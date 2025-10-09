@@ -1,0 +1,80 @@
+name: list_bloc
+description: Create a comprehensive list BLoC with schema management, pagination, search, filtering, reordering, and individual item state tracking.
+
+# The following defines the brick repository url.
+# Uncomment and update the following line before publishing the brick.
+# repository: https://github.com/my_org/my_repo
+
+# The following defines the version and build number for your brick.
+# A version number is three numbers separated by dots, like 1.2.34
+# followed by an optional build number (separated by a +).
+version: 0.1.0+1
+
+# The following defines the environment for the current brick.
+# It includes the version of mason that the brick requires.
+environment:
+  mason: ^0.1.1
+
+# Variables specify dynamic values that your brick depends on.
+# Zero or more variables can be specified for a given brick.
+# Each variable has:
+#  * a type (string, number, boolean, enum, array, or list)
+#  * an optional short description
+#  * an optional default value
+#  * an optional list of default values (array only)
+#  * an optional prompt phrase used when asking for the variable
+#  * a list of values (enums only)
+#  * an optional separator (list only)
+vars:
+  name:
+    type: string
+    description: Your list name (e.g., "Users", "Products")
+    default: users
+    prompt: What is your list's name?
+  item_type:
+    type: string
+    description: Type of items in the list
+    default: User
+    prompt: What is the item type? (singular form)
+  has_pagination:
+    type: boolean
+    description: Include pagination support
+    default: true
+    prompt: Does this list need pagination?
+  has_search:
+    type: boolean
+    description: Include search functionality
+    default: true
+    prompt: Does this list need search functionality?
+  has_filters:
+    type: boolean
+    description: Include advanced filtering
+    default: true
+    prompt: Does this list need filters?
+  has_reorder:
+    type: boolean
+    description: Include drag & drop reordering
+    default: false
+    prompt: Does this list need reordering?
+  has_crud:
+    type: boolean
+    description: Include CRUD operations
+    default: true
+    prompt: Does this list need CRUD operations?
+  filter_types:
+    type: array
+    description: Types of filters to include
+    default: ["category", "status"]
+    prompt: What filter types?
+    separator: ","
+  sort_options:
+    type: array
+    description: Available sort options
+    default: ["name", "date"]
+    prompt: What sort options?
+    separator: ","
+  output_directory:
+    type: string
+    description: Output directory for the list bloc
+    default: app_bloc
+    prompt: Where should the list bloc be created?

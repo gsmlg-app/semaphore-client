@@ -1,0 +1,22 @@
+name: form_bloc
+description: Copy from pub.dev, fix version conflict
+version: 0.31.0
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+resolution: workspace
+
+dependencies:
+  meta: any
+  uuid: any
+  bloc: ^9.0.0
+  rxdart: any
+  equatable: any
+  collection: any
+
+dev_dependencies:
+  test: ^1.20.1
+  mocktail: ^1.0.3
+  bloc_test: ^10.0.0
+  fire_line_diff: ^1.5.3
+  lints: ^6.0.0

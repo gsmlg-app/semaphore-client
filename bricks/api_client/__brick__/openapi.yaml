@@ -1,0 +1,14 @@
+openapi: 3.1.0
+info:
+  title: API
+  version: "1.0.0"
+  description: |
+    This is the complete OpenAPI specification
+servers:
+  - url: https://apis.gsmlg.app/v1
+    description: Production server
+tags:
+  - name: Module
+    description: Endpoints for managing Module.
+paths: {}
+components: {}

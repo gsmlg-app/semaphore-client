@@ -1,0 +1,37 @@
+name: {{name.snakeCase()}}_list_bloc
+description: "A comprehensive list BLoC for managing {{name.pascalCase()}} data with schema management, pagination, search, filtering, and individual item state tracking."
+version: 0.1.0
+homepage: https://github.com/your-org/semaphore-client
+
+environment:
+  sdk: '>=3.8.0 <4.0.0'
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State management
+  bloc: ^9.0.0
+  flutter_bloc: ^9.0.0
+  
+  # Equality comparisons
+  equatable: ^2.0.7
+  
+  # Core dependencies from workspace
+  app_logging: any
+  app_theme: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  
+  # Testing
+  bloc_test: ^10.0.0
+  mocktail: ^1.0.0
+  
+  # Linting
+  flutter_lints: ^6.0.0
+
+flutter:
+  # No assets needed for this package

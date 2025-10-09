@@ -1,0 +1,19 @@
+name: app_database
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+resolution: workspace
+
+dependencies:
+  drift: ^2.26.2
+  drift_flutter: ^0.2.5
+  path_provider: ^2.1.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  drift_dev: ^2.26.2
+  build_runner: ^2.4.15

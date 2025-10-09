@@ -1,0 +1,7 @@
+name: api_client_hooks
+
+environment:
+  sdk: ">=3.8.0 <4.0.0"
+
+dependencies:
+  mason: ^0.1.1

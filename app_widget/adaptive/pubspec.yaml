@@ -1,0 +1,24 @@
+name: app_adaptive_widgets
+description: Flutter adaptive widgets for my apps.
+version: 1.0.0
+homepage: none
+publish: none
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
+  flutter_adaptive_scaffold: any
+  flutter_bloc: ^9.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0

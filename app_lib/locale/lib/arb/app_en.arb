@@ -1,0 +1,21 @@
+{
+  "@@locale": "en",
+  "appName": "Semaphore Client",
+  "errorOccurred": "Error Occurred",
+  "backToHome": "Back to Home",
+  "welcomeHome": "Welcome to my app",
+  "ok": "OK",
+  "cancel": "Cancel",
+  "loading": "Loading",
+  "success": "Success",
+  "error": "Error",
+  "undo": "Undo",
+  "navHome": "Home",
+  "navSetting": "Setting",
+  "settingsTitle": "Setting",
+  "smenuTheme": "Theme",
+  "appearance": "Appearance",
+  "accentColor": "Accent Color",
+  "language": "Language",
+  "@@description": "App description"
+}

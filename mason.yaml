@@ -1,0 +1,15 @@
+bricks:
+  api_client:
+    path: bricks/api_client
+  simple_bloc:
+    path: bricks/simple_bloc
+  list_bloc:
+    path: bricks/list_bloc
+  repository:
+    path: bricks/repository
+  screen:
+    path: bricks/screen
+  widget:
+    path: bricks/widget
+  form_bloc:
+    path: bricks/form_bloc

@@ -1,0 +1,26 @@
+name: {{name.snakeCase()}}_repository
+description: {{name.sentenceCase()}} repository implementation
+version: 1.0.0
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  equatable: ^2.0.7
+  {{#has_remote_data_source}}
+  dio: ^5.7.0
+  connectivity_plus: ^6.0.5
+  {{/has_remote_data_source}}
+  {{#has_local_data_source}}
+  shared_preferences: ^2.3.5
+  path_provider: ^2.1.5
+  {{/has_local_data_source}}
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.3
+  flutter_lints: ^6.0.0

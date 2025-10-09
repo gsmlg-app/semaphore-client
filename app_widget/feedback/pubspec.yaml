@@ -1,0 +1,23 @@
+name: app_feedback
+description: Feedback widgets
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  app_locale: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  lint: ^2.0.1
+
+flutter:
+  uses-material-design: true

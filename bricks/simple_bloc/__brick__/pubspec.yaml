@@ -1,0 +1,20 @@
+name: {{name.snakeCase()}}_bloc
+description: App {{name.snakeCase()}} bloc
+version: 1.0.0
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  bloc: ^9.0.0
+  equatable: ^2.0.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  bloc_test: ^10.0.0
+  mocktail: ^1.0.3
+  flutter_lints: ^6.0.0

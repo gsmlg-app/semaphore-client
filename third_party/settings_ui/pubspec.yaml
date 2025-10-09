@@ -1,0 +1,19 @@
+name: settings_ui
+description: An Settings UI package for Flutter
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.21.0
+
+flutter:
+  uses-material-design: true

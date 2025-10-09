@@ -1,0 +1,29 @@
+name: "{{package_name.snakeCase()}}"
+version: 1.0.0
+description: API client, generate from OpenAPI spec
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+resolution: workspace
+
+dependencies:
+  dio: ^5.7.0
+  json_annotation: ^4.9.0
+  freezed_annotation: ^3.0.0
+  retrofit: ^4.4.2
+
+dev_dependencies:
+  test: "^1.16.0"
+  build_runner: any
+  json_serializable: "^6.9.3"
+  freezed: ^3.0.6 # for freezed
+  swagger_parser: "^1.26.1"
+  retrofit_generator: ^9.1.9
+
+global_options:
+  freezed:
+    runs_before:
+      - json_serializable
+  json_serializable:
+    runs_before:
+      - retrofit_generator

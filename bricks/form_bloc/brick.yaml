@@ -1,0 +1,19 @@
+name: form_bloc
+description: Create a form bloc package.
+
+version: 0.1.0+1
+
+environment:
+  mason: ^0.1.1
+
+vars:
+  name:
+    type: string
+    description: Your form bloc name
+    default: login
+    prompt: What is your form bloc's name?
+  output_directory:
+    type: string
+    description: Output directory for the form bloc
+    default: app_bloc
+    prompt: Where should the form bloc be created?

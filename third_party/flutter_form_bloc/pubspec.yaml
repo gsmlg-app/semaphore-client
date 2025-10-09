@@ -1,0 +1,25 @@
+name: flutter_form_bloc
+description: flutter_form_bloc copy from pub.dev, change to newest version
+version: 1.0.0
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  intl: any
+
+  form_bloc: any
+  flutter_bloc: ^9.0.0
+  equatable: ^2.0.7
+  rxdart: ^0.28.0
+  flutter_keyboard_visibility: ^6.0.0
+  collection: ^1.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0

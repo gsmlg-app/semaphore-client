@@ -1,0 +1,182 @@
+name: semaphore_client
+description: "Semaphore Client"
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.8.0 <4.0.0"
+
+workspace:
+  - app_lib/database
+  - app_lib/theme
+  - app_lib/locale
+  - app_lib/provider
+  - app_lib/logging
+  - app_bloc/theme
+  - app_widget/adaptive
+  - app_widget/artwork
+  - app_widget/feedback
+  - app_widget/web_view
+  - third_party/form_bloc
+  - third_party/flutter_form_bloc
+  - third_party/flutter_adaptive_scaffold
+  - third_party/settings_ui
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  logging: ^1.3.0
+
+  go_router: ^16.0.0
+
+  bloc: ^9.0.0
+  flutter_bloc: ^9.0.0
+  equatable: ^2.0.7
+
+  shared_preferences: ^2.3.5
+  path_provider: ^2.1.5
+  path: any
+
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.16
+  lottie: ^3.3.1
+  google_fonts: ^6.2.1
+
+  # workspace packages
+  app_database: any
+  app_theme: any
+  app_locale: any
+  app_provider: any
+  theme_bloc: any
+  app_artwork: any
+  app_feedback: any
+  app_adaptive_widgets: any
+  settings_ui: any
+  app_logging: any
+  app_web_view: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+  build_runner: ^2.4.15
+
+  melos: ^7.0.0
+  dependency_validator: ^5.0.2
+
+flutter:
+  uses-material-design: true
+
+# generate icon with `dart run flutter_launcher_icons:main``
+flutter_launcher_icons:
+  image_path: "app_widget/artwork/assets/icon/app-icon.png"
+  android: true
+  ios: true
+  min_sdk_android: 21
+  windows:
+    generate: true
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+
+melos:
+  name: semaphore_client
+  command:
+    version:
+      # Only allow versioning to happen on main branch.
+      branch: main
+      # Generates a link to a prefilled GitHub release creation page.
+      releaseUrl: true
+
+  scripts:
+    prepare:
+      description: Prepare project with `bootstrap`, `build_runner build` and `gen-l10n`
+      steps:
+        - melos bootstrap
+        - melos run gen-l10n
+        - melos run build-all
+
+    build-all:
+      run: melos exec --order-dependents dart run build_runner build --delete-conflicting-outputs
+      description: Run `dart/flutter analyze` for all packages.
+
+    lint:all:
+      run: melos run analyze && melos run format
+      description: Run all static analysis checks.
+
+    analyze:
+      run: |
+        melos exec --order-dependents flutter analyze --fatal-infos
+      description: Run `flutter analyze` for all packages.
+
+    fix:
+      run: melos exec --order-dependents dart fix . --apply
+      description: Run `dart fix` for all packages.
+
+    fix-dry-run:
+      run: melos exec --order-dependents dart fix . --dry-run
+      description: Run `dart fix` in dry-run mode for all packages.
+
+    format:
+      run: melos exec --order-dependents dart format .
+      description: Run `dart format` for all packages.
+
+    format-check:
+      run: melos exec --order-dependents dart format . --set-exit-if-changed
+      description: Run `dart format` checks for all packages.
+
+    upgrade:
+      run: melos exec --order-dependents dart pub upgrade --major-versions
+      description: Run `flutter pub upgrade` update dependencies in all packages.
+
+    outdated:
+      run: melos exec --order-dependents dart pub outdated
+      description: Run `flutter pub outdated` check outdated dependencies in all packages.
+
+    validate-dependencies:
+      run: dart run dependency_validator
+      description: Run `dart run dependency_validator` check dependencies usage.
+
+    test:
+      run: melos exec --order-dependents --fail-fast flutter test || true
+      description: Run Flutter tests for all packages (ignores packages without tests).
+      
+    test:coverage:
+      run: melos exec --order-dependents --fail-fast flutter test --coverage || true
+      description: Run Flutter tests with coverage for all packages (ignores packages without tests).
+      
+    test:watch:
+      run: melos exec --order-dependents --fail-fast flutter test --watch || true
+      description: Run Flutter tests in watch mode for all packages (ignores packages without tests).
+      
+    test:names:
+      run: melos exec --order-dependents --fail-fast flutter test --names || true
+      description: List all available tests in all packages (ignores packages without tests).
+      
+    test:selective:
+      run: melos exec --scope="app_theme" --scope="app_provider" --scope="app_database" --scope="app_locale" --scope="theme_bloc" --scope="settings_ui" --scope="form_bloc" --scope="flutter_adaptive_scaffold" --scope="app_web_view" --scope="app_adaptive_widgets" --scope="app_feedback" --scope="app_artwork" --scope="semaphore_client" flutter test
+      description: Run Flutter tests only for packages that have test directories.
+      
+    test:report:
+      description: Generate a comprehensive test report for all packages
+      steps:
+        - melos run test:selective
+        - echo "Test execution completed. Check individual package outputs above."
+      
+    test:bricks:
+      run: cd tool/brick_tests && dart pub get && dart test *.dart
+      description: Run Mason brick tests separately from Flutter tests.
+      
+    test:all:
+      description: Run all tests including Flutter tests and brick tests
+      steps:
+        - melos run test
+        - melos run test:bricks
+
+    gen-l10n:
+      run: melos exec --scope="app_locale" flutter gen-l10n
+      description: Generate localization files from ARB files.

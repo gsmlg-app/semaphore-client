@@ -1,0 +1,26 @@
+name: app_logging
+description: Centralized logging and error handling for the Semaphore Client
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  logging: ^1.2.0
+  stack_trace: ^1.11.1
+  shared_preferences: ^2.0.17
+  meta: ^1.11.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
