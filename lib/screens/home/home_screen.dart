@@ -1,76 +1,41 @@
-import 'package:app_adaptive_widgets/app_adaptive_widgets.dart';
-import 'package:app_artwork/app_artwork.dart';
-import 'package:app_locale/app_locale.dart';
 import 'package:flutter/material.dart';
-import 'package:semaphore_client/destination.dart';
 
-class HomeScreen extends StatelessWidget {
-  static const name = 'Home Screen';
-  static const path = '/home';
-
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
+  static const name = 'home';
+  static const path = '/home';
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    double w = screenWidth;
-    if (screenHeight < screenWidth) {
-      w = screenHeight;
-    }
-
-    return AppAdaptiveScaffold(
-      selectedIndex: Destinations.indexOf(const Key(HomeScreen.name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
-      destinations: Destinations.navs(context),
-      appBar: AppBar(
-        title: Text(context.l10n.appName),
-        centerTitle: true,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-      body: (context) => SafeArea(
+    final size = MediaQuery.of(context).size;
+    final width = size.width > size.height ? size.height : size.width;
+    final textSize = width * 0.618 * 0.1;
+    Color? textColor = Theme.of(context).colorScheme.onSurface;
+    final textStyle = TextStyle(fontSize: textSize, color: textColor);
+    return Scaffold(
+      body: SafeArea(
         child: Center(
           child: SizedBox(
-            width: w * 0.618,
-            height: w * 0.618,
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
+              width: width * 0.618,
+              height: width * 0.618,
               child: Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    LaddingPageLottie(width: w * 0.382, height: w * 0.382),
-                    Text(
-                      context.l10n.welcomeHome,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                      ),
-                    ),
-                    Text(
-                      '$screenWidth x $screenHeight',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        throw Exception('This is a crash!');
-                      },
-                      child: Text(
-                        'Throw Error',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                      ),
-                    ),
+                    Text('Ansible', style: textStyle),
+                    SizedBox(height: textSize),
+                    Text('Semaphore', style: textStyle),
                   ],
                 ),
-              ),
-            ),
-          ),
+              )),
         ),
       ),
     );

@@ -4,8 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'event.dart';
-part 'state.dart';
+import 'event.dart';
+import 'state.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   SharedPreferences pref;

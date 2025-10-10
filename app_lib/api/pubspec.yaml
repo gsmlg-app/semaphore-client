@@ -1,0 +1,25 @@
+name: app_api
+version: 1.0.0
+description: API client for Semaphore
+publish_to: none
+
+environment:
+  sdk: ">=3.8.0 <4.0.0"
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  dio: ^5.3.1
+  json_annotation: ^4.8.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.15
+
+flutter:
+  # No assets or resources needed for API package

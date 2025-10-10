@@ -1,0 +1,109 @@
+{
+    "@@locale": "ko",
+    "appName": "Ansible Semaphore 실행기",
+    "show": "보이기",
+    "hide": "숨기기",
+    "exit": "종료",
+    "destinationProject": "프로젝트",
+    "destinationSetting": "설정",
+    "settingsTitle": "설정",
+    "smenuTheme": "테마",
+    "titleSelectAppearance": "모양 선택",
+    "titleSelectColorTheme": "색상 테마 선택",
+    "smenuSemaphore": "Ansible Semaphore",
+    "smenuSemaphoreServer": "서버",
+    "titleSelectServer": "서버 선택",
+    "addServer": "서버 추가",
+    "serverNameLabel": "서버 이름",
+    "serverNameHint": "서버 이름을 입력하십시오.",
+    "serverUrlLabel": "서버 URL",
+    "serverUrlHint": "서버의 URL을 입력하십시오. /api 부분을 포함해야 합니다. 예: https://semaphore.example.com/api",
+    "usernameLabel": "사용자 이름",
+    "usernameHint": "서버 인증에 사용할 사용자 이름을 입력하십시오.",
+    "passwordLabel": "비밀번호",
+    "passwordHint": "서버 인증에 사용할 비밀번호를 입력하십시오.",
+    "buttonDelete": "삭제",
+    "buttonCancel": "취소",
+    "buttonSave": "저장",
+    "smenuSemaphoreServerProject": "프로젝트",
+    "noServerActivated": "[활성화된 서버 없음]",
+    "accidentallyDeleted": "실수로 삭제하셨나요?",
+    "undo": "실행 취소",
+    "delete": "삭제",
+    "refresh": "새로 고침",
+    "autoRefresh": "자동 새로 고침",
+    "rename": "이름 바꾸기",
+    "serverAdded": "서버가 추가되었습니다.",
+    "renameServer": "서버 이름 바꾸기",
+    "serverRenamed": "서버 이름이 {serverName}로 변경되었습니다.",
+    "@serverRenamed": {
+        "placeholders": {
+            "serverName": {
+                "type": "String"
+            }
+        }
+    },
+    "clickToSelect": "[선택하려면 클릭하십시오.]",
+    "titleSelectProject": "프로젝트 선택",
+    "addProject": "프로젝트 추가",
+    "projectNameLabel": "프로젝트 이름",
+    "projectNameHint": "프로젝트 이름을 입력하십시오.",
+    "projectAlertLabel": "이 프로젝트에 대한 알림 허용",
+    "alertChatLabel": "텔레그램 채팅 ID (선택 사항)",
+    "maxParallelTasksLabel": "최대 병렬 작업 수 (선택 사항)",
+    "maxParallelTasksHint": "0 이상이어야 합니다. 0 - 무제한.",
+    "projectPageTitle": "프로젝트",
+    "titleTemplate": "템플릿",
+    "titleHistory": "내역",
+    "titleActivity": "활동",
+    "titleTask": "작업",
+    "rerunTask": "작업 다시 실행",
+    "runTask": "작업 실행",
+    "edit": "편집",
+    "statusSuccess": "성공",
+    "statusFailed": "실패",
+    "statusRunning": "실행 중",
+    "statusWaiting": "대기 중",
+    "statusStopped": "중지됨",
+    "statusUnknown": "알 수 없음",
+    "taskOutput": "작업 출력",
+    "taskNoOutput": "N/A",
+    "taskLabelMessage": "메시지",
+    "taskLabelDryRun": "Dry Run",
+    "taskLabelDebug": "디버그",
+    "taskLabelDiff": "Diff",
+    "taskCreated": "작업 #{taskId} 생성됨!",
+    "@taskCreated": {
+        "placeholders": {
+            "taskId": {
+                "type": "int"
+            }
+        }
+    },
+    "taskStartedAt": "{time}에 시작됨",
+    "@taskStartedAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "taskRunning": "실행 중...",
+    "taskDuration": "지속 시간: {duration}",
+    "@taskDuration": {
+        "placeholders": {
+            "duration": {
+                "type": "String"
+            }
+        }
+    },
+    "byUser": "{user}에 의함",
+    "@byUser": {
+        "placeholders": {
+            "user": {
+                "type": "String"
+            }
+        }
+    },
+    "@@description": "Ansible Semaphore 클라이언트 도구"
+}

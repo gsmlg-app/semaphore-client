@@ -5,7 +5,8 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.6.0"
+  sdk: ">=3.8.0 <4.0.0"
+resolution: workspace
 
 dependencies:
   flutter:
@@ -14,8 +15,7 @@ dependencies:
   equatable: ^2.0.5
   bloc: ^9.0.0
   flutter_bloc: ^9.0.0
-  app_logging:
-    path: ../../app_lib/logging
+  app_logging: any
   logging: ^1.2.0
 
 dev_dependencies:

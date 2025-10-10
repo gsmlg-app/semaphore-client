@@ -1,4 +1,5 @@
-part of 'bloc.dart';
+import 'package:app_theme/app_theme.dart';
+import 'package:flutter/material.dart';
 
 sealed class ThemeEvent {
   const ThemeEvent();

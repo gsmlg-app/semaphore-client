@@ -10,6 +10,9 @@ dependencies:
   drift: ^2.26.2
   drift_flutter: ^0.2.5
   path_provider: ^2.1.5
+  flat_buffers: ^23.5.26
+  objectbox: ^2.5.1
+  objectbox_flutter_libs: ^2.5.1
 
 dev_dependencies:
   flutter_test:

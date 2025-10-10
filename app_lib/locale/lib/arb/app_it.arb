@@ -1,0 +1,110 @@
+{
+    "@@locale": "it",
+    "appName": "Esecutore Semaforo Ansible",
+    "show": "Mostra",
+    "hide": "Nascondi",
+    "exit": "Esci",
+    "destinationProject": "Progetto",
+    "destinationSetting": "Impostazione",
+    "settingsTitle": "Impostazione",
+    "smenuTheme": "Tema",
+    "titleSelectAppearance": "Seleziona l'aspetto",
+    "titleSelectColorTheme": "Seleziona il colore di accento",
+    "smenuSemaphore": "Semaforo Ansible",
+    "smenuSemaphoreServer": "Server",
+    "titleSelectServer": "Seleziona il server",
+    "addServer": "Aggiungi server",
+    "serverNameLabel": "Nome server",
+    "serverNameHint": "Inserisci un nome per il server",
+    "serverUrlLabel": "URL del server",
+    "serverUrlHint": "Inserisci l'URL del server, deve includere la parte /api, ad esempio https://semaphore.example.com/api",
+    "usernameLabel": "Nome utente",
+    "usernameHint": "Inserisci il nome utente per l'autenticazione con il server",
+    "passwordLabel": "Password",
+    "passwordHint": "Inserisci la password per l'autenticazione con il server",
+    "buttonDelete": "Elimina",
+    "buttonCancel": "Annulla",
+    "buttonSave": "Salva",
+    "smenuSemaphoreServerProject": "Progetto",
+    "noServerActivated": "[Nessun server è attivato]",
+    "accidentallyDeleted": "Eliminato accidentalmente?",
+    "undo": "Annulla",
+    "delete": "Elimina",
+    "refresh": "Aggiorna",
+    "autoRefresh": "Aggiornamento automatico",
+    "rename": "Rinomina",
+    "serverAdded": "Server aggiunto",
+    "renameServer": "Rinomina server",
+    "serverRenamed": "Server rinominato in {serverName}",
+    "@serverRenamed": {
+        "placeholders": {
+            "serverName": {
+                "type": "String"
+            }
+        }
+    },
+    "clickToSelect": "[Clicca per selezionare]",
+    "titleSelectProject": "Seleziona il progetto",
+    "addProject": "Aggiungi progetto",
+    "projectNameLabel": "Nome progetto",
+    "projectNameHint": "Inserisci un nome per il progetto",
+    "projectAlertLabel": "Consenti avvisi per questo progetto",
+    "alertChatLabel": "ID chat Telegram (opzionale)",
+    "maxParallelTasksLabel": "Numero massimo di attività parallele (opzionale)",
+    "maxParallelTasksHint": "Dovrebbe essere 0 o maggiore, 0 - illimitato.",
+    "projectPageTitle": "Progetto",
+    "titleTemplate": "Modello",
+    "titleHistory": "Cronologia",
+    "titleActivity": "Attività",
+    "titleTask": "Attività",
+    "rerunTask": "Ripeti l'attività",
+    "runTask": "Esegui l'attività",
+    "edit": "Modifica",
+    "statusSuccess": "Riuscito",
+    "statusFailed": "Fallito",
+    "statusRunning": "In esecuzione",
+    "statusWaiting": "In attesa",
+    "statusStopped": "Arresto",
+    "statusUnknown": "Sconosciuto",
+    "taskOutput": "Output dell'attività",
+    "taskNoOutput": "N/A",
+    "taskLabelMessage": "Messaggio",
+    "taskLabelDryRun": "Esecuzione a secco",
+    "taskLabelDebug": "Debug",
+    "taskLabelDiff": "Differenza",
+    "taskCreated": "Attività #{taskId} creata!",
+    "@taskCreated": {
+        "placeholders": {
+            "taskId": {
+                "type": "int"
+            }
+        }
+    },
+    "taskStartedAt": "Avviato alle {time}",
+    "@taskStartedAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "taskRunning": "In esecuzione...",
+    "taskDuration": "Durata: {duration}",
+    "@taskDuration": {
+        "placeholders": {
+            "duration": {
+                "type": "String"
+            }
+        }
+    },
+    "byUser": "da {user}",
+    "@byUser": {
+        "placeholders": {
+            "user": {
+                "type": "String"
+            }
+        }
+    },
+    "@@description": "Strumenti client di Semaforo Ansible"
+}
+

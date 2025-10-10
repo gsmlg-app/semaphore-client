@@ -1,0 +1,110 @@
+{
+    "@@locale": "zh",
+    "appName": "Ansible Semaphore 运行器",
+    "show": "显示",
+    "hide": "隐藏",
+    "exit": "退出",
+    "destinationProject": "项目",
+    "destinationSetting": "设置",
+    "settingsTitle": "设置",
+    "smenuTheme": "主题",
+    "titleSelectAppearance": "选择外观",
+    "titleSelectColorTheme": "选择主题色",
+    "smenuSemaphore": "Ansible Semaphore",
+    "smenuSemaphoreServer": "服务器",
+    "titleSelectServer": "选择服务器",
+    "addServer": "添加服务器",
+    "serverNameLabel": "服务器名称",
+    "serverNameHint": "输入服务器名称",
+    "serverUrlLabel": "服务器 URL",
+    "serverUrlHint": "输入服务器 URL，必须包含 /api 部分，例如 https://semaphore.example.com/api",
+    "usernameLabel": "用户名",
+    "usernameHint": "输入用于验证服务器的用户名",
+    "passwordLabel": "密码",
+    "passwordHint": "输入用于验证服务器的密码",
+    "buttonDelete": "删除",
+    "buttonCancel": "取消",
+    "buttonSave": "保存",
+    "smenuSemaphoreServerProject": "项目",
+    "noServerActivated": "[未激活任何服务器]",
+    "accidentallyDeleted": "不小心删除了？",
+    "undo": "撤销",
+    "delete": "删除",
+    "refresh": "刷新",
+    "autoRefresh": "自动刷新",
+    "rename": "重命名",
+    "serverAdded": "服务器已添加",
+    "renameServer": "重命名服务器",
+    "serverRenamed": "服务器已重命名为 {serverName}",
+    "@serverRenamed": {
+        "placeholders": {
+            "serverName": {
+                "type": "String"
+            }
+        }
+    },
+    "clickToSelect": "[点击选择]",
+    "titleSelectProject": "选择项目",
+    "addProject": "添加项目",
+    "projectNameLabel": "项目名称",
+    "projectNameHint": "输入项目名称",
+    "projectAlertLabel": "允许此项目发出警报",
+    "alertChatLabel": "Telegram 聊天 ID（可选）",
+    "maxParallelTasksLabel": "最大并行任务数（可选）",
+    "maxParallelTasksHint": "应为 0 或更大，0 - 无限。",
+    "projectPageTitle": "项目",
+    "titleTemplate": "模板",
+    "titleHistory": "历史记录",
+    "titleActivity": "活动",
+    "titleTask": "任务",
+    "rerunTask": "重新运行任务",
+    "runTask": "运行任务",
+    "edit": "编辑",
+    "statusSuccess": "成功",
+    "statusFailed": "失败",
+    "statusRunning": "正在运行",
+    "statusWaiting": "等待",
+    "statusStopped": "已停止",
+    "statusUnknown": "未知",
+    "taskOutput": "任务输出",
+    "taskNoOutput": "N/A",
+    "taskLabelMessage": "消息",
+    "taskLabelDryRun": "试运行",
+    "taskLabelDebug": "调试",
+    "taskLabelDiff": "差异",
+    "taskCreated": "任务 #{taskId} 已创建！",
+    "@taskCreated": {
+        "placeholders": {
+            "taskId": {
+                "type": "int"
+            }
+        }
+    },
+    "taskStartedAt": "开始于 {time}",
+    "@taskStartedAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "taskRunning": "正在运行...",
+    "taskDuration": "持续时间：{duration}",
+    "@taskDuration": {
+        "placeholders": {
+            "duration": {
+                "type": "String"
+            }
+        }
+    },
+    "byUser": "由 {user} 执行",
+    "@byUser": {
+        "placeholders": {
+            "user": {
+                "type": "String"
+            }
+        }
+    },
+    "@@description": "Ansible Semaphore 客户端工具"
+}
+

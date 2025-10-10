@@ -6,11 +6,8 @@ import 'package:go_router/go_router.dart';
 class ErrorScreen extends StatelessWidget {
   static const name = 'Error';
   static const path = '/error';
-
   const ErrorScreen({super.key, required this.routerState});
-
   final GoRouterState routerState;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +20,7 @@ class ErrorScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               alignment: Alignment.topLeft,
               child: Text(
-                context.l10n.errorOccurred,
+                context.l10n.statusFailed,
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   color: Theme.of(context).colorScheme.error,
                 ),
@@ -31,6 +28,7 @@ class ErrorScreen extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 24),
+              margin: const EdgeInsets.only(top: 16),
               child: Text(
                 routerState.error.toString(),
                 style: Theme.of(context).textTheme.bodyLarge,
@@ -42,7 +40,7 @@ class ErrorScreen extends StatelessWidget {
                 onPressed: () {
                   context.go(SplashScreen.path);
                 },
-                child: Text(context.l10n.backToHome),
+                child: Text(context.l10n.show),
               ),
             ),
           ],

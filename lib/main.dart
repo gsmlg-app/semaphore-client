@@ -1,51 +1,104 @@
-import 'dart:io';
-
-import 'package:app_database/app_database.dart';
-import 'package:app_locale/app_locale.dart';
-import 'package:app_logging/app_logging.dart';
-import 'package:app_provider/app_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:app_theme/app_theme.dart';
+import 'package:app_utils/app_utils.dart' hide PlatformExt;
+import 'package:app_locale/app_locale.dart';
+import 'package:app_database/app_database.dart';
+import 'package:desktop_tray/desktop_tray.dart';
+import 'package:desktop_tray/src/system_tray_manager.dart' show PlatformExt;
+import 'package:semaphore_client/app.dart';
+import 'package:activity_bloc/activity.dart';
+import 'package:history_bloc/history.dart';
+import 'package:integration_bloc/integration.dart';
+import 'package:inventory_bloc/inventory.dart';
+import 'package:inventory_form_bloc/inventory_form.dart';
+import 'package:key_store_bloc/key_store.dart';
+import 'package:project_bloc/project.dart';
+import 'package:project_form_bloc/project_form.dart';
+import 'package:repository_bloc/repository.dart';
+import 'package:run_task_bloc/run_task.dart';
+import 'package:schedule_bloc/schedule.dart';
+import 'package:server_bloc/server.dart';
+import 'package:server_form_bloc/server_form.dart';
+import 'package:task_bloc/task.dart';
+import 'package:task_output_bloc/task_output.dart';
+import 'package:team_bloc/team.dart';
+import 'package:template_bloc/template.dart';
+import 'package:theme_bloc/theme.dart';
+import 'package:variable_bloc/variable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:window_manager/window_manager.dart';
 
-import 'app.dart';
-
-void main(List<String> args) async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final applicationSupportDirectory = await getApplicationSupportDirectory();
+  if (PlatformExt.isDesktop) {
+    await windowManager.ensureInitialized();
 
-  // Initialize logging
-  final logger = AppLogger();
-  logger.initialize(level: LogLevel.debug);
-  final directory = Directory(
-    path.join(applicationSupportDirectory.path, 'appName'),
-  );
-  await directory.create(recursive: true);
-  final logFile = File(
-    path.join(applicationSupportDirectory.path, 'appName', 'app.log'),
-  );
-  logger.logStream.listen((record) {
-    final log =
-        '${record.loggerName} ${record.level.name} [${record.time}]: ${record.message}';
-    logFile.writeAsString(log, mode: FileMode.append);
-  });
-  // Use logger
-  logger.i('App started');
+    WindowOptions windowOptions = const WindowOptions(
+      size: Size(800, 600),
+      center: true,
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.normal,
+      minimumSize: Size(360, 720),
+    );
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
 
   final sharedPrefs = await SharedPreferences.getInstance();
   final database = AppDatabase();
+  final objectBox = await ObjectBox.create();
 
   runApp(
-    MainProvider(
-      sharedPrefs: sharedPrefs,
-      database: database,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: AppLocale.localizationsDelegates,
-        supportedLocales: AppLocale.supportedLocales,
-        home: CrashReportingWidget(child: const App()),
+    MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<AppDatabase>(
+          create: (BuildContext context) => database,
+        ),
+        RepositoryProvider<ObjectBox>(
+          create: (BuildContext context) => objectBox,
+        ),
+        RepositoryProvider<SharedPreferences>(
+          create: (BuildContext context) => sharedPrefs,
+        ),
+      ],
+      child: MultiBlocProvider(
+          providers: [
+            BlocProvider<ThemeBloc>(
+              create: (BuildContext context) => ThemeBloc(
+                context.read<SharedPreferences>(),
+              ),
+            ),
+            BlocProvider<SemaphoreServerBloc>(
+              create: (BuildContext context) => SemaphoreServerBloc(
+                SemaphoreServerState(),
+                context.read<ObjectBox>(),
+                context.read<SharedPreferences>(),
+              ),
+            ),
+            BlocProvider(create: (BuildContext context) => ServerFormBloc()),
+            BlocProvider(create: (BuildContext context) => ProjectBloc()),
+            BlocProvider(create: (BuildContext context) => ProjectFormBloc()),
+            BlocProvider(create: (BuildContext context) => ActivityBloc()),
+            BlocProvider(create: (BuildContext context) => HistoryBloc()),
+            BlocProvider(create: (BuildContext context) => TemplateBloc()),
+            BlocProvider(create: (BuildContext context) => TaskBloc()),
+            BlocProvider(create: (BuildContext context) => TaskOutputBloc()),
+            BlocProvider(create: (BuildContext context) => RunTaskFormBloc()),
+            BlocProvider(create: (BuildContext context) => ScheduleBloc()),
+            BlocProvider(create: (BuildContext context) => InventoryBloc()),
+            BlocProvider(create: (BuildContext context) => InventoryFormBloc()),
+            BlocProvider(create: (BuildContext context) => VariableBloc()),
+            BlocProvider(create: (BuildContext context) => KeyStoreBloc()),
+            BlocProvider(create: (BuildContext context) => RepositoryBloc()),
+            BlocProvider(create: (BuildContext context) => IntegrationBloc()),
+            BlocProvider(create: (BuildContext context) => TeamBloc()),
+          ],
+          child: const App(),
       ),
     ),
   );

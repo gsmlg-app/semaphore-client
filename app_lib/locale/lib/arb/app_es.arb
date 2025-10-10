@@ -1,0 +1,110 @@
+{
+    "@@locale": "es",
+    "appName": "Ansible Semaphore Runner",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "exit": "Salir",
+    "destinationProject": "Proyecto",
+    "destinationSetting": "Configuración",
+    "settingsTitle": "Configuración",
+    "smenuTheme": "Tema",
+    "titleSelectAppearance": "Seleccionar Apariencia",
+    "titleSelectColorTheme": "Seleccionar Color de Acentos",
+    "smenuSemaphore": "Ansible Semaphore",
+    "smenuSemaphoreServer": "Servidor",
+    "titleSelectServer": "Seleccionar Servidor",
+    "addServer": "Agregar Servidor",
+    "serverNameLabel": "Nombre del Servidor",
+    "serverNameHint": "Ingrese un nombre para el servidor",
+    "serverUrlLabel": "URL del Servidor",
+    "serverUrlHint": "Ingrese la URL del servidor, debe incluir la parte /api, por ejemplo, https://semaphore.example.com/api",
+    "usernameLabel": "Nombre de Usuario",
+    "usernameHint": "Ingrese el nombre de usuario para autenticarse con el servidor",
+    "passwordLabel": "Contraseña",
+    "passwordHint": "Ingrese la contraseña para autenticarse con el servidor",
+    "buttonDelete": "Eliminar",
+    "buttonCancel": "Cancelar",
+    "buttonSave": "Guardar",
+    "smenuSemaphoreServerProject": "Proyecto",
+    "noServerActivated": "[No hay ningún servidor activado]",
+    "accidentallyDeleted": "¿Eliminado por error?",
+    "undo": "Deshacer",
+    "delete": "Eliminar",
+    "refresh": "Actualizar",
+    "autoRefresh": "Actualización Automática",
+    "rename": "Renombrar",
+    "serverAdded": "Servidor agregado",
+    "renameServer": "Renombrar Servidor",
+    "serverRenamed": "Servidor renombrado a {serverName}",
+    "@serverRenamed": {
+        "placeholders": {
+            "serverName": {
+                "type": "String"
+            }
+        }
+    },
+    "clickToSelect": "[Click para Seleccionar]",
+    "titleSelectProject": "Seleccionar Proyecto",
+    "addProject": "Agregar Proyecto",
+    "projectNameLabel": "Nombre del Proyecto",
+    "projectNameHint": "Ingrese un nombre para el proyecto",
+    "projectAlertLabel": "Permitir alertas para este proyecto",
+    "alertChatLabel": "ID de Chat de Telegram (Opcional)",
+    "maxParallelTasksLabel": "Número máximo de tareas en paralelo (Opcional)",
+    "maxParallelTasksHint": "Debe ser 0 o mayor, 0 - ilimitado.",
+    "projectPageTitle": "Proyecto",
+    "titleTemplate": "Plantilla",
+    "titleHistory": "Historial",
+    "titleActivity": "Actividad",
+    "titleTask": "Tarea",
+    "rerunTask": "Re-ejecutar Tarea",
+    "runTask": "Ejecutar Tarea",
+    "edit": "Editar",
+    "statusSuccess": "Éxito",
+    "statusFailed": "Falla",
+    "statusRunning": "En Ejecución",
+    "statusWaiting": "Esperando",
+    "statusStopped": "Detenido",
+    "statusUnknown": "Desconocido",
+    "taskOutput": "Salida de la Tarea",
+    "taskNoOutput": "N/A",
+    "taskLabelMessage": "Mensaje",
+    "taskLabelDryRun": "Ejecución en Seco",
+    "taskLabelDebug": "Depuración",
+    "taskLabelDiff": "Diferencia",
+    "taskCreated": "Tarea #{taskId} creada!",
+    "@taskCreated": {
+        "placeholders": {
+            "taskId": {
+                "type": "int"
+            }
+        }
+    },
+    "taskStartedAt": "Iniciada a las {time}",
+    "@taskStartedAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "taskRunning": "En ejecución...",
+    "taskDuration": "Duración: {duration}",
+    "@taskDuration": {
+        "placeholders": {
+            "duration": {
+                "type": "String"
+            }
+        }
+    },
+    "byUser": "por {user}",
+    "@byUser": {
+        "placeholders": {
+            "user": {
+                "type": "String"
+            }
+        }
+    },
+    "@@description": "Herramientas de Cliente de Ansible Semaphore"
+}
+

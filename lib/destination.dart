@@ -11,13 +11,13 @@ class Destinations {
           key: const Key(HomeScreen.name),
           icon: const Icon(Icons.home_outlined),
           selectedIcon: const Icon(Icons.home),
-          label: context.l10n.navHome,
+          label: context.l10n.destinationProject,
         ),
         NavigationDestination(
           key: const Key(SettingsScreen.name),
           icon: const Icon(Icons.settings_outlined),
           selectedIcon: const Icon(Icons.settings),
-          label: context.l10n.navSetting,
+          label: context.l10n.destinationSetting,
         ),
       ];
 

@@ -1,21 +1,132 @@
 {
-  "@@locale": "en",
-  "appName": "Semaphore Client",
-  "errorOccurred": "Error Occurred",
-  "backToHome": "Back to Home",
-  "welcomeHome": "Welcome to my app",
-  "ok": "OK",
-  "cancel": "Cancel",
-  "loading": "Loading",
-  "success": "Success",
-  "error": "Error",
-  "undo": "Undo",
-  "navHome": "Home",
-  "navSetting": "Setting",
-  "settingsTitle": "Setting",
-  "smenuTheme": "Theme",
-  "appearance": "Appearance",
-  "accentColor": "Accent Color",
-  "language": "Language",
-  "@@description": "App description"
+    "@@locale": "en",
+    "appName": "Semaphore Mobile",
+    "show": "Show",
+    "hide": "Hide",
+    "exit": "Exit",
+    "destinationProject": "Project",
+    "destinationSetting": "Setting",
+    "settingsTitle": "Setting",
+    "smenuTheme": "Theme",
+    "titleSelectAppearance": "Select Appearance",
+    "titleSelectColorTheme": "Select Accent Color",
+    "smenuSemaphore": "Semaphore",
+    "smenuSemaphoreServer": "Server",
+    "titleSelectServer": "Select Server",
+    "addServer": "Add Server",
+    "serverNameLabel": "Server Name",
+    "serverNameHint": "Enter a name for the server",
+    "serverUrlLabel": "Server URL",
+    "serverUrlHint": "Enter the URL of the server, must include the /api part, e.g. https://semaphore.example.com/api",
+    "usernameLabel": "Username",
+    "usernameHint": "Enter the username to authenticate with the server",
+    "passwordLabel": "Password",
+    "passwordHint": "Enter the password to authenticate with the server",
+    "buttonDelete": "Delete",
+    "buttonCancel": "Cancel",
+    "buttonSave": "Save",
+    "smenuSemaphoreServerProject": "Project",
+    "noServerActivated": "[No server is activated]",
+    "accidentallyDeleted": "Accidentally deleted?",
+    "undo": "Undo",
+    "delete": "Delete",
+    "refresh": "Refresh",
+    "autoRefresh": "Auto Refresh",
+    "rename": "Rename",
+    "serverAdded": "Server added",
+    "renameServer": "Rename Server",
+    "serverRenamed": "Server renamed to {serverName}",
+    "@serverRenamed": {
+        "placeholders": {
+            "serverName": {
+                "type": "String"
+            }
+        }
+    },
+    "clickToSelect": "[Click to Select]",
+    "titleSelectProject": "Select Project",
+    "addProject": "Add Project",
+    "projectNameLabel": "Project Name",
+    "projectNameHint": "Enter a name for the project",
+    "projectAlertLabel": "Allow alerts for this project",
+    "alertChatLabel": "Telegram Chat ID (Optional)",
+    "maxParallelTasksLabel": "Max number of parallel tasks (Optional)",
+    "maxParallelTasksHint": "Should be 0 or greater, 0 - unlimited.",
+    "projectPageTitle": "Project",
+    "titleHistory": "History",
+    "titleActivity": "Activity",
+    "titleTemplate": "Template",
+    "titleSchedule": "Schedule",
+    "titleInventory": "Inventory",
+    "titleVariable": "Variable Group",
+    "titleKeyStore": "Key Store",
+    "titleRepository": "Repository",
+    "titleIntegration": "Integration",
+    "titleTeam": "Team",
+    "titleTask": "Task",
+    "rerunTask": "Rerun Task",
+    "runTask": "Run Task",
+    "add": "Add",
+    "create": "Create",
+    "edit": "Edit",
+    "save": "Save",
+    "statusSuccess": "Success",
+    "statusFailed": "Failed",
+    "statusRunning": "Running",
+    "statusWaiting": "Waiting",
+    "statusStopped": "Stopped",
+    "statusUnknown": "Unknown",
+    "taskOutput": "Task Output",
+    "taskNoOutput": "N/A",
+    "taskLabelMessage": "Message",
+    "taskLabelDryRun": "Dry Run",
+    "taskLabelDebug": "Debug",
+    "taskLabelDiff": "Diff",
+    "taskCreated": "Task #{taskId} created!",
+    "@taskCreated": {
+        "placeholders": {
+            "taskId": {
+                "type": "int"
+            }
+        }
+    },
+    "showTaskOutput": "Show Task Output",
+    "taskStartedAt": "Started at {time}",
+    "@taskStartedAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "taskRunning": "Running...",
+    "taskDuration": "Duration: {duration}",
+    "@taskDuration": {
+        "placeholders": {
+            "duration": {
+                "type": "String"
+            }
+        }
+    },
+    "byUser": "by {user}",
+    "@byUser": {
+        "placeholders": {
+            "user": {
+                "type": "String"
+            }
+        }
+    },
+    "inventoryNameLabel": "Name",
+    "inventorySshKeyLabel": "User Credentials",
+    "inventoryBecomeKeyLabel": "Sudo Credentials (Optional)",
+    "inventoryTypeLabel": "Type",
+    "inventoryInventoryFileLabel": "Path to Inventory file",
+    "inventoryInventoryTextLabel": "Enter inventory",
+    "inventoryInventoryTextHint": "Static inventory example:",
+    "inventoryInventoryTextYamlHint": "Static YAML inventory example:",
+    "inventoryRepositoryLabel": "Repository (Optional)",
+    "inventoryCreated": "Inventory created",
+    "inventoryUpdated": "Inventory updated",
+    "inventoryDeleted": "Inventory deleted",
+    "@@description": "Semaphore Client Tools"
 }

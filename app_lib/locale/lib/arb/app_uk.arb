@@ -1,0 +1,110 @@
+{
+    "@@locale": "uk",
+    "appName": "Виконавець Ansible Semaphore",
+    "show": "Показати",
+    "hide": "Приховати",
+    "exit": "Вийти",
+    "destinationProject": "Проект",
+    "destinationSetting": "Налаштування",
+    "settingsTitle": "Налаштування",
+    "smenuTheme": "Тема",
+    "titleSelectAppearance": "Виберіть зовнішній вигляд",
+    "titleSelectColorTheme": "Виберіть колір акценту",
+    "smenuSemaphore": "Ansible Semaphore",
+    "smenuSemaphoreServer": "Сервер",
+    "titleSelectServer": "Виберіть сервер",
+    "addServer": "Додати сервер",
+    "serverNameLabel": "Назва сервера",
+    "serverNameHint": "Введіть назву для сервера",
+    "serverUrlLabel": "URL сервера",
+    "serverUrlHint": "Введіть URL сервера, включаючи /api частину, наприклад https://semaphore.example.com/api",
+    "usernameLabel": "Ім'я користувача",
+    "usernameHint": "Введіть ім'я користувача для автентифікації на сервері",
+    "passwordLabel": "Пароль",
+    "passwordHint": "Введіть пароль для автентифікації на сервері",
+    "buttonDelete": "Видалити",
+    "buttonCancel": "Скасувати",
+    "buttonSave": "Зберегти",
+    "smenuSemaphoreServerProject": "Проект",
+    "noServerActivated": "[Немає активних серверів]",
+    "accidentallyDeleted": "Випадково видалено?",
+    "undo": "Скасувати",
+    "delete": "Видалити",
+    "refresh": "Оновити",
+    "autoRefresh": "Автоматичне оновлення",
+    "rename": "Перейменувати",
+    "serverAdded": "Сервер додано",
+    "renameServer": "Перейменувати сервер",
+    "serverRenamed": "Сервер перейменовано на {serverName}",
+    "@serverRenamed": {
+        "placeholders": {
+            "serverName": {
+                "type": "String"
+            }
+        }
+    },
+    "clickToSelect": "[Натисніть, щоб вибрати]",
+    "titleSelectProject": "Виберіть проект",
+    "addProject": "Додати проект",
+    "projectNameLabel": "Назва проекту",
+    "projectNameHint": "Введіть назву для проекту",
+    "projectAlertLabel": "Дозволити сповіщення для цього проекту",
+    "alertChatLabel": "ID Telegram-чату (необов'язково)",
+    "maxParallelTasksLabel": "Максимальна кількість паралельних завдань (необов'язково)",
+    "maxParallelTasksHint": "Повинно бути 0 або більше, 0 - необмежено.",
+    "projectPageTitle": "Проект",
+    "titleTemplate": "Шаблон",
+    "titleHistory": "Історія",
+    "titleActivity": "Активність",
+    "titleTask": "Завдання",
+    "rerunTask": "Запустити завдання повторно",
+    "runTask": "Запустити завдання",
+    "edit": "Редагувати",
+    "statusSuccess": "Успішно",
+    "statusFailed": "Помилка",
+    "statusRunning": "Виконується",
+    "statusWaiting": "Очікує",
+    "statusStopped": "Зупинено",
+    "statusUnknown": "Невідомо",
+    "taskOutput": "Вивід завдання",
+    "taskNoOutput": "Н/Д",
+    "taskLabelMessage": "Повідомлення",
+    "taskLabelDryRun": "Сухий запуск",
+    "taskLabelDebug": "Налагодження",
+    "taskLabelDiff": "Відмінності",
+    "taskCreated": "Завдання #{taskId} створено!",
+    "@taskCreated": {
+        "placeholders": {
+            "taskId": {
+                "type": "int"
+            }
+        }
+    },
+    "taskStartedAt": "Розпочато о {time}",
+    "@taskStartedAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "taskRunning": "Виконується...",
+    "taskDuration": "Тривалість: {duration}",
+    "@taskDuration": {
+        "placeholders": {
+            "duration": {
+                "type": "String"
+            }
+        }
+    },
+    "byUser": "користовачем {user}",
+    "@byUser": {
+        "placeholders": {
+            "user": {
+                "type": "String"
+            }
+        }
+    },
+    "@@description": "Інструменти клієнта Ansible Semaphore"
+}
+

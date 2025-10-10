@@ -1,0 +1,110 @@
+{
+    "@@locale": "ja",
+    "appName": "Ansible Semaphore ランナー",
+    "show": "表示",
+    "hide": "非表示",
+    "exit": "終了",
+    "destinationProject": "プロジェクト",
+    "destinationSetting": "設定",
+    "settingsTitle": "設定",
+    "smenuTheme": "テーマ",
+    "titleSelectAppearance": "外観を選択",
+    "titleSelectColorTheme": "アクセントカラーを選択",
+    "smenuSemaphore": "Ansible Semaphore",
+    "smenuSemaphoreServer": "サーバー",
+    "titleSelectServer": "サーバーを選択",
+    "addServer": "サーバーを追加",
+    "serverNameLabel": "サーバー名",
+    "serverNameHint": "サーバー名を入力してください",
+    "serverUrlLabel": "サーバーURL",
+    "serverUrlHint": "サーバーのURLを入力してください。/api 部分を含める必要があります (例: https://semaphore.example.com/api)",
+    "usernameLabel": "ユーザー名",
+    "usernameHint": "サーバーに認証するためのユーザー名を入力してください",
+    "passwordLabel": "パスワード",
+    "passwordHint": "サーバーに認証するためのパスワードを入力してください",
+    "buttonDelete": "削除",
+    "buttonCancel": "キャンセル",
+    "buttonSave": "保存",
+    "smenuSemaphoreServerProject": "プロジェクト",
+    "noServerActivated": "[サーバーがアクティブ化されていません]",
+    "accidentallyDeleted": "誤って削除されましたか？",
+    "undo": "元に戻す",
+    "delete": "削除",
+    "refresh": "更新",
+    "autoRefresh": "自動更新",
+    "rename": "名前を変更",
+    "serverAdded": "サーバーが追加されました",
+    "renameServer": "サーバーの名前を変更",
+    "serverRenamed": "サーバー名が {serverName} に変更されました",
+    "@serverRenamed": {
+        "placeholders": {
+            "serverName": {
+                "type": "String"
+            }
+        }
+    },
+    "clickToSelect": "[選択するにはクリックしてください]",
+    "titleSelectProject": "プロジェクトを選択",
+    "addProject": "プロジェクトを追加",
+    "projectNameLabel": "プロジェクト名",
+    "projectNameHint": "プロジェクト名を入力してください",
+    "projectAlertLabel": "このプロジェクトのアラートを許可する",
+    "alertChatLabel": "Telegram チャットID (オプション)",
+    "maxParallelTasksLabel": "最大並列タスク数 (オプション)",
+    "maxParallelTasksHint": "0 以上にする必要があります。0 - 無制限。",
+    "projectPageTitle": "プロジェクト",
+    "titleTemplate": "テンプレート",
+    "titleHistory": "履歴",
+    "titleActivity": "アクティビティ",
+    "titleTask": "タスク",
+    "rerunTask": "タスクを再実行",
+    "runTask": "タスクを実行",
+    "edit": "編集",
+    "statusSuccess": "成功",
+    "statusFailed": "失敗",
+    "statusRunning": "実行中",
+    "statusWaiting": "待機中",
+    "statusStopped": "停止済み",
+    "statusUnknown": "不明",
+    "taskOutput": "タスク出力",
+    "taskNoOutput": "N/A",
+    "taskLabelMessage": "メッセージ",
+    "taskLabelDryRun": "ドライラン",
+    "taskLabelDebug": "デバッグ",
+    "taskLabelDiff": "差分",
+    "taskCreated": "タスク #{taskId} が作成されました！",
+    "@taskCreated": {
+        "placeholders": {
+            "taskId": {
+                "type": "int"
+            }
+        }
+    },
+    "taskStartedAt": "{time} に開始",
+    "@taskStartedAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "taskRunning": "実行中...",
+    "taskDuration": "期間: {duration}",
+    "@taskDuration": {
+        "placeholders": {
+            "duration": {
+                "type": "String"
+            }
+        }
+    },
+    "byUser": "{user} によって",
+    "@byUser": {
+        "placeholders": {
+            "user": {
+                "type": "String"
+            }
+        }
+    },
+    "@@description": "Ansible Semaphore クライアントツール"
+}
+

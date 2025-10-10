@@ -1,0 +1,110 @@
+{
+    "@@locale": "zh_Hant",
+    "appName": "Ansible Semaphore 執行器",
+    "show": "顯示",
+    "hide": "隱藏",
+    "exit": "退出",
+    "destinationProject": "專案",
+    "destinationSetting": "設定",
+    "settingsTitle": "設定",
+    "smenuTheme": "主題",
+    "titleSelectAppearance": "選擇外觀",
+    "titleSelectColorTheme": "選擇強調顏色",
+    "smenuSemaphore": "Ansible Semaphore",
+    "smenuSemaphoreServer": "伺服器",
+    "titleSelectServer": "選擇伺服器",
+    "addServer": "新增伺服器",
+    "serverNameLabel": "伺服器名稱",
+    "serverNameHint": "輸入伺服器名稱",
+    "serverUrlLabel": "伺服器 URL",
+    "serverUrlHint": "輸入伺服器 URL，必須包含 /api 部分，例如 https://semaphore.example.com/api",
+    "usernameLabel": "使用者名稱",
+    "usernameHint": "輸入用於驗證伺服器的使用者名稱",
+    "passwordLabel": "密碼",
+    "passwordHint": "輸入用於驗證伺服器的密碼",
+    "buttonDelete": "刪除",
+    "buttonCancel": "取消",
+    "buttonSave": "儲存",
+    "smenuSemaphoreServerProject": "專案",
+    "noServerActivated": "[未啟用伺服器]",
+    "accidentallyDeleted": "意外刪除？",
+    "undo": "復原",
+    "delete": "刪除",
+    "refresh": "重新整理",
+    "autoRefresh": "自動重新整理",
+    "rename": "重新命名",
+    "serverAdded": "伺服器已新增",
+    "renameServer": "重新命名伺服器",
+    "serverRenamed": "伺服器已重新命名為 {serverName}",
+    "@serverRenamed": {
+        "placeholders": {
+            "serverName": {
+                "type": "String"
+            }
+        }
+    },
+    "clickToSelect": "[點擊選擇]",
+    "titleSelectProject": "選擇專案",
+    "addProject": "新增專案",
+    "projectNameLabel": "專案名稱",
+    "projectNameHint": "輸入專案名稱",
+    "projectAlertLabel": "允許此專案發送警報",
+    "alertChatLabel": "Telegram 聊天 ID (選填)",
+    "maxParallelTasksLabel": "最大平行任務數 (選填)",
+    "maxParallelTasksHint": "應為 0 或更大，0 - 無限制。",
+    "projectPageTitle": "專案",
+    "titleTemplate": "範本",
+    "titleHistory": "歷史紀錄",
+    "titleActivity": "活動",
+    "titleTask": "任務",
+    "rerunTask": "重新執行任務",
+    "runTask": "執行任務",
+    "edit": "編輯",
+    "statusSuccess": "成功",
+    "statusFailed": "失敗",
+    "statusRunning": "執行中",
+    "statusWaiting": "等待中",
+    "statusStopped": "已停止",
+    "statusUnknown": "未知",
+    "taskOutput": "任務輸出",
+    "taskNoOutput": "無",
+    "taskLabelMessage": "訊息",
+    "taskLabelDryRun": "測試執行",
+    "taskLabelDebug": "除錯",
+    "taskLabelDiff": "差異",
+    "taskCreated": "已建立任務 #{taskId}！",
+    "@taskCreated": {
+        "placeholders": {
+            "taskId": {
+                "type": "int"
+            }
+        }
+    },
+    "taskStartedAt": "於 {time} 開始",
+    "@taskStartedAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "taskRunning": "執行中...",
+    "taskDuration": "持續時間：{duration}",
+    "@taskDuration": {
+        "placeholders": {
+            "duration": {
+                "type": "String"
+            }
+        }
+    },
+    "byUser": "由 {user} 執行",
+    "@byUser": {
+        "placeholders": {
+            "user": {
+                "type": "String"
+            }
+        }
+    },
+    "@@description": "Ansible Semaphore 客戶端工具"
+}
+

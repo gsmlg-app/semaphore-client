@@ -1,0 +1,110 @@
+{
+    "@@locale": "ar",
+    "appName": "Ansible Semaphore Runner",
+    "show": "عرض",
+    "hide": "إخفاء",
+    "exit": "خروج",
+    "destinationProject": "مشروع",
+    "destinationSetting": "إعداد",
+    "settingsTitle": "إعداد",
+    "smenuTheme": "مظهر",
+    "titleSelectAppearance": "اختر المظهر",
+    "titleSelectColorTheme": "اختر لون التمييز",
+    "smenuSemaphore": "Ansible Semaphore",
+    "smenuSemaphoreServer": "خادم",
+    "titleSelectServer": "اختر الخادم",
+    "addServer": "أضف خادم",
+    "serverNameLabel": "اسم الخادم",
+    "serverNameHint": "أدخل اسمًا للخادم",
+    "serverUrlLabel": "عنوان URL للخادم",
+    "serverUrlHint": "أدخل عنوان URL للخادم، يجب أن يتضمن جزء /api، على سبيل المثال https://semaphore.example.com/api",
+    "usernameLabel": "اسم المستخدم",
+    "usernameHint": "أدخل اسم المستخدم للمصادقة مع الخادم",
+    "passwordLabel": "كلمة المرور",
+    "passwordHint": "أدخل كلمة المرور للمصادقة مع الخادم",
+    "buttonDelete": "حذف",
+    "buttonCancel": "إلغاء",
+    "buttonSave": "حفظ",
+    "smenuSemaphoreServerProject": "مشروع",
+    "noServerActivated": "[لم يتم تنشيط أي خادم]",
+    "accidentallyDeleted": "حذفت عن طريق الخطأ؟",
+    "undo": "تراجع",
+    "delete": "حذف",
+    "refresh": "تحديث",
+    "autoRefresh": "التحديث التلقائي",
+    "rename": "إعادة تسمية",
+    "serverAdded": "تم إضافة الخادم",
+    "renameServer": "إعادة تسمية الخادم",
+    "serverRenamed": "تمت إعادة تسمية الخادم إلى {serverName}",
+    "@serverRenamed": {
+        "placeholders": {
+            "serverName": {
+                "type": "String"
+            }
+        }
+    },
+    "clickToSelect": "[انقر لتحديد]",
+    "titleSelectProject": "اختر المشروع",
+    "addProject": "أضف مشروع",
+    "projectNameLabel": "اسم المشروع",
+    "projectNameHint": "أدخل اسمًا للمشروع",
+    "projectAlertLabel": "السماح بالتنبيهات لهذا المشروع",
+    "alertChatLabel": "معرف محادثة Telegram (اختياري)",
+    "maxParallelTasksLabel": "العدد الأقصى للمهام المتوازية (اختياري)",
+    "maxParallelTasksHint": "يجب أن يكون 0 أو أكبر، 0 - غير محدود.",
+    "projectPageTitle": "مشروع",
+    "titleTemplate": "قالب",
+    "titleHistory": "التاريخ",
+    "titleActivity": "النشاط",
+    "titleTask": "مهمة",
+    "rerunTask": "إعادة تشغيل المهمة",
+    "runTask": "تشغيل المهمة",
+    "edit": "تحرير",
+    "statusSuccess": "نجاح",
+    "statusFailed": "فشل",
+    "statusRunning": "جار التشغيل",
+    "statusWaiting": "في انتظار",
+    "statusStopped": "توقف",
+    "statusUnknown": "غير معروف",
+    "taskOutput": "مخرجات المهمة",
+    "taskNoOutput": "غير متاح",
+    "taskLabelMessage": "رسالة",
+    "taskLabelDryRun": "تشغيل جاف",
+    "taskLabelDebug": "تصحيح الأخطاء",
+    "taskLabelDiff": "الفرق",
+    "taskCreated": "تم إنشاء المهمة #{taskId}!",
+    "@taskCreated": {
+        "placeholders": {
+            "taskId": {
+                "type": "int"
+            }
+        }
+    },
+    "taskStartedAt": "بدأ في {time}",
+    "@taskStartedAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "taskRunning": "جار التشغيل...",
+    "taskDuration": "المدة: {duration}",
+    "@taskDuration": {
+        "placeholders": {
+            "duration": {
+                "type": "String"
+            }
+        }
+    },
+    "byUser": "بواسطة {user}",
+    "@byUser": {
+        "placeholders": {
+            "user": {
+                "type": "String"
+            }
+        }
+    },
+    "@@description": "أدوات عميل Ansible Semaphore"
+}
+

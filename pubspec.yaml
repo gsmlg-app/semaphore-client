@@ -13,11 +13,33 @@ workspace:
   - app_lib/locale
   - app_lib/provider
   - app_lib/logging
+  - app_lib/utils
+  - app_lib/api
   - app_bloc/theme
+  - app_bloc/error_handler
+  - app_bloc/activity
+  - app_bloc/history
+  - app_bloc/integration
+  - app_bloc/inventory
+  - app_bloc/inventory_form
+  - app_bloc/key_store
+  - app_bloc/project
+  - app_bloc/project_form
+  - app_bloc/repository
+  - app_bloc/run_task
+  - app_bloc/schedule
+  - app_bloc/server
+  - app_bloc/server_form
+  - app_bloc/task
+  - app_bloc/task_output
+  - app_bloc/team
+  - app_bloc/template
+  - app_bloc/variable
   - app_widget/adaptive
   - app_widget/artwork
   - app_widget/feedback
   - app_widget/web_view
+  - app_plugins/desktop_tray
   - third_party/form_bloc
   - third_party/flutter_form_bloc
   - third_party/flutter_adaptive_scaffold
@@ -49,13 +71,35 @@ dependencies:
   app_theme: any
   app_locale: any
   app_provider: any
+  app_logging: any
+  app_utils: any
+  app_api: any
   theme_bloc: any
+  error_handler_bloc: any
+  activity_bloc: any
+  history_bloc: any
+  integration_bloc: any
+  inventory_bloc: any
+  inventory_form_bloc: any
+  key_store_bloc: any
+  project_bloc: any
+  project_form_bloc: any
+  repository_bloc: any
+  run_task_bloc: any
+  schedule_bloc: any
+  server_bloc: any
+  server_form_bloc: any
+  task_bloc: any
+  task_output_bloc: any
+  team_bloc: any
+  template_bloc: any
+  variable_bloc: any
   app_artwork: any
   app_feedback: any
   app_adaptive_widgets: any
   settings_ui: any
-  app_logging: any
   app_web_view: any
+  desktop_tray: any
 
 dev_dependencies:
   flutter_test:
@@ -66,7 +110,7 @@ dev_dependencies:
   build_runner: ^2.4.15
 
   melos: ^7.0.0
-  dependency_validator: ^5.0.2
+  # dependency_validator: ^5.0.2 # Temporarily removed due to analyzer conflict
 
 flutter:
   uses-material-design: true

@@ -1,0 +1,110 @@
+{
+    "@@locale": "ru",
+    "appName": "Ansible Semaphore Runner",
+    "show": "Показать",
+    "hide": "Скрыть",
+    "exit": "Выход",
+    "destinationProject": "Проект",
+    "destinationSetting": "Настройка",
+    "settingsTitle": "Настройка",
+    "smenuTheme": "Тема",
+    "titleSelectAppearance": "Выберите внешний вид",
+    "titleSelectColorTheme": "Выберите акцентный цвет",
+    "smenuSemaphore": "Ansible Semaphore",
+    "smenuSemaphoreServer": "Сервер",
+    "titleSelectServer": "Выберите сервер",
+    "addServer": "Добавить сервер",
+    "serverNameLabel": "Имя сервера",
+    "serverNameHint": "Введите имя для сервера",
+    "serverUrlLabel": "URL сервера",
+    "serverUrlHint": "Введите URL сервера, он должен включать часть /api, например https://semaphore.example.com/api",
+    "usernameLabel": "Имя пользователя",
+    "usernameHint": "Введите имя пользователя для аутентификации на сервере",
+    "passwordLabel": "Пароль",
+    "passwordHint": "Введите пароль для аутентификации на сервере",
+    "buttonDelete": "Удалить",
+    "buttonCancel": "Отмена",
+    "buttonSave": "Сохранить",
+    "smenuSemaphoreServerProject": "Проект",
+    "noServerActivated": "[Нет активных серверов]",
+    "accidentallyDeleted": "Удалено случайно?",
+    "undo": "Отменить",
+    "delete": "Удалить",
+    "refresh": "Обновить",
+    "autoRefresh": "Автообновление",
+    "rename": "Переименовать",
+    "serverAdded": "Сервер добавлен",
+    "renameServer": "Переименовать сервер",
+    "serverRenamed": "Сервер переименован в {serverName}",
+    "@serverRenamed": {
+        "placeholders": {
+            "serverName": {
+                "type": "String"
+            }
+        }
+    },
+    "clickToSelect": "[Нажмите, чтобы выбрать]",
+    "titleSelectProject": "Выберите проект",
+    "addProject": "Добавить проект",
+    "projectNameLabel": "Имя проекта",
+    "projectNameHint": "Введите имя для проекта",
+    "projectAlertLabel": "Разрешить оповещения для этого проекта",
+    "alertChatLabel": "Telegram Chat ID (необязательно)",
+    "maxParallelTasksLabel": "Максимальное количество параллельных задач (необязательно)",
+    "maxParallelTasksHint": "Должно быть 0 или больше, 0 - неограниченное количество.",
+    "projectPageTitle": "Проект",
+    "titleTemplate": "Шаблон",
+    "titleHistory": "История",
+    "titleActivity": "Активность",
+    "titleTask": "Задача",
+    "rerunTask": "Повторить задачу",
+    "runTask": "Запустить задачу",
+    "edit": "Изменить",
+    "statusSuccess": "Успешно",
+    "statusFailed": "Ошибка",
+    "statusRunning": "Выполняется",
+    "statusWaiting": "В ожидании",
+    "statusStopped": "Остановлено",
+    "statusUnknown": "Неизвестно",
+    "taskOutput": "Вывод задачи",
+    "taskNoOutput": "N/A",
+    "taskLabelMessage": "Сообщение",
+    "taskLabelDryRun": "Прогон без изменений",
+    "taskLabelDebug": "Отладка",
+    "taskLabelDiff": "Различия",
+    "taskCreated": "Задача #{taskId} создана!",
+    "@taskCreated": {
+        "placeholders": {
+            "taskId": {
+                "type": "int"
+            }
+        }
+    },
+    "taskStartedAt": "Начато в {time}",
+    "@taskStartedAt": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "taskRunning": "Выполняется...",
+    "taskDuration": "Длительность: {duration}",
+    "@taskDuration": {
+        "placeholders": {
+            "duration": {
+                "type": "String"
+            }
+        }
+    },
+    "byUser": "пользователем {user}",
+    "@byUser": {
+        "placeholders": {
+            "user": {
+                "type": "String"
+            }
+        }
+    },
+    "@@description": "Ansible Semaphore Client Tools"
+}
+
