@@ -51,7 +51,7 @@ class ObjectBox {
         directory: databaseDir,
         macosApplicationGroup: Platform.isIOS ? 'group.gsmlg.app' : null,
       );
-      print('ObjectBox store opened successfully at: ${store.directory}');
+      print('ObjectBox store opened successfully at: $databaseDir');
       return ObjectBox._create(store);
     } catch (e) {
       print('Error creating ObjectBox: $e');
