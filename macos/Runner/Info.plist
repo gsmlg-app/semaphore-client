@@ -28,5 +28,12 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<!-- Network permissions and App Transport Security configuration -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<!-- Allow arbitrary loads for development. Consider restricting to specific domains for production -->
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>
