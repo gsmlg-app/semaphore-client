@@ -1,4 +1,5 @@
 import 'package:app_api/app_api.dart';
+import 'package:app_logging/app_logging.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -26,10 +27,10 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       final resp = await projectApi.projectProjectIdTasksLastGet(
         projectId: event.projectId,
       );
-      print(resp.data);
+      AppLogger().d('History data: ${resp.data}');
       emit(HistoryLoaded(history: resp.data ?? []));
     } catch (e) {
-      print(e);
+      AppLogger().e('Failed to load history', error: e);
       emit(HistoryError(e));
     }
   }

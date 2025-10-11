@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:app_api/app_api.dart';
+import 'package:app_logging/app_logging.dart';
 
 part 'variable_event.dart';
 part 'variable_state.dart';
@@ -32,10 +33,10 @@ class VariableBloc extends Bloc<VariableEvent, VariableState> {
         order: 'asc',
       );
 
-      print(resp.data);
+      AppLogger().d('Variable data: ${resp.data}');
       emit(VariableLoaded(variables: resp.data ?? [], loading: false));
     } catch (e) {
-      print(e);
+      AppLogger().e('Failed to load variables', error: e);
       emit(VariableError(e));
     }
   }

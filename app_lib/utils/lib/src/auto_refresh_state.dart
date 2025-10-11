@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app_logging/app_logging.dart';
 import 'package:flutter/material.dart';
 
 mixin AutoRefreshMixin<T extends StatefulWidget>
@@ -59,7 +60,7 @@ mixin AutoRefreshMixin<T extends StatefulWidget>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    debugPrint('LifeCycleManager<AppLifecycleState<$state>>');
+    AppLogger().d('LifeCycleManager<AppLifecycleState<$state>>');
     if (state == AppLifecycleState.resumed) {
       if (autoRefresh) {
         refresh();

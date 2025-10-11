@@ -1,4 +1,5 @@
 import 'package:app_api/app_api.dart';
+import 'package:app_logging/app_logging.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -29,10 +30,10 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       final resp = await scheduleApi.projectProjectIdSchedulesGet(
         projectId: event.projectId,
       );
-      print(resp.data);
+      AppLogger().d('Schedule data: ${resp.data}');
       emit(ScheduleLoaded(schedules: resp.data ?? [], loading: false));
     } catch (e) {
-      print(e);
+      AppLogger().e('Failed to load schedules', error: e);
       emit(ScheduleError(e));
     }
   }

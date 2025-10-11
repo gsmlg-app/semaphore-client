@@ -1,4 +1,5 @@
 import 'package:app_database/app_database.dart';
+import 'package:app_logging/app_logging.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -152,7 +153,7 @@ class SemaphoreServerBloc
     try {
       final server = event.server;
       final resp = await server.api.getProjectsApi().projectsGet();
-      print('projects: ${resp.data}');
+      AppLogger().d('Projects loaded: ${resp.data}');
 
       // Delete existing projects for this server
       await (database.delete(
@@ -182,8 +183,7 @@ class SemaphoreServerBloc
 
       emitter(state.copyWith(servers: servers));
     } catch (e, s) {
-      print(e);
-      print(s);
+      AppLogger().e('Failed to load projects', error: e, stackTrace: s);
     }
   }
 }

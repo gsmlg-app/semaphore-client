@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:app_api/app_api.dart';
+import 'package:app_logging/app_logging.dart';
 
 part 'team_event.dart';
 part 'team_state.dart';
@@ -24,10 +25,10 @@ class TeamBloc extends Bloc<TeamEvent, TeamState> {
         order: 'asc',
       );
 
-      print(resp.data);
+      AppLogger().d('Team data: ${resp.data}');
       emit(TeamLoaded(users: resp.data ?? [], loading: false));
     } catch (e) {
-      print(e);
+      AppLogger().e('Failed to load team', error: e);
       emit(TeamError(e));
     }
   }

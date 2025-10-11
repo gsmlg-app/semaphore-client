@@ -1,4 +1,5 @@
 import 'package:app_api/app_api.dart';
+import 'package:app_logging/app_logging.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -29,10 +30,10 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
       final resp = await projectApi.projectProjectIdEventsGet(
         projectId: event.projectId,
       );
-      print(resp.data);
+      AppLogger().d('Activity data: ${resp.data}');
       emit(ActivityLoaded(activities: resp.data ?? [], loading: false));
     } catch (e) {
-      print(e);
+      AppLogger().e('Failed to load activities', error: e);
       emit(ActivityError(e));
     }
   }

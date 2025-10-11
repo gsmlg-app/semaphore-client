@@ -2,6 +2,7 @@ import 'dart:io' show Platform;
 
 import 'package:app_locale/app_locale.dart';
 import 'package:app_locale/gen_l10n/app_localizations.dart';
+import 'package:app_logging/app_logging.dart';
 import 'package:desktop_tray/desktop_tray.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,7 +46,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     }
     WidgetsBinding.instance.addObserver(this);
     if (WidgetsBinding.instance.lifecycleState != null) {
-      print(WidgetsBinding.instance.lifecycleState!);
+      AppLogger().d('App lifecycle state: ${WidgetsBinding.instance.lifecycleState!}');
     }
   }
 
@@ -89,16 +90,16 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       menuItems: [
         MenuItemLabel(
           label: showLabel,
-          onClicked: (menuItem) => print('Show app'),
+          onClicked: (menuItem) => AppLogger().d('Show app'),
         ),
         MenuItemLabel(
           label: hideLabel,
-          onClicked: (menuItem) => print('Hide app'),
+          onClicked: (menuItem) => AppLogger().d('Hide app'),
         ),
         MenuSeparator(),
         MenuItemLabel(
           label: exitLabel,
-          onClicked: (menuItem) => print('Exit app'),
+          onClicked: (menuItem) => AppLogger().d('Exit app'),
         ),
       ],
     );
@@ -109,7 +110,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     await quickActionsManager.initialize();
 
     quickActionsManager.registerAction('run_task', () {
-      print('The user tapped on the "Run task" action.');
+      AppLogger().d('The user tapped on the "Run task" action.');
       // TODO: Update with proper navigation and BLoC calls
       // router.goNamed(TemplateScreen.name);
       // final state = context.read<ServerBloc>().state;

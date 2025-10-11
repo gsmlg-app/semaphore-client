@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:app_api/app_api.dart';
+import 'package:app_logging/app_logging.dart';
 
 part 'integration_event.dart';
 part 'integration_state.dart';
@@ -30,10 +31,10 @@ class IntegrationBloc extends Bloc<IntegrationEvent, IntegrationState> {
         projectId: event.projectId,
       );
 
-      print(resp.data);
+      AppLogger().d('Integration data: ${resp.data}');
       emit(IntegrationLoaded(integrations: resp.data ?? [], loading: false));
     } catch (e) {
-      print(e);
+      AppLogger().e('Failed to load integrations', error: e);
       emit(IntegrationError(e));
     }
   }

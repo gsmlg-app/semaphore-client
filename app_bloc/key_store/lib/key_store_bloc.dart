@@ -1,3 +1,4 @@
+import 'package:app_logging/app_logging.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:app_api/app_api.dart';
@@ -32,10 +33,10 @@ class KeyStoreBloc extends Bloc<KeyStoreEvent, KeyStoreState> {
         order: 'asc',
       );
 
-      print(resp.data);
+      AppLogger().d('Key store response: ${resp.data}');
       emit(KeyStoreLoaded(accessKeys: resp.data ?? [], loading: false));
     } catch (e) {
-      print(e);
+      AppLogger().e('Failed to load key store', error: e);
       emit(KeyStoreError(e));
     }
   }

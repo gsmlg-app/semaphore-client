@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 {{#has_local_data_source}}
 import 'package:shared_preferences/shared_preferences.dart';
 {{/has_local_data_source}}
+import 'package:app_logging/app_logging.dart';
 import 'exceptions/exceptions.dart';
 import 'models/{{name.snakeCase()}}_model.dart';
 {{#has_remote_data_source}}
@@ -367,8 +368,7 @@ class {{model_name.pascalCase()}}RepositoryImpl extends {{model_name.pascalCase(
       await localDataSource.cache{{model_name.pascalCase()}}s(remote{{model_name.pascalCase()}}s);
     } catch (e) {
       // Sync failed, but don't throw - just log
-      // TODO: Add proper logging
-      print('Failed to sync {{name.sentenceCase}}s: $e');
+      AppLogger().e('Failed to sync {{name.sentenceCase}}s: $e');
     }
 {{/has_local_data_source}}
 {{^has_local_data_source}}

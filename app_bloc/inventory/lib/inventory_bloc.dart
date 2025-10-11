@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:app_api/app_api.dart';
+import 'package:app_logging/app_logging.dart';
 
 part 'inventory_event.dart';
 part 'inventory_state.dart';
@@ -30,10 +31,10 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
         sort: 'name',
         order: 'asc',
       );
-      print(resp.data);
+      AppLogger().d('Inventory data: ${resp.data}');
       emit(InventoryLoaded(inventorys: resp.data ?? [], loading: false));
     } catch (e) {
-      print(e);
+      AppLogger().e('Failed to load inventory', error: e);
       emit(InventoryError(e));
     }
   }
@@ -65,7 +66,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
           ),
         );
       } catch (e) {
-        print(e);
+        AppLogger().e('Failed to add inventory', error: e);
         emit(InventoryError(e));
       }
     } else {
@@ -95,7 +96,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
           ),
         );
       } catch (e) {
-        print(e);
+        AppLogger().e('Failed to remove inventory', error: e);
         emit(InventoryError(e));
       }
     } else {

@@ -20,7 +20,7 @@ class ErrorHandler {
     // Configure logging levels
     logging.Logger.root.level = logging.Level.ALL;
     logging.Logger.root.onRecord.listen((record) {
-      debugPrint('${record.level.name}: ${record.time}: ${record.message}');
+      AppLogger().d('${record.level.name}: ${record.time}: ${record.message}');
     });
 
     _logger.info('Error handler initialized');

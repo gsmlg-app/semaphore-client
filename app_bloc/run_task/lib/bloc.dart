@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:app_api/app_api.dart';
+import 'package:app_logging/app_logging.dart';
 
 class RunTaskFormBloc extends FormBloc<Task, String> {
   SemaphoreApi api = SemaphoreApi();
@@ -36,7 +37,7 @@ class RunTaskFormBloc extends FormBloc<Task, String> {
           templateId: templateId,
         );
     template = resp.data;
-    print(template);
+    AppLogger().d('Template loaded: $template');
     if (template == null) {
       emitLoadFailed(failureResponse: 'Template not exists');
       return;
@@ -119,6 +120,7 @@ class RunTaskFormBloc extends FormBloc<Task, String> {
         emitFailure(failureResponse: 'Failed to create task');
       }
     } catch (e) {
+      AppLogger().e('Failed to submit task', error: e);
       emitFailure(failureResponse: e.toString());
     }
   }
