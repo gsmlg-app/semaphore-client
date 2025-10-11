@@ -23,7 +23,7 @@ void showEditInventory({
   showFullScreenDialog(
     context: context,
     title: Text(
-      context.l10n.edit,
+      context.l10n!.edit,
       style: Theme.of(context).textTheme.titleLarge,
     ),
     builder: (context0) {
@@ -76,7 +76,7 @@ void showEditInventory({
                     autocorrect: false,
                     enableSuggestions: false,
                     decoration: InputDecoration(
-                      labelText: context.l10n.inventoryNameLabel,
+                      labelText: context.l10n!.inventoryNameLabel,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -88,7 +88,7 @@ void showEditInventory({
                       ),
                     ),
                     decoration: InputDecoration(
-                      labelText: context.l10n.inventorySshKeyLabel,
+                      labelText: context.l10n!.inventorySshKeyLabel,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -100,7 +100,7 @@ void showEditInventory({
                       ),
                     ),
                     decoration: InputDecoration(
-                        labelText: context.l10n.inventoryBecomeKeyLabel),
+                        labelText: context.l10n!.inventoryBecomeKeyLabel),
                   ),
                   const SizedBox(height: 20),
                   DropdownFieldBlocBuilder(
@@ -111,7 +111,7 @@ void showEditInventory({
                       ),
                     ),
                     decoration: InputDecoration(
-                      labelText: context.l10n.inventoryTypeLabel,
+                      labelText: context.l10n!.inventoryTypeLabel,
                     ),
                   ),
                   BlocBuilder<SelectFieldBloc<InventoryTypeEnum, dynamic>,
@@ -133,7 +133,7 @@ void showEditInventory({
                               maxLines: 1,
                               decoration: InputDecoration(
                                 labelText:
-                                    context.l10n.inventoryInventoryFileLabel,
+                                    context.l10n!.inventoryInventoryFileLabel,
                               ),
                             ),
                             const SizedBox(height: 20),
@@ -146,7 +146,7 @@ void showEditInventory({
                               ),
                               decoration: InputDecoration(
                                 labelText:
-                                    context.l10n.inventoryRepositoryLabel,
+                                    context.l10n!.inventoryRepositoryLabel,
                               ),
                             ),
                           ],
@@ -169,7 +169,7 @@ void showEditInventory({
                               maxLines: null,
                               decoration: InputDecoration(
                                 hintText:
-                                    context.l10n.inventoryInventoryTextLabel,
+                                    context.l10n!.inventoryInventoryTextLabel,
                               ),
                             ),
                             const SizedBox(height: 20),
@@ -181,7 +181,7 @@ void showEditInventory({
                                     .colorScheme
                                     .primaryContainer,
                                 child: Text('''
-${context.l10n.inventoryInventoryTextHint}
+${context.l10n!.inventoryInventoryTextHint}
 
 [website]
 172.18.8.40
@@ -196,7 +196,7 @@ ${context.l10n.inventoryInventoryTextHint}
                                     .colorScheme
                                     .primaryContainer,
                                 child: Text('''
-${context.l10n.inventoryInventoryTextYamlHint}
+${context.l10n!.inventoryInventoryTextYamlHint}
 
 all:
   children:
@@ -239,7 +239,7 @@ all:
                               ),
                               onPressed: formBloc.submit,
                               child: Text(
-                                context.l10n.save,
+                                context.l10n!.save,
                               ),
                             )
                           : ElevatedButton(
@@ -248,7 +248,7 @@ all:
                               ),
                               onPressed: null,
                               child: Text(
-                                context.l10n.save,
+                                context.l10n!.save,
                               ),
                             );
                     },

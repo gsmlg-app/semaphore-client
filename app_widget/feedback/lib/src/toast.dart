@@ -10,7 +10,7 @@ void showSuccessToast({
   String? actionLabel,
   void Function()? onActionPressed,
 }) {
-  title ??= context.l10n.statusSuccess;
+  title ??= context.l10n!.statusSuccess;
   final snackBar = SnackBar(
     backgroundColor: Theme.of(context).colorScheme.primary,
     content: SingleChildScrollView(
@@ -26,9 +26,9 @@ void showSuccessToast({
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 Text(title ?? '',
-                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                         color: Theme.of(context).colorScheme.onPrimary)),
+                Text(title ?? '',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary)),
                 const SizedBox(
                   height: 8,
                 ),
@@ -65,7 +65,7 @@ void showErrorToast({
   String? actionLabel,
   void Function()? onActionPressed,
 }) {
-  title ??= context.l10n.statusFailed;
+  title ??= context.l10n!.statusFailed;
   final snackBar = SnackBar(
     backgroundColor: Theme.of(context).colorScheme.error,
     content: SingleChildScrollView(
@@ -81,9 +81,9 @@ void showErrorToast({
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 Text(title ?? '',
-                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                         color: Theme.of(context).colorScheme.onError)),
+                Text(title ?? '',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onError)),
                 const SizedBox(
                   height: 8,
                 ),

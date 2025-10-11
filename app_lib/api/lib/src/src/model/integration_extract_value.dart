@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'integration_extract_value.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,143 +16,73 @@ part 'integration_extract_value.g.dart';
 class IntegrationExtractValue {
   /// Returns a new [IntegrationExtractValue] instance.
   IntegrationExtractValue({
+    this.id,
 
-     this.id,
+    this.name,
 
-     this.name,
+    this.valueSource,
 
-     this.valueSource,
+    this.bodyDataType,
 
-     this.bodyDataType,
+    this.key,
 
-     this.key,
+    this.variable,
 
-     this.variable,
+    this.variableType,
 
-     this.variableType,
-
-     this.integrationId,
+    this.integrationId,
   });
 
-  @JsonKey(
-    
-    name: r'id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'id', required: false, includeIfNull: false)
   final int? id;
 
-
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'value_source',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'value_source', required: false, includeIfNull: false)
   final IntegrationExtractValueValueSourceEnum? valueSource;
 
-
-
-  @JsonKey(
-    
-    name: r'body_data_type',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'body_data_type', required: false, includeIfNull: false)
   final IntegrationExtractValueBodyDataTypeEnum? bodyDataType;
 
-
-
-  @JsonKey(
-    
-    name: r'key',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'key', required: false, includeIfNull: false)
   final String? key;
 
-
-
-  @JsonKey(
-    
-    name: r'variable',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'variable', required: false, includeIfNull: false)
   final String? variable;
 
-
-
-  @JsonKey(
-    
-    name: r'variable_type',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'variable_type', required: false, includeIfNull: false)
   final IntegrationExtractValueVariableTypeEnum? variableType;
 
-
-
-  @JsonKey(
-    
-    name: r'integration_id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'integration_id', required: false, includeIfNull: false)
   final int? integrationId;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is IntegrationExtractValue &&
-     other.id == id &&
-     other.name == name &&
-     other.valueSource == valueSource &&
-     other.bodyDataType == bodyDataType &&
-     other.key == key &&
-     other.variable == variable &&
-     other.variableType == variableType &&
-     other.integrationId == integrationId;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is IntegrationExtractValue &&
+          other.id == id &&
+          other.name == name &&
+          other.valueSource == valueSource &&
+          other.bodyDataType == bodyDataType &&
+          other.key == key &&
+          other.variable == variable &&
+          other.variableType == variableType &&
+          other.integrationId == integrationId;
 
   @override
   int get hashCode =>
-    id.hashCode +
-    name.hashCode +
-    valueSource.hashCode +
-    bodyDataType.hashCode +
-    key.hashCode +
-    variable.hashCode +
-    variableType.hashCode +
-    integrationId.hashCode;
+      id.hashCode +
+      name.hashCode +
+      valueSource.hashCode +
+      bodyDataType.hashCode +
+      key.hashCode +
+      variable.hashCode +
+      variableType.hashCode +
+      integrationId.hashCode;
 
-  factory IntegrationExtractValue.fromJson(Map<String, dynamic> json) => _$IntegrationExtractValueFromJson(json);
+  factory IntegrationExtractValue.fromJson(Map<String, dynamic> json) =>
+      _$IntegrationExtractValueFromJson(json);
 
   Map<String, dynamic> toJson() => _$IntegrationExtractValueToJson(this);
 
@@ -161,9 +90,7 @@ class IntegrationExtractValue {
   String toString() {
     return toJson().toString();
   }
-
 }
-
 
 enum IntegrationExtractValueValueSourceEnum {
   @JsonValue(r'body')
@@ -171,8 +98,6 @@ enum IntegrationExtractValueValueSourceEnum {
   @JsonValue(r'header')
   header,
 }
-
-
 
 enum IntegrationExtractValueBodyDataTypeEnum {
   @JsonValue(r'json')
@@ -183,13 +108,9 @@ enum IntegrationExtractValueBodyDataTypeEnum {
   string,
 }
 
-
-
 enum IntegrationExtractValueVariableTypeEnum {
   @JsonValue(r'environment')
   environment,
   @JsonValue(r'task')
   task,
 }
-
-

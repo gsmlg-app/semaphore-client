@@ -1,3 +1,3 @@
-library inventory_form;
+library;
 
 export 'bloc.dart';

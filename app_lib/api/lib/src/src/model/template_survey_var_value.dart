@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'template_survey_var_value.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,48 +15,26 @@ part 'template_survey_var_value.g.dart';
 )
 class TemplateSurveyVarValue {
   /// Returns a new [TemplateSurveyVarValue] instance.
-  TemplateSurveyVarValue({
+  TemplateSurveyVarValue({this.name, this.value});
 
-     this.name,
-
-     this.value,
-  });
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'value',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'value', required: false, includeIfNull: false)
   final String? value;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TemplateSurveyVarValue &&
+          other.name == name &&
+          other.value == value;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is TemplateSurveyVarValue &&
-     other.name == name &&
-     other.value == value;
+  int get hashCode => name.hashCode + value.hashCode;
 
-  @override
-  int get hashCode =>
-    name.hashCode +
-    value.hashCode;
-
-  factory TemplateSurveyVarValue.fromJson(Map<String, dynamic> json) => _$TemplateSurveyVarValueFromJson(json);
+  factory TemplateSurveyVarValue.fromJson(Map<String, dynamic> json) =>
+      _$TemplateSurveyVarValueFromJson(json);
 
   Map<String, dynamic> toJson() => _$TemplateSurveyVarValueToJson(this);
 
@@ -65,6 +42,4 @@ class TemplateSurveyVarValue {
   String toString() {
     return toJson().toString();
   }
-
 }
-

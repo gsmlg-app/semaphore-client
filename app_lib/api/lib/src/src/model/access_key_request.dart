@@ -9,7 +9,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'access_key_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -19,128 +18,67 @@ part 'access_key_request.g.dart';
 class AccessKeyRequest {
   /// Returns a new [AccessKeyRequest] instance.
   AccessKeyRequest({
+    this.id,
 
-     this.id,
+    this.name,
 
-     this.name,
+    this.type,
 
-     this.type,
+    this.projectId,
 
-     this.projectId,
+    this.overrideSecret,
 
-     this.overrideSecret,
+    this.loginPassword,
 
-     this.loginPassword,
-
-     this.ssh,
+    this.ssh,
   });
 
-  @JsonKey(
-    
-    name: r'id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'id', required: false, includeIfNull: false)
   final int? id;
 
-
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'type',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'type', required: false, includeIfNull: false)
   final AccessKeyRequestTypeEnum? type;
 
-
-
-          // minimum: 1
-  @JsonKey(
-    
-    name: r'project_id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  // minimum: 1
+  @JsonKey(name: r'project_id', required: false, includeIfNull: false)
   final int? projectId;
 
-
-
-  @JsonKey(
-    
-    name: r'override_secret',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'override_secret', required: false, includeIfNull: false)
   final bool? overrideSecret;
 
-
-
-  @JsonKey(
-    
-    name: r'login_password',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'login_password', required: false, includeIfNull: false)
   final AccessKeyRequestLoginPassword? loginPassword;
 
-
-
-  @JsonKey(
-    
-    name: r'ssh',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'ssh', required: false, includeIfNull: false)
   final AccessKeyRequestSsh? ssh;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccessKeyRequest &&
-     other.id == id &&
-     other.name == name &&
-     other.type == type &&
-     other.projectId == projectId &&
-     other.overrideSecret == overrideSecret &&
-     other.loginPassword == loginPassword &&
-     other.ssh == ssh;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AccessKeyRequest &&
+          other.id == id &&
+          other.name == name &&
+          other.type == type &&
+          other.projectId == projectId &&
+          other.overrideSecret == overrideSecret &&
+          other.loginPassword == loginPassword &&
+          other.ssh == ssh;
 
   @override
   int get hashCode =>
-    id.hashCode +
-    name.hashCode +
-    type.hashCode +
-    projectId.hashCode +
-    overrideSecret.hashCode +
-    loginPassword.hashCode +
-    ssh.hashCode;
+      id.hashCode +
+      name.hashCode +
+      type.hashCode +
+      projectId.hashCode +
+      overrideSecret.hashCode +
+      loginPassword.hashCode +
+      ssh.hashCode;
 
-  factory AccessKeyRequest.fromJson(Map<String, dynamic> json) => _$AccessKeyRequestFromJson(json);
+  factory AccessKeyRequest.fromJson(Map<String, dynamic> json) =>
+      _$AccessKeyRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$AccessKeyRequestToJson(this);
 
@@ -148,9 +86,7 @@ class AccessKeyRequest {
   String toString() {
     return toJson().toString();
   }
-
 }
-
 
 enum AccessKeyRequestTypeEnum {
   @JsonValue(r'none')
@@ -160,5 +96,3 @@ enum AccessKeyRequestTypeEnum {
   @JsonValue(r'login_password')
   loginPassword,
 }
-
-

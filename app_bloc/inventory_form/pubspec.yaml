@@ -19,6 +19,8 @@ dependencies:
   app_api: any
   app_utils: any
 
+  dio: any
+  flutter_form_bloc: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

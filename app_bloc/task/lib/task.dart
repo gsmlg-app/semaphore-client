@@ -1,3 +1,3 @@
-library task;
+library;
 
 export 'task_bloc.dart';

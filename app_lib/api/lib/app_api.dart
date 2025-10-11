@@ -1,4 +1,4 @@
-library app_api;
+library;
 
 export 'src/semaphore_client.dart';
 export 'src/semaphore_api.dart';

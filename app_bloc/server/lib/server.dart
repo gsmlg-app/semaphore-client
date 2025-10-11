@@ -1,4 +1,4 @@
-library server;
+library;
 
 export 'src/server_bloc.dart';
 export 'src/bloc.dart';

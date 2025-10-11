@@ -36,7 +36,7 @@ void showUndoSnackbar({
     showCloseIcon: showCloseIcon,
     content: message,
     action: SnackBarAction(
-      label: context.l10n.undo,
+      label: context.l10n!.undo,
       onPressed: onUndoPressed,
     ),
   );

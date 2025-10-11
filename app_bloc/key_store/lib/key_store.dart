@@ -1,3 +1,3 @@
-library key_store;
+library;
 
 export 'key_store_bloc.dart';

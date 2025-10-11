@@ -66,7 +66,7 @@ class _TemplateTaskScreenState extends State<TemplateTaskScreen>
               title: Text.rich(
                 TextSpan(
                   children: [
-                    TextSpan(text: context.l10n.titleTask),
+                    TextSpan(text: context.l10n!.titleTask),
                     const WidgetSpan(
                       child: SizedBox(
                         width: 24,
@@ -181,7 +181,7 @@ class _TemplateTaskScreenState extends State<TemplateTaskScreen>
                                 icon: const Icon(Icons.stop),
                               )
                             : IconButton(
-                                tooltip: context.l10n.rerunTask,
+                                tooltip: context.l10n!.rerunTask,
                                 icon: const Icon(Icons.replay),
                                 onPressed: () {
                                    showRunTaskFrom(
@@ -219,7 +219,7 @@ class _TemplateTaskScreenState extends State<TemplateTaskScreen>
             title: Text.rich(
               TextSpan(
                 children: [
-                  TextSpan(text: context.l10n.titleTask),
+                  TextSpan(text: context.l10n!.titleTask),
                   const WidgetSpan(
                     child: SizedBox(
                       width: 24,
@@ -330,7 +330,7 @@ class _TemplateTaskScreenState extends State<TemplateTaskScreen>
                               icon: const Icon(Icons.stop),
                             )
                           : IconButton(
-                              tooltip: context.l10n.rerunTask,
+                              tooltip: context.l10n!.rerunTask,
                               icon: const Icon(Icons.replay),
                               onPressed: () {
                                  showRunTaskFrom(
@@ -374,7 +374,7 @@ class _TemplateTaskScreenState extends State<TemplateTaskScreen>
         size: size,
         actions: [
           AppAdaptiveAction(
-            title: context.l10n.runTask,
+            title: context.l10n!.runTask,
             icon: Icons.play_arrow_rounded,
             onPressed: () {
               openRunTask();
@@ -382,7 +382,7 @@ class _TemplateTaskScreenState extends State<TemplateTaskScreen>
           ),
           AppAdaptiveAction(
             icon: Icons.refresh,
-            title: context.l10n.refresh,
+            title: context.l10n!.refresh,
             onPressed: () {
               loadData();
             },
@@ -390,7 +390,7 @@ class _TemplateTaskScreenState extends State<TemplateTaskScreen>
           if (autoRefresh)
             AppAdaptiveAction(
               icon: Icons.sync_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 stopRefresh();
               },
@@ -398,7 +398,7 @@ class _TemplateTaskScreenState extends State<TemplateTaskScreen>
           else
             AppAdaptiveAction(
               icon: Icons.sync_disabled_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 startRefresh();
               },

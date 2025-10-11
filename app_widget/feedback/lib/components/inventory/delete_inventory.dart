@@ -15,7 +15,7 @@ void showDeleteInventory({
       builder: (context) {
         return AlertDialog.adaptive(
           backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-          title: Text(context.l10n.titleInventory),
+          title: Text(context.l10n!.titleInventory),
           content: Wrap(
             spacing: 8.0,
             runSpacing: 8.0,
@@ -38,12 +38,12 @@ void showDeleteInventory({
               style: TextButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.error,
               ),
-              child: Text(context.l10n.buttonDelete),
+              child: Text(context.l10n!.buttonDelete),
               onPressed: () {
                 final undoSnackBar = SnackBar(
-                  content: Text(context.l10n.accidentallyDeleted),
+                  content: Text(context.l10n!.accidentallyDeleted),
                   action: SnackBarAction(
-                      label: context.l10n.undo,
+                      label: context.l10n!.undo,
                       onPressed: () {
                         context.read<InventoryBloc>().add(InventoryAdd(
                               context
@@ -71,7 +71,7 @@ void showDeleteInventory({
               },
             ),
             TextButton(
-              child: Text(context.l10n.buttonCancel),
+              child: Text(context.l10n!.buttonCancel),
               onPressed: () {
                 Navigator.of(context).pop();
               },

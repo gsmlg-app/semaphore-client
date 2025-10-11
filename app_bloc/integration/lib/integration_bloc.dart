@@ -10,12 +10,17 @@ class IntegrationBloc extends Bloc<IntegrationEvent, IntegrationState> {
     on<IntegrationLoad>(_integrationLoad);
   }
 
-  _integrationLoad(
-      IntegrationLoad event, Emitter<IntegrationState> emit) async {
+  Future<void> _integrationLoad(
+    IntegrationLoad event,
+    Emitter<IntegrationState> emit,
+  ) async {
     if (state is IntegrationLoaded) {
-      emit(IntegrationLoaded(
+      emit(
+        IntegrationLoaded(
           integrations: (state as IntegrationLoaded).integrations,
-          loading: true));
+          loading: true,
+        ),
+      );
     } else {
       emit(IntegrationLoading());
     }

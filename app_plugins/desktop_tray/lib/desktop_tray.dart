@@ -1,4 +1,4 @@
-library desktop_tray;
+library;
 
 export 'src/system_tray_manager.dart';
 export 'src/quick_actions_manager.dart';

@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'view_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,66 +15,32 @@ part 'view_request.g.dart';
 )
 class ViewRequest {
   /// Returns a new [ViewRequest] instance.
-  ViewRequest({
+  ViewRequest({this.title, this.projectId, this.position});
 
-     this.title,
-
-     this.projectId,
-
-     this.position,
-  });
-
-  @JsonKey(
-    
-    name: r'title',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'title', required: false, includeIfNull: false)
   final String? title;
 
-
-
-          // minimum: 1
-  @JsonKey(
-    
-    name: r'project_id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  // minimum: 1
+  @JsonKey(name: r'project_id', required: false, includeIfNull: false)
   final int? projectId;
 
-
-
-          // minimum: 1
-  @JsonKey(
-    
-    name: r'position',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  // minimum: 1
+  @JsonKey(name: r'position', required: false, includeIfNull: false)
   final int? position;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ViewRequest &&
+          other.title == title &&
+          other.projectId == projectId &&
+          other.position == position;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ViewRequest &&
-     other.title == title &&
-     other.projectId == projectId &&
-     other.position == position;
+  int get hashCode => title.hashCode + projectId.hashCode + position.hashCode;
 
-  @override
-  int get hashCode =>
-    title.hashCode +
-    projectId.hashCode +
-    position.hashCode;
-
-  factory ViewRequest.fromJson(Map<String, dynamic> json) => _$ViewRequestFromJson(json);
+  factory ViewRequest.fromJson(Map<String, dynamic> json) =>
+      _$ViewRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$ViewRequestToJson(this);
 
@@ -83,6 +48,4 @@ class ViewRequest {
   String toString() {
     return toJson().toString();
   }
-
 }
-

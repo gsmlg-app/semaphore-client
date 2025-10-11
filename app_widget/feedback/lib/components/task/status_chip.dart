@@ -12,7 +12,7 @@ class StatusChip extends StatelessWidget {
     switch (status) {
       case 'success':
         return Tooltip(
-          message: context.l10n.statusSuccess,
+          message: context.l10n!.statusSuccess,
           child: Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
@@ -25,7 +25,7 @@ class StatusChip extends StatelessWidget {
 
       case 'error':
         return Tooltip(
-          message: context.l10n.statusFailed,
+          message: context.l10n!.statusFailed,
           child: Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
@@ -38,7 +38,7 @@ class StatusChip extends StatelessWidget {
 
       case 'stopped':
         return Tooltip(
-          message: context.l10n.statusStopped,
+          message: context.l10n!.statusStopped,
           child: Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
@@ -51,7 +51,7 @@ class StatusChip extends StatelessWidget {
 
       case 'waiting':
         return Tooltip(
-          message: context.l10n.statusWaiting,
+          message: context.l10n!.statusWaiting,
           child: Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
@@ -64,7 +64,7 @@ class StatusChip extends StatelessWidget {
 
       case 'running':
         return Tooltip(
-          message: context.l10n.statusRunning,
+          message: context.l10n!.statusRunning,
           child: Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
@@ -77,7 +77,7 @@ class StatusChip extends StatelessWidget {
 
       default:
         return Tooltip(
-          message: context.l10n.statusUnknown,
+          message: context.l10n!.statusUnknown,
           child: Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(

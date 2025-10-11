@@ -10,17 +10,25 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
     on<ActivityLoad>(_activityLoad);
   }
 
-  _activityLoad(ActivityLoad event, Emitter<ActivityState> emit) async {
+  Future<void> _activityLoad(
+    ActivityLoad event,
+    Emitter<ActivityState> emit,
+  ) async {
     if (state is ActivityLoaded) {
-      emit(ActivityLoaded(
-          activities: (state as ActivityLoaded).activities, loading: true));
+      emit(
+        ActivityLoaded(
+          activities: (state as ActivityLoaded).activities,
+          loading: true,
+        ),
+      );
     } else {
       emit(ActivityLoading());
     }
     try {
       final projectApi = event.api.getProjectApi();
       final resp = await projectApi.projectProjectIdEventsGet(
-          projectId: event.projectId);
+        projectId: event.projectId,
+      );
       print(resp.data);
       emit(ActivityLoaded(activities: resp.data ?? [], loading: false));
     } catch (e) {

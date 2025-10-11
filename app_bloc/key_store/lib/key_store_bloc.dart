@@ -10,17 +10,27 @@ class KeyStoreBloc extends Bloc<KeyStoreEvent, KeyStoreState> {
     on<KeyStoreLoad>(_key_storeLoad);
   }
 
-  _key_storeLoad(KeyStoreLoad event, Emitter<KeyStoreState> emit) async {
+  Future<void> _key_storeLoad(
+    KeyStoreLoad event,
+    Emitter<KeyStoreState> emit,
+  ) async {
     if (state is KeyStoreLoaded) {
-      emit(KeyStoreLoaded(
-          accessKeys: (state as KeyStoreLoaded).accessKeys, loading: true));
+      emit(
+        KeyStoreLoaded(
+          accessKeys: (state as KeyStoreLoaded).accessKeys,
+          loading: true,
+        ),
+      );
     } else {
       emit(KeyStoreLoading());
     }
     try {
       final projectApi = event.api.getProjectApi();
       final resp = await projectApi.projectProjectIdKeysGet(
-          projectId: event.projectId, sort: 'name', order: 'asc');
+        projectId: event.projectId,
+        sort: 'name',
+        order: 'asc',
+      );
 
       print(resp.data);
       emit(KeyStoreLoaded(accessKeys: resp.data ?? [], loading: false));

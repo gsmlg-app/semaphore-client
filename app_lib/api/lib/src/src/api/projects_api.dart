@@ -14,13 +14,12 @@ import '../model/project_backup.dart';
 import '../model/project_request.dart';
 
 class ProjectsApi {
-
   final Dio _dio;
 
   const ProjectsApi(this._dio);
 
   /// Get projects
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -31,8 +30,8 @@ class ProjectsApi {
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
   /// Returns a [Future] containing a [Response] with a [List<Project>] as data
-  /// Throws [DioError] if API call or serialization fails
-  Future<Response<List<Project>>> projectsGet({ 
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<List<Project>>> projectsGet({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -40,12 +39,10 @@ class ProjectsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/projects';
-    final _options = Options(
+    final path = r'/projects';
+    final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -53,7 +50,8 @@ class ProjectsApi {
             'name': 'cookie',
             'keyName': 'Cookie',
             'where': 'header',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'bearer',
             'keyName': 'Authorization',
@@ -65,46 +63,52 @@ class ProjectsApi {
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    List<Project>? _responseData;
+    List<Project>? responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<Project>, Project>(rawData, 'List<Project>', growable: true);
+      final rawData = response.data;
+      responseData = rawData == null
+          ? null
+          : deserialize<List<Project>, Project>(
+              rawData,
+              'List<Project>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
-      throw DioError(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioErrorType.unknown,
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
     return Response<List<Project>>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
   /// Create a new project
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [project] 
+  /// * [project]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -113,8 +117,8 @@ _responseData = rawData == null ? null : deserialize<List<Project>, Project>(raw
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
   /// Returns a [Future] containing a [Response] with a [Project] as data
-  /// Throws [DioError] if API call or serialization fails
-  Future<Response<Project>> projectsPost({ 
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<Project>> projectsPost({
     required ProjectRequest project,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -123,12 +127,10 @@ _responseData = rawData == null ? null : deserialize<List<Project>, Project>(raw
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/projects';
-    final _options = Options(
+    final path = r'/projects';
+    final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -136,7 +138,8 @@ _responseData = rawData == null ? null : deserialize<List<Project>, Project>(raw
             'name': 'cookie',
             'keyName': 'Cookie',
             'where': 'header',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'bearer',
             'keyName': 'Authorization',
@@ -149,63 +152,62 @@ _responseData = rawData == null ? null : deserialize<List<Project>, Project>(raw
       validateStatus: validateStatus,
     );
 
-    dynamic _bodyData;
+    dynamic bodyData;
 
     try {
-_bodyData=jsonEncode(project);
-    } catch(error, stackTrace) {
-      throw DioError(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
-        type: DioErrorType.unknown,
+      bodyData = jsonEncode(project);
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: options.compose(_dio.options, path),
+        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      data: bodyData,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Project? _responseData;
+    Project? responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<Project, Project>(rawData, 'Project', growable: true);
+      final rawData = response.data;
+      responseData = rawData == null
+          ? null
+          : deserialize<Project, Project>(rawData, 'Project', growable: true);
     } catch (error, stackTrace) {
-      throw DioError(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioErrorType.unknown,
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
     return Response<Project>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
   /// Restore Project
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [backup] 
+  /// * [backup]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -214,8 +216,8 @@ _responseData = rawData == null ? null : deserialize<Project, Project>(rawData, 
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
   /// Returns a [Future] containing a [Response] with a [Project] as data
-  /// Throws [DioError] if API call or serialization fails
-  Future<Response<Project>> projectsRestorePost({ 
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<Project>> projectsRestorePost({
     required ProjectBackup backup,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -224,12 +226,10 @@ _responseData = rawData == null ? null : deserialize<Project, Project>(rawData, 
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/projects/restore';
-    final _options = Options(
+    final path = r'/projects/restore';
+    final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -237,7 +237,8 @@ _responseData = rawData == null ? null : deserialize<Project, Project>(rawData, 
             'name': 'cookie',
             'keyName': 'Cookie',
             'where': 'header',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'bearer',
             'keyName': 'Authorization',
@@ -250,56 +251,54 @@ _responseData = rawData == null ? null : deserialize<Project, Project>(rawData, 
       validateStatus: validateStatus,
     );
 
-    dynamic _bodyData;
+    dynamic bodyData;
 
     try {
-_bodyData=jsonEncode(backup);
-    } catch(error, stackTrace) {
-      throw DioError(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
-        type: DioErrorType.unknown,
+      bodyData = jsonEncode(backup);
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: options.compose(_dio.options, path),
+        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      data: bodyData,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Project? _responseData;
+    Project? responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<Project, Project>(rawData, 'Project', growable: true);
+      final rawData = response.data;
+      responseData = rawData == null
+          ? null
+          : deserialize<Project, Project>(rawData, 'Project', growable: true);
     } catch (error, stackTrace) {
-      throw DioError(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioErrorType.unknown,
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
     return Response<Project>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
-
 }

@@ -10,17 +10,25 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     on<ScheduleLoad>(_scheduleLoad);
   }
 
-  _scheduleLoad(ScheduleLoad event, Emitter<ScheduleState> emit) async {
+  Future<void> _scheduleLoad(
+    ScheduleLoad event,
+    Emitter<ScheduleState> emit,
+  ) async {
     if (state is ScheduleLoaded) {
-      emit(ScheduleLoaded(
-          schedules: (state as ScheduleLoaded).schedules, loading: true));
+      emit(
+        ScheduleLoaded(
+          schedules: (state as ScheduleLoaded).schedules,
+          loading: true,
+        ),
+      );
     } else {
       emit(ScheduleLoading());
     }
     try {
       final scheduleApi = event.api.getScheduleApi();
       final resp = await scheduleApi.projectProjectIdSchedulesGet(
-          projectId: event.projectId);
+        projectId: event.projectId,
+      );
       print(resp.data);
       emit(ScheduleLoaded(schedules: resp.data ?? [], loading: false));
     } catch (e) {

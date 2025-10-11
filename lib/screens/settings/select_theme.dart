@@ -26,7 +26,7 @@ class SettingsSelectTheme extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           slivers: <Widget>[
             SliverAppBar(
-              title: Text(context.l10n.titleSelectColorTheme),
+              title: Text(context.l10n!.titleSelectColorTheme),
             ),
             SliverList(
               delegate: SliverChildListDelegate([
@@ -43,7 +43,7 @@ class SettingsSelectTheme extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              context.l10n.settingsTitle,
+              context.l10n!.settingsTitle,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             SizedBox(

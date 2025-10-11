@@ -1,3 +1,3 @@
-library project;
+library;
 
 export 'bloc.dart';

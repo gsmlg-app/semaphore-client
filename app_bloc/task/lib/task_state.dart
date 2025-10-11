@@ -7,9 +7,7 @@ final class TaskInitial extends TaskState {}
 
 final class TaskLoading extends TaskState {
   final Template? template;
-  TaskLoading({
-    this.template,
-  });
+  TaskLoading({this.template});
 }
 
 final class TaskLoaded extends TaskState {

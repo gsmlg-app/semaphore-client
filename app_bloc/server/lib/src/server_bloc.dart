@@ -1,4 +1,4 @@
-library server_bloc;
+library;
 
 export 'bloc.dart';
 export 'event.dart';

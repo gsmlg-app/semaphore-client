@@ -8,30 +8,23 @@ class InventoryFormBloc extends FormBloc<String, String> {
   Inventory? editData;
 
   final name = TextFieldBloc<String>(
-    validators: [
-      FieldBlocValidators.required,
-    ],
+    validators: [FieldBlocValidators.required],
   );
 
   final sshKeyId = SelectFieldBloc<AccessKey, dynamic>(
-    validators: [
-      FieldBlocValidators.required,
-    ],
+    validators: [FieldBlocValidators.required],
   );
 
-  final becomeKeyId = SelectFieldBloc<AccessKey, dynamic>(
-    validators: [],
-  );
+  final becomeKeyId = SelectFieldBloc<AccessKey, dynamic>(validators: []);
 
-  final type = SelectFieldBloc<InventoryTypeEnum, dynamic>(validators: [
-    FieldBlocValidators.required,
-  ], items: InventoryTypeEnum.values);
+  final type = SelectFieldBloc<InventoryTypeEnum, dynamic>(
+    validators: [FieldBlocValidators.required],
+    items: InventoryTypeEnum.values,
+  );
 
   final inventory = TextFieldBloc<String>(validators: []);
 
-  final repositoryId = SelectFieldBloc<Repository, dynamic>(
-    validators: [],
-  );
+  final repositoryId = SelectFieldBloc<Repository, dynamic>(validators: []);
 
   InventoryFormBloc() {
     addFieldBlocs(
@@ -68,9 +61,7 @@ class InventoryFormBloc extends FormBloc<String, String> {
       }
       emitLoaded();
     } catch (e) {
-      emitLoadFailed(
-        failureResponse: e.toString(),
-      );
+      emitLoadFailed(failureResponse: e.toString());
     }
   }
 
@@ -84,16 +75,17 @@ class InventoryFormBloc extends FormBloc<String, String> {
           name: name.value,
           sshKeyId: sshKeyId.value?.id,
           becomeKeyId: becomeKeyId.value?.id,
-          type: InventoryRequestTypeEnum.values
-              .firstWhere((e) => e.name == type.value?.name),
+          type: InventoryRequestTypeEnum.values.firstWhere(
+            (e) => e.name == type.value?.name,
+          ),
           inventory: inventory.value,
           repositoryId: repositoryId.value?.id,
         );
         await projectApi.projectProjectIdInventoryPost(
-            projectId: projectId, inventory: request);
-        emitSuccess(
-          successResponse: 'Inventory has been created',
+          projectId: projectId,
+          inventory: request,
         );
+        emitSuccess(successResponse: 'Inventory has been created');
       } else {
         final request = InventoryRequest(
           id: editData!.id!,
@@ -101,50 +93,41 @@ class InventoryFormBloc extends FormBloc<String, String> {
           name: name.value,
           sshKeyId: sshKeyId.value?.id,
           becomeKeyId: becomeKeyId.value?.id,
-          type: InventoryRequestTypeEnum.values
-              .firstWhere((e) => e.name == type.value?.name),
+          type: InventoryRequestTypeEnum.values.firstWhere(
+            (e) => e.name == type.value?.name,
+          ),
           inventory: inventory.value,
           repositoryId: repositoryId.value?.id,
         );
         await projectApi.projectProjectIdInventoryInventoryIdPut(
-            projectId: projectId,
-            inventoryId: editData!.id!,
-            inventory: request);
-        emitSuccess(
-          successResponse: 'Inventory has been updated',
+          projectId: projectId,
+          inventoryId: editData!.id!,
+          inventory: request,
         );
+        emitSuccess(successResponse: 'Inventory has been updated');
       }
     } on DioException catch (e) {
-      emitFailure(
-        failureResponse: e.response.toString(),
-      );
+      emitFailure(failureResponse: e.response.toString());
     } catch (e) {
-      emitFailure(
-        failureResponse: e.toString(),
-      );
+      emitFailure(failureResponse: e.toString());
     }
   }
 
   void _setValues(
-      Inventory item, List<AccessKey> keys, List<Repository> repos) {
+    Inventory item,
+    List<AccessKey> keys,
+    List<Repository> repos,
+  ) {
     clear();
     name.updateValue(item.name ?? '');
-    sshKeyId.updateValue(keys
-        .where(
-          (k) => k.id == item.sshKeyId,
-        )
-        .firstOrNull);
-    becomeKeyId.updateValue(keys
-        .where(
-          (k) => k.id == item.becomeKeyId,
-        )
-        .firstOrNull);
+    sshKeyId.updateValue(keys.where((k) => k.id == item.sshKeyId).firstOrNull);
+    becomeKeyId.updateValue(
+      keys.where((k) => k.id == item.becomeKeyId).firstOrNull,
+    );
     type.updateValue(item.type);
     inventory.updateValue(item.inventory ?? '');
-    repositoryId.updateValue(repos
-        .where(
-          (r) => r.id == item.repositoryId,
-        )
-        .firstOrNull);
+    repositoryId.updateValue(
+      repos.where((r) => r.id == item.repositoryId).firstOrNull,
+    );
   }
 }

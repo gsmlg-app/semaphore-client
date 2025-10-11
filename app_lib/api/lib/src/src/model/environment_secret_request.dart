@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'environment_secret_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,95 +16,52 @@ part 'environment_secret_request.g.dart';
 class EnvironmentSecretRequest {
   /// Returns a new [EnvironmentSecretRequest] instance.
   EnvironmentSecretRequest({
+    this.id,
 
-     this.id,
+    this.name,
 
-     this.name,
+    this.secret,
 
-     this.secret,
+    this.type,
 
-     this.type,
-
-     this.operation,
+    this.operation,
   });
 
-  @JsonKey(
-    
-    name: r'id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'id', required: false, includeIfNull: false)
   final int? id;
 
-
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'secret',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'secret', required: false, includeIfNull: false)
   final String? secret;
 
-
-
-  @JsonKey(
-    
-    name: r'type',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'type', required: false, includeIfNull: false)
   final EnvironmentSecretRequestTypeEnum? type;
 
-
-
-  @JsonKey(
-    
-    name: r'operation',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'operation', required: false, includeIfNull: false)
   final EnvironmentSecretRequestOperationEnum? operation;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is EnvironmentSecretRequest &&
-     other.id == id &&
-     other.name == name &&
-     other.secret == secret &&
-     other.type == type &&
-     other.operation == operation;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is EnvironmentSecretRequest &&
+          other.id == id &&
+          other.name == name &&
+          other.secret == secret &&
+          other.type == type &&
+          other.operation == operation;
 
   @override
   int get hashCode =>
-    id.hashCode +
-    name.hashCode +
-    secret.hashCode +
-    type.hashCode +
-    operation.hashCode;
+      id.hashCode +
+      name.hashCode +
+      secret.hashCode +
+      type.hashCode +
+      operation.hashCode;
 
-  factory EnvironmentSecretRequest.fromJson(Map<String, dynamic> json) => _$EnvironmentSecretRequestFromJson(json);
+  factory EnvironmentSecretRequest.fromJson(Map<String, dynamic> json) =>
+      _$EnvironmentSecretRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$EnvironmentSecretRequestToJson(this);
 
@@ -113,9 +69,7 @@ class EnvironmentSecretRequest {
   String toString() {
     return toJson().toString();
   }
-
 }
-
 
 enum EnvironmentSecretRequestTypeEnum {
   @JsonValue(r'env')
@@ -123,8 +77,6 @@ enum EnvironmentSecretRequestTypeEnum {
   @JsonValue(r'var')
   var_,
 }
-
-
 
 enum EnvironmentSecretRequestOperationEnum {
   @JsonValue(r'create')
@@ -134,5 +86,3 @@ enum EnvironmentSecretRequestOperationEnum {
   @JsonValue(r'delete')
   delete,
 }
-
-

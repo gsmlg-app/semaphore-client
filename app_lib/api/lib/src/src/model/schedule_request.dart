@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'schedule_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,111 +16,59 @@ part 'schedule_request.g.dart';
 class ScheduleRequest {
   /// Returns a new [ScheduleRequest] instance.
   ScheduleRequest({
+    this.id,
 
-     this.id,
+    this.cronFormat,
 
-     this.cronFormat,
+    this.projectId,
 
-     this.projectId,
+    this.templateId,
 
-     this.templateId,
+    this.name,
 
-     this.name,
-
-     this.active,
+    this.active,
   });
 
-  @JsonKey(
-    
-    name: r'id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'id', required: false, includeIfNull: false)
   final int? id;
 
-
-
-  @JsonKey(
-    
-    name: r'cron_format',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'cron_format', required: false, includeIfNull: false)
   final String? cronFormat;
 
-
-
-  @JsonKey(
-    
-    name: r'project_id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'project_id', required: false, includeIfNull: false)
   final int? projectId;
 
-
-
-  @JsonKey(
-    
-    name: r'template_id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'template_id', required: false, includeIfNull: false)
   final int? templateId;
 
-
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'active',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'active', required: false, includeIfNull: false)
   final bool? active;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ScheduleRequest &&
-     other.id == id &&
-     other.cronFormat == cronFormat &&
-     other.projectId == projectId &&
-     other.templateId == templateId &&
-     other.name == name &&
-     other.active == active;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ScheduleRequest &&
+          other.id == id &&
+          other.cronFormat == cronFormat &&
+          other.projectId == projectId &&
+          other.templateId == templateId &&
+          other.name == name &&
+          other.active == active;
 
   @override
   int get hashCode =>
-    id.hashCode +
-    cronFormat.hashCode +
-    projectId.hashCode +
-    templateId.hashCode +
-    name.hashCode +
-    active.hashCode;
+      id.hashCode +
+      cronFormat.hashCode +
+      projectId.hashCode +
+      templateId.hashCode +
+      name.hashCode +
+      active.hashCode;
 
-  factory ScheduleRequest.fromJson(Map<String, dynamic> json) => _$ScheduleRequestFromJson(json);
+  factory ScheduleRequest.fromJson(Map<String, dynamic> json) =>
+      _$ScheduleRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$ScheduleRequestToJson(this);
 
@@ -129,6 +76,4 @@ class ScheduleRequest {
   String toString() {
     return toJson().toString();
   }
-
 }
-

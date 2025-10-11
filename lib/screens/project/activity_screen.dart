@@ -41,7 +41,7 @@ class _ActivityScreenState extends State<ActivityScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleActivity),
+              title: Text(context.l10n!.titleActivity),
               actions: getActions(context, isSmall: true),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -107,7 +107,7 @@ class _ActivityScreenState extends State<ActivityScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleActivity),
+              title: Text(context.l10n!.titleActivity),
               actions: getActions(context),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -166,7 +166,7 @@ class _ActivityScreenState extends State<ActivityScreen>
         actions: [
           AppAdaptiveAction(
             icon: Icons.refresh,
-            title: context.l10n.refresh,
+            title: context.l10n!.refresh,
             onPressed: () {
               loadData();
             },
@@ -175,7 +175,7 @@ class _ActivityScreenState extends State<ActivityScreen>
             AppAdaptiveAction(
               disabled: !autoRefresh,
               icon: Icons.sync_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 stopRefresh();
               },
@@ -184,7 +184,7 @@ class _ActivityScreenState extends State<ActivityScreen>
             AppAdaptiveAction(
               disabled: autoRefresh,
               icon: Icons.sync_disabled_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 startRefresh();
               },

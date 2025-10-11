@@ -8,7 +8,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'project_project_id_tasks_post_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -18,135 +17,74 @@ part 'project_project_id_tasks_post_request.g.dart';
 class ProjectProjectIdTasksPostRequest {
   /// Returns a new [ProjectProjectIdTasksPostRequest] instance.
   ProjectProjectIdTasksPostRequest({
+    this.templateId,
 
-     this.templateId,
+    this.playbook,
 
-     this.playbook,
+    this.environment,
 
-     this.environment,
+    this.gitBranch,
 
-     this.gitBranch,
+    this.message,
 
-     this.message,
+    this.limit,
 
-     this.limit,
-
-     this.params,
+    this.params,
   });
 
-  @JsonKey(
-    
-    name: r'template_id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'template_id', required: false, includeIfNull: false)
   final int? templateId;
 
-
-
-  @JsonKey(
-    
-    name: r'playbook',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'playbook', required: false, includeIfNull: false)
   final String? playbook;
 
-
-
-  @JsonKey(
-    
-    name: r'environment',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'environment', required: false, includeIfNull: false)
   final String? environment;
 
-
-
-  @JsonKey(
-    
-    name: r'git_branch',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'git_branch', required: false, includeIfNull: false)
   final String? gitBranch;
 
-
-
-  @JsonKey(
-    
-    name: r'message',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'message', required: false, includeIfNull: false)
   final String? message;
 
-
-
   @Deprecated('limit has been deprecated')
-  @JsonKey(
-    
-    name: r'limit',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'limit', required: false, includeIfNull: false)
   final String? limit;
 
-
-
-  @JsonKey(
-    
-    name: r'params',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'params', required: false, includeIfNull: false)
   final ProjectProjectIdTasksPostRequestParams? params;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProjectProjectIdTasksPostRequest &&
-     other.templateId == templateId &&
-     other.playbook == playbook &&
-     other.environment == environment &&
-     other.gitBranch == gitBranch &&
-     other.message == message &&
-     other.limit == limit &&
-     other.params == params;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProjectProjectIdTasksPostRequest &&
+          other.templateId == templateId &&
+          other.playbook == playbook &&
+          other.environment == environment &&
+          other.gitBranch == gitBranch &&
+          other.message == message &&
+          other.limit == limit &&
+          other.params == params;
 
   @override
   int get hashCode =>
-    templateId.hashCode +
-    playbook.hashCode +
-    environment.hashCode +
-    gitBranch.hashCode +
-    message.hashCode +
-    limit.hashCode +
-    params.hashCode;
+      templateId.hashCode +
+      playbook.hashCode +
+      environment.hashCode +
+      gitBranch.hashCode +
+      message.hashCode +
+      limit.hashCode +
+      params.hashCode;
 
-  factory ProjectProjectIdTasksPostRequest.fromJson(Map<String, dynamic> json) => _$ProjectProjectIdTasksPostRequestFromJson(json);
+  factory ProjectProjectIdTasksPostRequest.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ProjectProjectIdTasksPostRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ProjectProjectIdTasksPostRequestToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$ProjectProjectIdTasksPostRequestToJson(this);
 
   @override
   String toString() {
     return toJson().toString();
   }
-
 }
-

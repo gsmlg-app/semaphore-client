@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'inventory_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,147 +16,77 @@ part 'inventory_request.g.dart';
 class InventoryRequest {
   /// Returns a new [InventoryRequest] instance.
   InventoryRequest({
+    this.id,
 
-     this.id,
+    this.name,
 
-     this.name,
+    this.projectId,
 
-     this.projectId,
+    this.inventory,
 
-     this.inventory,
+    this.sshKeyId,
 
-     this.sshKeyId,
+    this.becomeKeyId,
 
-     this.becomeKeyId,
+    this.repositoryId,
 
-     this.repositoryId,
-
-     this.type,
+    this.type,
   });
 
-  @JsonKey(
-    
-    name: r'id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'id', required: false, includeIfNull: false)
   final int? id;
 
-
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-          // minimum: 1
-  @JsonKey(
-    
-    name: r'project_id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  // minimum: 1
+  @JsonKey(name: r'project_id', required: false, includeIfNull: false)
   final int? projectId;
 
-
-
-  @JsonKey(
-    
-    name: r'inventory',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'inventory', required: false, includeIfNull: false)
   final String? inventory;
 
-
-
-          // minimum: 1
-  @JsonKey(
-    
-    name: r'ssh_key_id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  // minimum: 1
+  @JsonKey(name: r'ssh_key_id', required: false, includeIfNull: false)
   final int? sshKeyId;
 
-
-
-          // minimum: 1
-  @JsonKey(
-    
-    name: r'become_key_id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  // minimum: 1
+  @JsonKey(name: r'become_key_id', required: false, includeIfNull: false)
   final int? becomeKeyId;
 
-
-
-          // minimum: 1
-  @JsonKey(
-    
-    name: r'repository_id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  // minimum: 1
+  @JsonKey(name: r'repository_id', required: false, includeIfNull: false)
   final int? repositoryId;
 
-
-
-  @JsonKey(
-    
-    name: r'type',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'type', required: false, includeIfNull: false)
   final InventoryRequestTypeEnum? type;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is InventoryRequest &&
-     other.id == id &&
-     other.name == name &&
-     other.projectId == projectId &&
-     other.inventory == inventory &&
-     other.sshKeyId == sshKeyId &&
-     other.becomeKeyId == becomeKeyId &&
-     other.repositoryId == repositoryId &&
-     other.type == type;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is InventoryRequest &&
+          other.id == id &&
+          other.name == name &&
+          other.projectId == projectId &&
+          other.inventory == inventory &&
+          other.sshKeyId == sshKeyId &&
+          other.becomeKeyId == becomeKeyId &&
+          other.repositoryId == repositoryId &&
+          other.type == type;
 
   @override
   int get hashCode =>
-    id.hashCode +
-    name.hashCode +
-    projectId.hashCode +
-    inventory.hashCode +
-    sshKeyId.hashCode +
-    becomeKeyId.hashCode +
-    repositoryId.hashCode +
-    type.hashCode;
+      id.hashCode +
+      name.hashCode +
+      projectId.hashCode +
+      inventory.hashCode +
+      sshKeyId.hashCode +
+      becomeKeyId.hashCode +
+      repositoryId.hashCode +
+      type.hashCode;
 
-  factory InventoryRequest.fromJson(Map<String, dynamic> json) => _$InventoryRequestFromJson(json);
+  factory InventoryRequest.fromJson(Map<String, dynamic> json) =>
+      _$InventoryRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$InventoryRequestToJson(this);
 
@@ -165,9 +94,7 @@ class InventoryRequest {
   String toString() {
     return toJson().toString();
   }
-
 }
-
 
 enum InventoryRequestTypeEnum {
   @JsonValue(r'static')
@@ -179,5 +106,3 @@ enum InventoryRequestTypeEnum {
   @JsonValue(r'terraform-workspace')
   terraformWorkspace,
 }
-
-

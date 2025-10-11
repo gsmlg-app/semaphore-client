@@ -13,6 +13,29 @@ dependencies:
 
   app_locale: any
 
+  flutter_form_bloc: any
+  inventory_bloc: any
+  inventory_form_bloc: any
+  server_bloc: any
+  app_utils: any
+  app_api: any
+  app_database: any
+  flutter_bloc: any
+  google_fonts: any
+  intl: any
+  task_output_bloc: any
+  run_task_bloc: any
+  task_bloc: any
+  server_form_bloc: any
+  drift: any
+  go_router: any
+  settings_ui: any
+  theme_bloc: any
+  semaphore_client: any
+  project_form_bloc: any
+  repository_bloc: any
+  key_store_bloc: any
+  variable_bloc: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

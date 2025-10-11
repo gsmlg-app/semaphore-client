@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:server_bloc/server.dart';
 import 'package:semaphore_client/screens/settings/settings_screen.dart';
+import 'package:server_bloc/server.dart';
 
-import 'paint_logo.dart';
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
   static const name = 'splash';
@@ -18,30 +17,32 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: BlocListener<SemaphoreServerBloc, SemaphoreServerState>(
-            bloc: serverBlock,
-            listener: (context, state) {
-              print(state);
-              if (state.loaded) {
-                if (state.activeServer != null) {
-                  context.goNamed(SettingsScreen.name);
-                } else {
-                  context.goNamed(SettingsScreen.name);
-                }
+          bloc: serverBlock,
+          listener: (context, state) {
+            if (state.loaded) {
+              if (state.activeServer != null) {
+                context.goNamed(SettingsScreen.name);
               } else {
-                context.read<SemaphoreServerBloc>().add(LoadServers());
+                context.goNamed(SettingsScreen.name);
               }
-            },
-            child: Center(
-              child: SizedBox(
-                  width: width * 0.8,
-                  height: width * 0.8,
-                  child: Center(
-                    child: CustomPaint(
-                      size: Size(width * 0.7, width * 0.7 * 0.2),
-                      painter: LogoPainter(),
-                    ),
-                  )),
-            )),
+            } else {
+              context.read<SemaphoreServerBloc>().add(LoadServers());
+            }
+          },
+          child: Center(
+            child: SizedBox(
+              width: width * 0.8,
+              height: width * 0.8,
+              child: Center(
+                // child: CustomPaint(
+                //   size: Size(width * 0.7, width * 0.7 * 0.2),
+                //   painter: LogoPainter(),
+                // ),
+                child: Text('Semaphore Client'),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

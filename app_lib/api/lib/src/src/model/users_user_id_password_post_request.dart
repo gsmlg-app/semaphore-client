@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'users_user_id_password_post_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,32 +15,21 @@ part 'users_user_id_password_post_request.g.dart';
 )
 class UsersUserIdPasswordPostRequest {
   /// Returns a new [UsersUserIdPasswordPostRequest] instance.
-  UsersUserIdPasswordPostRequest({
+  UsersUserIdPasswordPostRequest({this.password});
 
-     this.password,
-  });
-
-  @JsonKey(
-    
-    name: r'password',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'password', required: false, includeIfNull: false)
   final String? password;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UsersUserIdPasswordPostRequest && other.password == password;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is UsersUserIdPasswordPostRequest &&
-     other.password == password;
+  int get hashCode => password.hashCode;
 
-  @override
-  int get hashCode =>
-    password.hashCode;
-
-  factory UsersUserIdPasswordPostRequest.fromJson(Map<String, dynamic> json) => _$UsersUserIdPasswordPostRequestFromJson(json);
+  factory UsersUserIdPasswordPostRequest.fromJson(Map<String, dynamic> json) =>
+      _$UsersUserIdPasswordPostRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$UsersUserIdPasswordPostRequestToJson(this);
 
@@ -49,6 +37,4 @@ class UsersUserIdPasswordPostRequest {
   String toString() {
     return toJson().toString();
   }
-
 }
-

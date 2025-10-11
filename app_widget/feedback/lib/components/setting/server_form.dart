@@ -10,7 +10,7 @@ import 'package:drift/drift.dart' hide Column;
 void showServerForm(BuildContext context) {
   showFullScreenDialog(
     context: context,
-    title: Text(context.l10n.addServer),
+    title: Text(context.l10n!.addServer),
     builder: (context) {
       final serverFormBloc = context.read<ServerFormBloc>();
 
@@ -27,11 +27,16 @@ void showServerForm(BuildContext context) {
             username: Value(serverFormBloc.username.value),
             token: Value(token),
           );
-          final serverId = await database.into(database.semaphoreServers).insert(serverCompanion);
-          final server = await (database.select(database.semaphoreServers)..where((s) => s.id.equals(serverId))).getSingle();
+          final serverId = await database
+              .into(database.semaphoreServers)
+              .insert(serverCompanion);
+          final server = await (database.select(database.semaphoreServers)
+                ..where((s) => s.id.equals(serverId)))
+              .getSingle();
           context.read<SemaphoreServerBloc>().add(AddServer(server));
           Navigator.of(context).pop();
-          showSuccessToast(context: context, message: context.l10n.serverAdded);
+          showSuccessToast(
+              context: context, message: context.l10n!.serverAdded);
         },
         onFailure: (context, state) {
           if (state.failureResponse != null) {
@@ -54,8 +59,8 @@ void showServerForm(BuildContext context) {
                       autocorrect: false,
                       enableSuggestions: false,
                       decoration: InputDecoration(
-                        hintText: context.l10n.serverNameLabel,
-                        labelText: context.l10n.serverNameHint,
+                        hintText: context.l10n!.serverNameLabel,
+                        labelText: context.l10n!.serverNameHint,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -67,8 +72,8 @@ void showServerForm(BuildContext context) {
                       autocorrect: false,
                       enableSuggestions: false,
                       decoration: InputDecoration(
-                        hintText: context.l10n.serverUrlHint,
-                        labelText: context.l10n.serverUrlLabel,
+                        hintText: context.l10n!.serverUrlHint,
+                        labelText: context.l10n!.serverUrlLabel,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -80,8 +85,8 @@ void showServerForm(BuildContext context) {
                       autocorrect: false,
                       enableSuggestions: false,
                       decoration: InputDecoration(
-                          hintText: context.l10n.usernameHint,
-                          labelText: context.l10n.usernameLabel),
+                          hintText: context.l10n!.usernameHint,
+                          labelText: context.l10n!.usernameLabel),
                     ),
                     const SizedBox(height: 20),
                     TextFieldBlocBuilder(
@@ -92,8 +97,8 @@ void showServerForm(BuildContext context) {
                       autocorrect: false,
                       enableSuggestions: false,
                       decoration: InputDecoration(
-                        hintText: context.l10n.passwordHint,
-                        labelText: context.l10n.passwordLabel,
+                        hintText: context.l10n!.passwordHint,
+                        labelText: context.l10n!.passwordLabel,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -124,7 +129,7 @@ void showServerForm(BuildContext context) {
                                         const Size.fromHeight(50), // NEW
                                   ),
                                   onPressed: serverFormBloc.submit,
-                                  child: Text(context.l10n.buttonSave),
+                                  child: Text(context.l10n!.buttonSave),
                                 )
                               : ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -132,7 +137,7 @@ void showServerForm(BuildContext context) {
                                         const Size.fromHeight(50), // NEW
                                   ),
                                   onPressed: null,
-                                  child: Text(context.l10n.buttonSave),
+                                  child: Text(context.l10n!.buttonSave),
                                 );
                         }),
                   ],

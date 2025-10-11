@@ -10,17 +10,27 @@ class RepositoryBloc extends Bloc<RepositoryEvent, RepositoryState> {
     on<RepositoryLoad>(_repositoryLoad);
   }
 
-  _repositoryLoad(RepositoryLoad event, Emitter<RepositoryState> emit) async {
+  Future<void> _repositoryLoad(
+    RepositoryLoad event,
+    Emitter<RepositoryState> emit,
+  ) async {
     if (state is RepositoryLoaded) {
-      emit(RepositoryLoaded(
-          repositorys: (state as RepositoryLoaded).repositorys, loading: true));
+      emit(
+        RepositoryLoaded(
+          repositorys: (state as RepositoryLoaded).repositorys,
+          loading: true,
+        ),
+      );
     } else {
       emit(RepositoryLoading());
     }
     try {
       final projectApi = event.api.getProjectApi();
       final resp = await projectApi.projectProjectIdRepositoriesGet(
-          projectId: event.projectId, sort: 'name', order: 'asc');
+        projectId: event.projectId,
+        sort: 'name',
+        order: 'asc',
+      );
 
       print(resp.data);
       emit(RepositoryLoaded(repositorys: resp.data ?? [], loading: false));

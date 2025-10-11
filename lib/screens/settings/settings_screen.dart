@@ -21,7 +21,7 @@ class SettingsScreen extends StatelessWidget {
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              title: Text(context.l10n.settingsTitle),
+              title: Text(context.l10n!.settingsTitle),
             ),
             SliverList(
               delegate: SliverChildListDelegate([
@@ -40,7 +40,7 @@ class SettingsScreen extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           slivers: <Widget>[
             SliverAppBar(
-              title: Text(context.l10n.settingsTitle),
+              title: Text(context.l10n!.settingsTitle),
               automaticallyImplyLeading: false,
             ),
             SliverList(

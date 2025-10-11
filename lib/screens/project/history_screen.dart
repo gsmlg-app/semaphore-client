@@ -44,7 +44,7 @@ class _HistoryScreenState extends State<HistoryScreen>
         actions: [
           AppAdaptiveAction(
             icon: Icons.refresh,
-            title: context.l10n.refresh,
+            title: context.l10n!.refresh,
             onPressed: () {
               loadData();
             },
@@ -52,14 +52,14 @@ class _HistoryScreenState extends State<HistoryScreen>
           if (!autoRefresh)
             AppAdaptiveAction(
               icon: Icons.sync_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () => startRefresh(),
             )
           else
             AppAdaptiveAction(
               disabled: autoRefresh,
               icon: Icons.sync_disabled_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () => stopRefresh(),
             ),
         ],
@@ -83,7 +83,7 @@ class _HistoryScreenState extends State<HistoryScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleHistory),
+              title: Text(context.l10n!.titleHistory),
               actions: getActions(context),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -177,8 +177,8 @@ class _HistoryScreenState extends State<HistoryScreen>
                                   onPressed: () {},
                                   icon: const Icon(Icons.stop),
                                 )
-                              : IconButton(
-                                  tooltip: context.l10n.rerunTask,
+                                : IconButton(
+                                  tooltip: context.l10n!.rerunTask,
                                   icon: const Icon(Icons.replay),
                                   onPressed: () {
                                     showRunTaskFrom(

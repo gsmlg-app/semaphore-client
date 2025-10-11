@@ -45,7 +45,7 @@ class _InventoryScreenState extends State<InventoryScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleInventory),
+              title: Text(context.l10n!.titleInventory),
               actions: getActions(context, isSmall: true),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -109,7 +109,7 @@ class _InventoryScreenState extends State<InventoryScreen>
                             actions: [
                               AppAdaptiveAction(
                                 icon: Icons.delete,
-                                title: context.l10n.delete,
+                                title: context.l10n!.delete,
                                 onPressed: () {
                                   showDeleteInventory(
                                     context: context,
@@ -119,7 +119,7 @@ class _InventoryScreenState extends State<InventoryScreen>
                               ),
                               AppAdaptiveAction(
                                 icon: Icons.edit,
-                                title: context.l10n.edit,
+                                title: context.l10n!.edit,
                                 onPressed: () {
                                    showEditInventory(
                                      context: context,
@@ -156,7 +156,7 @@ class _InventoryScreenState extends State<InventoryScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleInventory),
+              title: Text(context.l10n!.titleInventory),
               actions: getActions(context),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -271,7 +271,7 @@ class _InventoryScreenState extends State<InventoryScreen>
         actions: [
           AppAdaptiveAction(
             icon: Icons.add,
-            title: context.l10n.add,
+            title: context.l10n!.add,
             onPressed: () {
                showCreateInventory(
                  context: context,
@@ -287,7 +287,7 @@ class _InventoryScreenState extends State<InventoryScreen>
           ),
           AppAdaptiveAction(
             icon: Icons.refresh,
-            title: context.l10n.refresh,
+            title: context.l10n!.refresh,
             onPressed: () {
               loadData();
             },
@@ -296,7 +296,7 @@ class _InventoryScreenState extends State<InventoryScreen>
             AppAdaptiveAction(
               disabled: !autoRefresh,
               icon: Icons.sync_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 stopRefresh();
               },
@@ -305,7 +305,7 @@ class _InventoryScreenState extends State<InventoryScreen>
             AppAdaptiveAction(
               disabled: autoRefresh,
               icon: Icons.sync_disabled_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 startRefresh();
               },

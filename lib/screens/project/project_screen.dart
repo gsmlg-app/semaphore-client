@@ -38,7 +38,7 @@ class ProjectScreen extends StatelessWidget {
           builder: (context, state) => CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                title: Text(context.l10n.projectPageTitle),
+                title: Text(context.l10n!.projectPageTitle),
               ),
               SliverList(
                 delegate: SliverChildListDelegate([
@@ -46,7 +46,7 @@ class ProjectScreen extends StatelessWidget {
                     leading: const Icon(Icons.rocket),
                     title: Row(
                       children: [
-                        Text(context.l10n.projectPageTitle),
+                        Text(context.l10n!.projectPageTitle),
                         const SizedBox(width: 8),
                         Text(
                           state.activeProject?.name ?? '--',
@@ -66,7 +66,7 @@ class ProjectScreen extends StatelessWidget {
                   const Divider(height: 20),
                   ListTile(
                     leading: const Icon(Icons.history),
-                    title: Text(context.l10n.titleHistory),
+                    title: Text(context.l10n!.titleHistory),
                     onTap: () {
                       context.read<HistoryBloc>().add(HistoryLoad(
                           state.activeServer!.api,
@@ -76,7 +76,7 @@ class ProjectScreen extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(Icons.event_note),
-                    title: Text(context.l10n.titleActivity),
+                    title: Text(context.l10n!.titleActivity),
                     onTap: () {
                       context.read<ActivityBloc>().add(ActivityLoad(
                           state.activeServer!.api,
@@ -86,7 +86,7 @@ class ProjectScreen extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(Icons.receipt),
-                    title: Text(context.l10n.titleTemplate),
+                    title: Text(context.l10n!.titleTemplate),
                     onTap: () {
                       context.read<TemplateBloc>().add(TemplateLoad(
                           state.activeServer!.api,
@@ -96,49 +96,49 @@ class ProjectScreen extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(Icons.schedule),
-                    title: Text(context.l10n.titleSchedule),
+                    title: Text(context.l10n!.titleSchedule),
                     onTap: () {
                       context.goNamed(ScheduleScreen.name);
                     },
                   ),
                   ListTile(
                     leading: const Icon(Icons.inventory),
-                    title: Text(context.l10n.titleInventory),
+                    title: Text(context.l10n!.titleInventory),
                     onTap: () {
                       context.goNamed(InventoryScreen.name);
                     },
                   ),
                   ListTile(
                     leading: const Icon(Icons.data_object),
-                    title: Text(context.l10n.titleVariable),
+                    title: Text(context.l10n!.titleVariable),
                     onTap: () {
                       context.goNamed(VariableScreen.name);
                     },
                   ),
                   ListTile(
                     leading: const Icon(Icons.key),
-                    title: Text(context.l10n.titleKeyStore),
+                    title: Text(context.l10n!.titleKeyStore),
                     onTap: () {
                       context.goNamed(KeyStoreScreen.name);
                     },
                   ),
                   ListTile(
                     leading: const Icon(Icons.commit),
-                    title: Text(context.l10n.titleRepository),
+                    title: Text(context.l10n!.titleRepository),
                     onTap: () {
                       context.goNamed(RepositoryScreen.name);
                     },
                   ),
                   ListTile(
                     leading: const Icon(Icons.merge_type),
-                    title: Text(context.l10n.titleIntegration),
+                    title: Text(context.l10n!.titleIntegration),
                     onTap: () {
                       context.goNamed(IntegrationScreen.name);
                     },
                   ),
                   ListTile(
                     leading: const Icon(Icons.group),
-                    title: Text(context.l10n.titleTeam),
+                    title: Text(context.l10n!.titleTeam),
                     onTap: () {
                       context.goNamed(TeamScreen.name);
                     },

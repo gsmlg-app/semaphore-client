@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'login.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,48 +15,23 @@ part 'login.g.dart';
 )
 class Login {
   /// Returns a new [Login] instance.
-  Login({
+  Login({this.auth, this.password});
 
-     this.auth,
-
-     this.password,
-  });
-
-      /// Username/Email address
-  @JsonKey(
-    
-    name: r'auth',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  /// Username/Email address
+  @JsonKey(name: r'auth', required: false, includeIfNull: false)
   final String? auth;
 
-
-
-      /// Password
-  @JsonKey(
-    
-    name: r'password',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  /// Password
+  @JsonKey(name: r'password', required: false, includeIfNull: false)
   final String? password;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Login && other.auth == auth && other.password == password;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is Login &&
-     other.auth == auth &&
-     other.password == password;
-
-  @override
-  int get hashCode =>
-    auth.hashCode +
-    password.hashCode;
+  int get hashCode => auth.hashCode + password.hashCode;
 
   factory Login.fromJson(Map<String, dynamic> json) => _$LoginFromJson(json);
 
@@ -67,6 +41,4 @@ class Login {
   String toString() {
     return toJson().toString();
   }
-
 }
-

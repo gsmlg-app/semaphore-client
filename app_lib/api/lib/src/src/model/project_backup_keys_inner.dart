@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'project_backup_keys_inner.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,48 +15,26 @@ part 'project_backup_keys_inner.g.dart';
 )
 class ProjectBackupKeysInner {
   /// Returns a new [ProjectBackupKeysInner] instance.
-  ProjectBackupKeysInner({
+  ProjectBackupKeysInner({this.name, this.type});
 
-     this.name,
-
-     this.type,
-  });
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'type',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'type', required: false, includeIfNull: false)
   final ProjectBackupKeysInnerTypeEnum? type;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProjectBackupKeysInner &&
+          other.name == name &&
+          other.type == type;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProjectBackupKeysInner &&
-     other.name == name &&
-     other.type == type;
+  int get hashCode => name.hashCode + type.hashCode;
 
-  @override
-  int get hashCode =>
-    name.hashCode +
-    type.hashCode;
-
-  factory ProjectBackupKeysInner.fromJson(Map<String, dynamic> json) => _$ProjectBackupKeysInnerFromJson(json);
+  factory ProjectBackupKeysInner.fromJson(Map<String, dynamic> json) =>
+      _$ProjectBackupKeysInnerFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProjectBackupKeysInnerToJson(this);
 
@@ -65,9 +42,7 @@ class ProjectBackupKeysInner {
   String toString() {
     return toJson().toString();
   }
-
 }
-
 
 enum ProjectBackupKeysInnerTypeEnum {
   @JsonValue(r'ssh')
@@ -77,5 +52,3 @@ enum ProjectBackupKeysInnerTypeEnum {
   @JsonValue(r'none')
   none,
 }
-
-

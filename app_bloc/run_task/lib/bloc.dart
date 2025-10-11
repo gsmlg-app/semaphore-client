@@ -7,26 +7,18 @@ import 'package:app_api/app_api.dart';
 class RunTaskFormBloc extends FormBloc<Task, String> {
   SemaphoreApi api = SemaphoreApi();
 
-  final message = TextFieldBloc<String>(
-    validators: [],
-  );
+  final message = TextFieldBloc<String>(validators: []);
 
-  final dryRun = BooleanFieldBloc<String>(
-    validators: [],
-  );
+  final dryRun = BooleanFieldBloc<String>(validators: []);
 
-  final diff = BooleanFieldBloc<String>(
-    validators: [],
-  );
+  final diff = BooleanFieldBloc<String>(validators: []);
 
   Template? template;
 
   List<TextFieldBloc> dynamicBlocs = [];
 
   RunTaskFormBloc() {
-    addFieldBlocs(
-      fieldBlocs: [message, dryRun, diff],
-    );
+    addFieldBlocs(fieldBlocs: [message, dryRun, diff]);
   }
 
   void init({
@@ -40,13 +32,13 @@ class RunTaskFormBloc extends FormBloc<Task, String> {
     final resp = await api
         .getProjectApi()
         .projectProjectIdTemplatesTemplateIdGet(
-            projectId: projectId, templateId: templateId);
+          projectId: projectId,
+          templateId: templateId,
+        );
     template = resp.data;
     print(template);
     if (template == null) {
-      emitLoadFailed(
-        failureResponse: 'Template not exists',
-      );
+      emitLoadFailed(failureResponse: 'Template not exists');
       return;
     }
     for (var bloc in dynamicBlocs) {
@@ -60,18 +52,14 @@ class RunTaskFormBloc extends FormBloc<Task, String> {
           fieldBloc = TextFieldBloc<int>(
             name: surveyVar.name,
             validators: surveyVar.required_ == true
-                ? [
-                    FieldBlocValidators.required,
-                  ]
+                ? [FieldBlocValidators.required]
                 : [],
           );
         } else {
           fieldBloc = TextFieldBloc<String>(
             name: surveyVar.name,
             validators: surveyVar.required_ == true
-                ? [
-                    FieldBlocValidators.required,
-                  ]
+                ? [FieldBlocValidators.required]
                 : [],
           );
         }
@@ -85,7 +73,7 @@ class RunTaskFormBloc extends FormBloc<Task, String> {
     }
   }
 
-  initTask(Task task) {
+  void initTask(Task task) {
     message.updateValue(task.message ?? '');
     // dryRun.updateValue(task.dryRun ?? false);
     // diff.updateValue(task.diff ?? false);
@@ -115,30 +103,23 @@ class RunTaskFormBloc extends FormBloc<Task, String> {
         dynamicData[bloc.name] = bloc.value;
       }
       final resp = await api.getProjectApi().projectProjectIdTasksPost(
-            projectId: template!.projectId!,
-            task: ProjectProjectIdTasksPostRequest(
-              templateId: template!.id!,
-              // dryRun: dryRun.value,
-              // debug: debug.value,
-              // diff: diff.value,
-              environment:
-                  dynamicBlocs.isNotEmpty ? jsonEncode(dynamicData) : null,
-            ),
-          );
+        projectId: template!.projectId!,
+        task: ProjectProjectIdTasksPostRequest(
+          templateId: template!.id!,
+          // dryRun: dryRun.value,
+          // debug: debug.value,
+          // diff: diff.value,
+          environment: dynamicBlocs.isNotEmpty ? jsonEncode(dynamicData) : null,
+        ),
+      );
       final newTask = resp.data;
       if (newTask != null) {
-        emitSuccess(
-          successResponse: newTask,
-        );
+        emitSuccess(successResponse: newTask);
       } else {
-        emitFailure(
-          failureResponse: 'Failed to create task',
-        );
+        emitFailure(failureResponse: 'Failed to create task');
       }
     } catch (e) {
-      emitFailure(
-        failureResponse: e.toString(),
-      );
+      emitFailure(failureResponse: e.toString());
     }
   }
 }

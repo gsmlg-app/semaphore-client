@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'project_project_id_users_user_id_put_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,42 +15,31 @@ part 'project_project_id_users_user_id_put_request.g.dart';
 )
 class ProjectProjectIdUsersUserIdPutRequest {
   /// Returns a new [ProjectProjectIdUsersUserIdPutRequest] instance.
-  ProjectProjectIdUsersUserIdPutRequest({
+  ProjectProjectIdUsersUserIdPutRequest({this.role});
 
-     this.role,
-  });
-
-  @JsonKey(
-    
-    name: r'role',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'role', required: false, includeIfNull: false)
   final ProjectProjectIdUsersUserIdPutRequestRoleEnum? role;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProjectProjectIdUsersUserIdPutRequest && other.role == role;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProjectProjectIdUsersUserIdPutRequest &&
-     other.role == role;
+  int get hashCode => role.hashCode;
 
-  @override
-  int get hashCode =>
-    role.hashCode;
+  factory ProjectProjectIdUsersUserIdPutRequest.fromJson(
+    Map<String, dynamic> json,
+  ) => _$ProjectProjectIdUsersUserIdPutRequestFromJson(json);
 
-  factory ProjectProjectIdUsersUserIdPutRequest.fromJson(Map<String, dynamic> json) => _$ProjectProjectIdUsersUserIdPutRequestFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ProjectProjectIdUsersUserIdPutRequestToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$ProjectProjectIdUsersUserIdPutRequestToJson(this);
 
   @override
   String toString() {
     return toJson().toString();
   }
-
 }
-
 
 enum ProjectProjectIdUsersUserIdPutRequestRoleEnum {
   @JsonValue(r'owner')
@@ -63,5 +51,3 @@ enum ProjectProjectIdUsersUserIdPutRequestRoleEnum {
   @JsonValue(r'guest')
   guest,
 }
-
-

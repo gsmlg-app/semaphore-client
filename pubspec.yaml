@@ -65,6 +65,7 @@ dependencies:
   flutter_svg: ^2.0.16
   lottie: ^3.3.1
   google_fonts: ^6.2.1
+  window_manager: ^0.5.1
 
   # workspace packages
   app_database: any

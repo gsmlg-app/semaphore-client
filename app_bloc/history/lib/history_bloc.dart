@@ -10,17 +10,22 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     on<HistoryLoad>(_historyLoad);
   }
 
-  _historyLoad(HistoryLoad event, Emitter<HistoryState> emit) async {
+  Future<void> _historyLoad(
+    HistoryLoad event,
+    Emitter<HistoryState> emit,
+  ) async {
     if (state is HistoryLoaded) {
-      emit(HistoryLoaded(
-          history: (state as HistoryLoaded).history, loading: true));
+      emit(
+        HistoryLoaded(history: (state as HistoryLoaded).history, loading: true),
+      );
     } else {
       emit(HistoryLoading());
     }
     try {
       final projectApi = event.api.getProjectApi();
       final resp = await projectApi.projectProjectIdTasksLastGet(
-          projectId: event.projectId);
+        projectId: event.projectId,
+      );
       print(resp.data);
       emit(HistoryLoaded(history: resp.data ?? []));
     } catch (e) {

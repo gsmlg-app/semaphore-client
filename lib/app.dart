@@ -1,16 +1,12 @@
 import 'dart:io' show Platform;
 
+import 'package:app_locale/app_locale.dart';
+import 'package:app_locale/gen_l10n/app_localizations.dart';
+import 'package:desktop_tray/desktop_tray.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:desktop_tray/desktop_tray.dart';
-import 'package:app_theme/app_theme.dart';
-import 'package:app_utils/app_utils.dart';
-import 'package:app_locale/app_locale.dart';
-import 'package:server_bloc/server.dart';
-import 'package:template_bloc/template.dart';
-import 'package:theme_bloc/theme_bloc.dart';
 import 'package:semaphore_client/router.dart';
-import 'package:semaphore_client/screens/project/template_screen.dart';
+import 'package:theme_bloc/theme_bloc.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -29,12 +25,22 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
     if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        initSystemTray();
+        // Delay a bit more to ensure localization is ready
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (mounted) {
+            initSystemTray();
+          }
+        });
       });
     }
     if (Platform.isAndroid || Platform.isIOS) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        initQuickActions();
+        // Delay a bit more to ensure localization is ready
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (mounted) {
+            initQuickActions();
+          }
+        });
       });
     }
     WidgetsBinding.instance.addObserver(this);
@@ -56,25 +62,44 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   }
 
   Future<void> initSystemTray() async {
-    String path =
-        Platform.isWindows ? 'assets/icon/icon.png' : 'assets/icon/icon.png';
+    String path = Platform.isWindows
+        ? 'assets/icon/icon.png'
+        : 'assets/icon/icon.png';
 
     systemTrayManager = SystemTrayManager();
 
-    final l10n = context.l10n;
-    if (l10n == null) return;
+    // Safely get localization with fallback values
+    AppLocalizations? l10n;
+    try {
+      l10n = AppLocalizations.of(context);
+    } catch (e) {
+      // Localization not ready, use fallback values
+      l10n = null;
+    }
+
+    // Use fallback values if localization is not available
+    final appName = l10n?.appName ?? 'Semaphore Client';
+    final showLabel = l10n?.show ?? 'Show';
+    final hideLabel = l10n?.hide ?? 'Hide';
+    final exitLabel = l10n?.exit ?? 'Exit';
 
     await systemTrayManager.initialize(
-      toolTip: l10n.appName,
+      toolTip: appName,
       iconPath: path,
       menuItems: [
         MenuItemLabel(
-            label: l10n.show, onClicked: (menuItem) => print('Show app')),
+          label: showLabel,
+          onClicked: (menuItem) => print('Show app'),
+        ),
         MenuItemLabel(
-            label: l10n.hide, onClicked: (menuItem) => print('Hide app')),
+          label: hideLabel,
+          onClicked: (menuItem) => print('Hide app'),
+        ),
         MenuSeparator(),
         MenuItemLabel(
-            label: l10n.exit, onClicked: (menuItem) => print('Exit app')),
+          label: exitLabel,
+          onClicked: (menuItem) => print('Exit app'),
+        ),
       ],
     );
   }
@@ -82,7 +107,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   Future<void> initQuickActions() async {
     quickActionsManager = QuickActionsManager();
     await quickActionsManager.initialize();
-    
+
     quickActionsManager.registerAction('run_task', () {
       print('The user tapped on the "Run task" action.');
       // TODO: Update with proper navigation and BLoC calls
@@ -92,16 +117,25 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       //     state.activeServer!.api, state.activeProject!.projectId!));
     });
 
-    final l10n = context.l10n;
-    if (l10n != null) {
-      await quickActionsManager.setShortcutItems([
-        ShortcutItem(
-          type: 'run_task',
-          localizedTitle: l10n.runTask,
-          icon: 'play_arrow',
-        ),
-      ]);
+    // Safely get localization with fallback values
+    AppLocalizations? l10n;
+    try {
+      l10n = AppLocalizations.of(context);
+    } catch (e) {
+      // Localization not ready, use fallback values
+      l10n = null;
     }
+
+    // Use fallback values if localization is not available
+    final runTaskLabel = l10n?.runTask ?? 'Run Task';
+
+    await quickActionsManager.setShortcutItems([
+      ShortcutItem(
+        type: 'run_task',
+        localizedTitle: runTaskLabel,
+        icon: 'play_arrow',
+      ),
+    ]);
   }
 
   @override
@@ -109,17 +143,18 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     final themeBloc = context.read<ThemeBloc>();
 
     return BlocBuilder<ThemeBloc, ThemeState>(
-        bloc: themeBloc,
-        builder: (context, state) {
-          return MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            routerConfig: router,
-            themeMode: state.themeMode,
-            theme: state.theme.lightTheme,
-            darkTheme: state.theme.darkTheme,
-            localizationsDelegates: AppLocale.localizationsDelegates,
-            supportedLocales: AppLocale.supportedLocales,
-          );
-        });
+      bloc: themeBloc,
+      builder: (context, state) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          routerConfig: router,
+          themeMode: state.themeMode,
+          theme: state.theme.lightTheme,
+          darkTheme: state.theme.darkTheme,
+          localizationsDelegates: AppLocale.localizationsDelegates,
+          supportedLocales: AppLocale.supportedLocales,
+        );
+      },
+    );
   }
 }

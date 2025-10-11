@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'info_type_update.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,32 +15,21 @@ part 'info_type_update.g.dart';
 )
 class InfoTypeUpdate {
   /// Returns a new [InfoTypeUpdate] instance.
-  InfoTypeUpdate({
+  InfoTypeUpdate({this.tagName});
 
-     this.tagName,
-  });
-
-  @JsonKey(
-    
-    name: r'tag_name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'tag_name', required: false, includeIfNull: false)
   final String? tagName;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is InfoTypeUpdate && other.tagName == tagName;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is InfoTypeUpdate &&
-     other.tagName == tagName;
+  int get hashCode => tagName.hashCode;
 
-  @override
-  int get hashCode =>
-    tagName.hashCode;
-
-  factory InfoTypeUpdate.fromJson(Map<String, dynamic> json) => _$InfoTypeUpdateFromJson(json);
+  factory InfoTypeUpdate.fromJson(Map<String, dynamic> json) =>
+      _$InfoTypeUpdateFromJson(json);
 
   Map<String, dynamic> toJson() => _$InfoTypeUpdateToJson(this);
 
@@ -49,6 +37,4 @@ class InfoTypeUpdate {
   String toString() {
     return toJson().toString();
   }
-
 }
-

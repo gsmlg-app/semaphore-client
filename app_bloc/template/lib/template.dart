@@ -1,3 +1,3 @@
-library template;
+library;
 
 export 'template_bloc.dart';

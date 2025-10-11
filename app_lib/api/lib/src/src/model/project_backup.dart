@@ -14,7 +14,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'project_backup.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -24,127 +23,66 @@ part 'project_backup.g.dart';
 class ProjectBackup {
   /// Returns a new [ProjectBackup] instance.
   ProjectBackup({
+    this.meta,
 
-     this.meta,
+    this.templates,
 
-     this.templates,
+    this.repositories,
 
-     this.repositories,
+    this.keys,
 
-     this.keys,
+    this.views,
 
-     this.views,
+    this.inventories,
 
-     this.inventories,
-
-     this.environments,
+    this.environments,
   });
 
-  @JsonKey(
-    
-    name: r'meta',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'meta', required: false, includeIfNull: false)
   final ProjectBackupMeta? meta;
 
-
-
-  @JsonKey(
-    
-    name: r'templates',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'templates', required: false, includeIfNull: false)
   final List<ProjectBackupTemplatesInner>? templates;
 
-
-
-  @JsonKey(
-    
-    name: r'repositories',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'repositories', required: false, includeIfNull: false)
   final List<ProjectBackupRepositoriesInner>? repositories;
 
-
-
-  @JsonKey(
-    
-    name: r'keys',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'keys', required: false, includeIfNull: false)
   final List<ProjectBackupKeysInner>? keys;
 
-
-
-  @JsonKey(
-    
-    name: r'views',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'views', required: false, includeIfNull: false)
   final List<ProjectBackupViewsInner>? views;
 
-
-
-  @JsonKey(
-    
-    name: r'inventories',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'inventories', required: false, includeIfNull: false)
   final List<ProjectBackupInventoriesInner>? inventories;
 
-
-
-  @JsonKey(
-    
-    name: r'environments',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'environments', required: false, includeIfNull: false)
   final List<ProjectBackupEnvironmentsInner>? environments;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProjectBackup &&
-     other.meta == meta &&
-     other.templates == templates &&
-     other.repositories == repositories &&
-     other.keys == keys &&
-     other.views == views &&
-     other.inventories == inventories &&
-     other.environments == environments;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProjectBackup &&
+          other.meta == meta &&
+          other.templates == templates &&
+          other.repositories == repositories &&
+          other.keys == keys &&
+          other.views == views &&
+          other.inventories == inventories &&
+          other.environments == environments;
 
   @override
   int get hashCode =>
-    meta.hashCode +
-    templates.hashCode +
-    repositories.hashCode +
-    keys.hashCode +
-    views.hashCode +
-    inventories.hashCode +
-    environments.hashCode;
+      meta.hashCode +
+      templates.hashCode +
+      repositories.hashCode +
+      keys.hashCode +
+      views.hashCode +
+      inventories.hashCode +
+      environments.hashCode;
 
-  factory ProjectBackup.fromJson(Map<String, dynamic> json) => _$ProjectBackupFromJson(json);
+  factory ProjectBackup.fromJson(Map<String, dynamic> json) =>
+      _$ProjectBackupFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProjectBackupToJson(this);
 
@@ -152,6 +90,4 @@ class ProjectBackup {
   String toString() {
     return toJson().toString();
   }
-
 }
-

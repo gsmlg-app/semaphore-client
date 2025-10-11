@@ -1,7 +1,4 @@
-import 'package:app_theme/app_theme.dart';
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'event.dart';

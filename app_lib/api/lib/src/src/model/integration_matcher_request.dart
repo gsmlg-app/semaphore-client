@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'integration_matcher_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,111 +16,59 @@ part 'integration_matcher_request.g.dart';
 class IntegrationMatcherRequest {
   /// Returns a new [IntegrationMatcherRequest] instance.
   IntegrationMatcherRequest({
+    this.name,
 
-     this.name,
+    this.matchType,
 
-     this.matchType,
+    this.method,
 
-     this.method,
+    this.bodyDataType,
 
-     this.bodyDataType,
+    this.key,
 
-     this.key,
-
-     this.value,
+    this.value,
   });
 
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'match_type',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'match_type', required: false, includeIfNull: false)
   final IntegrationMatcherRequestMatchTypeEnum? matchType;
 
-
-
-  @JsonKey(
-    
-    name: r'method',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'method', required: false, includeIfNull: false)
   final IntegrationMatcherRequestMethodEnum? method;
 
-
-
-  @JsonKey(
-    
-    name: r'body_data_type',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'body_data_type', required: false, includeIfNull: false)
   final IntegrationMatcherRequestBodyDataTypeEnum? bodyDataType;
 
-
-
-  @JsonKey(
-    
-    name: r'key',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'key', required: false, includeIfNull: false)
   final String? key;
 
-
-
-  @JsonKey(
-    
-    name: r'value',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'value', required: false, includeIfNull: false)
   final String? value;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is IntegrationMatcherRequest &&
-     other.name == name &&
-     other.matchType == matchType &&
-     other.method == method &&
-     other.bodyDataType == bodyDataType &&
-     other.key == key &&
-     other.value == value;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is IntegrationMatcherRequest &&
+          other.name == name &&
+          other.matchType == matchType &&
+          other.method == method &&
+          other.bodyDataType == bodyDataType &&
+          other.key == key &&
+          other.value == value;
 
   @override
   int get hashCode =>
-    name.hashCode +
-    matchType.hashCode +
-    method.hashCode +
-    bodyDataType.hashCode +
-    key.hashCode +
-    value.hashCode;
+      name.hashCode +
+      matchType.hashCode +
+      method.hashCode +
+      bodyDataType.hashCode +
+      key.hashCode +
+      value.hashCode;
 
-  factory IntegrationMatcherRequest.fromJson(Map<String, dynamic> json) => _$IntegrationMatcherRequestFromJson(json);
+  factory IntegrationMatcherRequest.fromJson(Map<String, dynamic> json) =>
+      _$IntegrationMatcherRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$IntegrationMatcherRequestToJson(this);
 
@@ -129,9 +76,7 @@ class IntegrationMatcherRequest {
   String toString() {
     return toJson().toString();
   }
-
 }
-
 
 enum IntegrationMatcherRequestMatchTypeEnum {
   @JsonValue(r'body')
@@ -139,8 +84,6 @@ enum IntegrationMatcherRequestMatchTypeEnum {
   @JsonValue(r'header')
   header,
 }
-
-
 
 enum IntegrationMatcherRequestMethodEnum {
   @JsonValue(r'equals')
@@ -151,8 +94,6 @@ enum IntegrationMatcherRequestMethodEnum {
   contains,
 }
 
-
-
 enum IntegrationMatcherRequestBodyDataTypeEnum {
   @JsonValue(r'json')
   json,
@@ -161,5 +102,3 @@ enum IntegrationMatcherRequestBodyDataTypeEnum {
   @JsonValue(r'string')
   string,
 }
-
-

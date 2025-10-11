@@ -41,7 +41,7 @@ class _IntegrationScreenState extends State<IntegrationScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleIntegration),
+              title: Text(context.l10n!.titleIntegration),
               actions: getActions(context, isSmall: true),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -110,7 +110,7 @@ class _IntegrationScreenState extends State<IntegrationScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleIntegration),
+              title: Text(context.l10n!.titleIntegration),
               actions: getActions(context),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -210,7 +210,7 @@ class _IntegrationScreenState extends State<IntegrationScreen>
         actions: [
           AppAdaptiveAction(
             icon: Icons.refresh,
-            title: context.l10n.refresh,
+            title: context.l10n!.refresh,
             onPressed: () {
               loadData();
             },
@@ -219,7 +219,7 @@ class _IntegrationScreenState extends State<IntegrationScreen>
             AppAdaptiveAction(
               disabled: !autoRefresh,
               icon: Icons.sync_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 stopRefresh();
               },
@@ -228,7 +228,7 @@ class _IntegrationScreenState extends State<IntegrationScreen>
             AppAdaptiveAction(
               disabled: autoRefresh,
               icon: Icons.sync_disabled_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 startRefresh();
               },

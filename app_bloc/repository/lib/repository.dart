@@ -1,3 +1,3 @@
-library repository;
+library;
 
 export 'repository_bloc.dart';

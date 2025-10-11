@@ -14,15 +14,18 @@ class SemaphoreServerState {
   bool get hasActiveProject => activeProject != null;
 
   factory SemaphoreServerState.fromSavedStats(
-      AppDatabase database, SharedPreferences prefs) {
+    AppDatabase database,
+    SharedPreferences prefs,
+  ) {
     return SemaphoreServerState(loaded: true);
   }
 
-  SemaphoreServerState(
-      {this.servers = const [],
-      this.activeServer,
-      this.activeProject,
-      this.loaded = false});
+  SemaphoreServerState({
+    this.servers = const [],
+    this.activeServer,
+    this.activeProject,
+    this.loaded = false,
+  });
 
   SemaphoreServerState copyWith({
     List<SemaphoreServer>? servers,
@@ -47,8 +50,9 @@ class SemaphoreServerState {
     return SemaphoreServerState(
       servers: servers == null ? this.servers : servers(),
       activeServer: activeServer == null ? this.activeServer : activeServer(),
-      activeProject:
-          activeProject == null ? this.activeProject : activeProject(),
+      activeProject: activeProject == null
+          ? this.activeProject
+          : activeProject(),
       loaded: loaded == null ? this.loaded : loaded(),
     );
   }

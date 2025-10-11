@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'project_backup_inventories_inner.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,64 +15,30 @@ part 'project_backup_inventories_inner.g.dart';
 )
 class ProjectBackupInventoriesInner {
   /// Returns a new [ProjectBackupInventoriesInner] instance.
-  ProjectBackupInventoriesInner({
+  ProjectBackupInventoriesInner({this.name, this.inventory, this.type});
 
-     this.name,
-
-     this.inventory,
-
-     this.type,
-  });
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'inventory',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'inventory', required: false, includeIfNull: false)
   final String? inventory;
 
-
-
-  @JsonKey(
-    
-    name: r'type',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'type', required: false, includeIfNull: false)
   final ProjectBackupInventoriesInnerTypeEnum? type;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProjectBackupInventoriesInner &&
+          other.name == name &&
+          other.inventory == inventory &&
+          other.type == type;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProjectBackupInventoriesInner &&
-     other.name == name &&
-     other.inventory == inventory &&
-     other.type == type;
+  int get hashCode => name.hashCode + inventory.hashCode + type.hashCode;
 
-  @override
-  int get hashCode =>
-    name.hashCode +
-    inventory.hashCode +
-    type.hashCode;
-
-  factory ProjectBackupInventoriesInner.fromJson(Map<String, dynamic> json) => _$ProjectBackupInventoriesInnerFromJson(json);
+  factory ProjectBackupInventoriesInner.fromJson(Map<String, dynamic> json) =>
+      _$ProjectBackupInventoriesInnerFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProjectBackupInventoriesInnerToJson(this);
 
@@ -81,9 +46,7 @@ class ProjectBackupInventoriesInner {
   String toString() {
     return toJson().toString();
   }
-
 }
-
 
 enum ProjectBackupInventoriesInnerTypeEnum {
   @JsonValue(r'static')
@@ -93,5 +56,3 @@ enum ProjectBackupInventoriesInnerTypeEnum {
   @JsonValue(r'file')
   file,
 }
-
-

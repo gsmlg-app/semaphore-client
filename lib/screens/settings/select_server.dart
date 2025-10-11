@@ -34,7 +34,7 @@ class SettingsSelectServer extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           slivers: <Widget>[
             SliverAppBar(
-              title: Text(context.l10n.titleSelectServer),
+              title: Text(context.l10n!.titleSelectServer),
               actions: [
                 serverBloc.state.hasServer
                     ? IconButton(
@@ -59,7 +59,7 @@ class SettingsSelectServer extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              context.l10n.settingsTitle,
+              context.l10n!.settingsTitle,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             SizedBox(
@@ -120,39 +120,39 @@ class SettingsSelectServer extends StatelessWidget {
                           PopupMenuButton<String>(
                             padding: EdgeInsets.zero,
                             onSelected: (value) {
-                              if (value == context.l10n.rename) {
+                              if (value == context.l10n!.rename) {
                                 showRenameServerForm(context, server);
                               }
-                              if (value == context.l10n.refresh) {
+                              if (value == context.l10n!.refresh) {
                                 context
                                     .read<SemaphoreServerBloc>()
                                     .add(LoadProjects(server));
                               }
-                              if (value == context.l10n.delete) {
+                              if (value == context.l10n!.delete) {
                                 showDeleteServer(context, server);
                               }
                             },
                             itemBuilder: (context) => [
                               PopupMenuItem(
-                                value: context.l10n.refresh,
+                                value: context.l10n!.refresh,
                                 child: ListTile(
                                   leading: const Icon(Icons.refresh),
-                                  title: Text(context.l10n.refresh),
+                                  title: Text(context.l10n!.refresh),
                                 ),
                               ),
                               const PopupMenuDivider(),
                               PopupMenuItem(
-                                value: context.l10n.delete,
+                                value: context.l10n!.delete,
                                 child: ListTile(
                                   leading: const Icon(Icons.delete),
-                                  title: Text(context.l10n.delete),
+                                  title: Text(context.l10n!.delete),
                                 ),
                               ),
                               PopupMenuItem(
-                                value: context.l10n.rename,
+                                value: context.l10n!.rename,
                                 child: ListTile(
                                   leading: const Icon(Icons.edit),
-                                  title: Text(context.l10n.rename),
+                                  title: Text(context.l10n!.rename),
                                 ),
                               ),
                             ],
@@ -164,10 +164,10 @@ class SettingsSelectServer extends StatelessWidget {
                   }).toList()
                 : [
                     SettingsSection(
-                      title: Text(context.l10n.smenuSemaphore),
+                      title: Text(context.l10n!.smenuSemaphore),
                       tiles: <SettingsTile>[
                         SettingsTile(
-                          title: Text(context.l10n.addServer),
+                          title: Text(context.l10n!.addServer),
                           trailing: const Icon(Icons.add),
                           onPressed: (context) {
                             context.read<ServerFormBloc>().clear();
@@ -192,7 +192,7 @@ class SettingsSelectServer extends StatelessWidget {
         List<SettingsTile> tiles = [
           SettingsTile(
             leading: const Icon(Icons.add),
-            title: Text(context.l10n.addProject),
+            title: Text(context.l10n!.addProject),
           ),
         ];
         
@@ -248,7 +248,7 @@ class SettingsSelectServer extends StatelessWidget {
       builder: (context) {
         return AlertDialog.adaptive(
           backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-          title: Text(context.l10n.smenuSemaphore),
+          title: Text(context.l10n!.smenuSemaphore),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -260,12 +260,12 @@ class SettingsSelectServer extends StatelessWidget {
               style: TextButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.error,
               ),
-              child: Text(context.l10n.buttonDelete),
+              child: Text(context.l10n!.buttonDelete),
               onPressed: () {
                 final undoSnackBar = SnackBar(
-                  content: Text(context.l10n.accidentallyDeleted),
+                  content: Text(context.l10n!.accidentallyDeleted),
                   action: SnackBarAction(
-                    label: context.l10n.undo,
+                    label: context.l10n!.undo,
                     onPressed: () {
                       context
                           .read<SemaphoreServerBloc>()
@@ -279,7 +279,7 @@ class SettingsSelectServer extends StatelessWidget {
               },
             ),
             TextButton(
-              child: Text(context.l10n.buttonCancel),
+              child: Text(context.l10n!.buttonCancel),
               onPressed: () {
                 Navigator.of(context).pop();
               },

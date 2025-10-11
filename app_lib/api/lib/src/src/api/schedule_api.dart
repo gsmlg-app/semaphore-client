@@ -13,13 +13,12 @@ import '../model/schedule.dart';
 import '../model/schedule_request.dart';
 
 class ScheduleApi {
-
   final Dio _dio;
 
   const ScheduleApi(this._dio);
 
   /// Get schedules
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [projectId] - Project ID
@@ -31,8 +30,8 @@ class ScheduleApi {
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
   /// Returns a [Future] containing a [Response] with a [List<Schedule>] as data
-  /// Throws [DioError] if API call or serialization fails
-  Future<Response<List<Schedule>>> projectProjectIdSchedulesGet({ 
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<List<Schedule>>> projectProjectIdSchedulesGet({
     required int projectId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -41,12 +40,15 @@ class ScheduleApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/project/{project_id}/schedules'.replaceAll('{' r'project_id' '}', projectId.toString());
-    final _options = Options(
+    final path = r'/project/{project_id}/schedules'.replaceAll(
+      '{'
+      r'project_id'
+      '}',
+      projectId.toString(),
+    );
+    final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -54,7 +56,8 @@ class ScheduleApi {
             'name': 'cookie',
             'keyName': 'Cookie',
             'where': 'header',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'bearer',
             'keyName': 'Authorization',
@@ -66,47 +69,53 @@ class ScheduleApi {
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    List<Schedule>? _responseData;
+    List<Schedule>? responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<List<Schedule>, Schedule>(rawData, 'List<Schedule>', growable: true);
+      final rawData = response.data;
+      responseData = rawData == null
+          ? null
+          : deserialize<List<Schedule>, Schedule>(
+              rawData,
+              'List<Schedule>',
+              growable: true,
+            );
     } catch (error, stackTrace) {
-      throw DioError(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioErrorType.unknown,
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
     return Response<List<Schedule>>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
   /// create schedule
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [projectId] - Project ID
-  /// * [schedule] 
+  /// * [schedule]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -115,8 +124,8 @@ _responseData = rawData == null ? null : deserialize<List<Schedule>, Schedule>(r
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
   /// Returns a [Future] containing a [Response] with a [Schedule] as data
-  /// Throws [DioError] if API call or serialization fails
-  Future<Response<Schedule>> projectProjectIdSchedulesPost({ 
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<Schedule>> projectProjectIdSchedulesPost({
     required int projectId,
     required ScheduleRequest schedule,
     CancelToken? cancelToken,
@@ -126,12 +135,15 @@ _responseData = rawData == null ? null : deserialize<List<Schedule>, Schedule>(r
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/project/{project_id}/schedules'.replaceAll('{' r'project_id' '}', projectId.toString());
-    final _options = Options(
+    final path = r'/project/{project_id}/schedules'.replaceAll(
+      '{'
+      r'project_id'
+      '}',
+      projectId.toString(),
+    );
+    final options = Options(
       method: r'POST',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -139,7 +151,8 @@ _responseData = rawData == null ? null : deserialize<List<Schedule>, Schedule>(r
             'name': 'cookie',
             'keyName': 'Cookie',
             'where': 'header',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'bearer',
             'keyName': 'Authorization',
@@ -152,60 +165,63 @@ _responseData = rawData == null ? null : deserialize<List<Schedule>, Schedule>(r
       validateStatus: validateStatus,
     );
 
-    dynamic _bodyData;
+    dynamic bodyData;
 
     try {
-_bodyData=jsonEncode(schedule);
-    } catch(error, stackTrace) {
-      throw DioError(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
-        type: DioErrorType.unknown,
+      bodyData = jsonEncode(schedule);
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: options.compose(_dio.options, path),
+        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      data: bodyData,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Schedule? _responseData;
+    Schedule? responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData, 'Schedule', growable: true);
+      final rawData = response.data;
+      responseData = rawData == null
+          ? null
+          : deserialize<Schedule, Schedule>(
+              rawData,
+              'Schedule',
+              growable: true,
+            );
     } catch (error, stackTrace) {
-      throw DioError(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioErrorType.unknown,
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
     return Response<Schedule>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
   /// Deletes schedule
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [projectId] - Project ID
@@ -218,8 +234,8 @@ _responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
   /// Returns a [Future]
-  /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> projectProjectIdSchedulesScheduleIdDelete({ 
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<void>> projectProjectIdSchedulesScheduleIdDelete({
     required int projectId,
     required int scheduleId,
     CancelToken? cancelToken,
@@ -229,12 +245,22 @@ _responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/project/{project_id}/schedules/{schedule_id}'.replaceAll('{' r'project_id' '}', projectId.toString()).replaceAll('{' r'schedule_id' '}', scheduleId.toString());
-    final _options = Options(
+    final path = r'/project/{project_id}/schedules/{schedule_id}'
+        .replaceAll(
+          '{'
+          r'project_id'
+          '}',
+          projectId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'schedule_id'
+          '}',
+          scheduleId.toString(),
+        );
+    final options = Options(
       method: r'DELETE',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -242,7 +268,8 @@ _responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData
             'name': 'cookie',
             'keyName': 'Cookie',
             'where': 'header',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'bearer',
             'keyName': 'Authorization',
@@ -254,19 +281,19 @@ _responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    return _response;
+    return response;
   }
 
   /// Get schedule
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [projectId] - Project ID
@@ -279,8 +306,8 @@ _responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
   /// Returns a [Future] containing a [Response] with a [Schedule] as data
-  /// Throws [DioError] if API call or serialization fails
-  Future<Response<Schedule>> projectProjectIdSchedulesScheduleIdGet({ 
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<Schedule>> projectProjectIdSchedulesScheduleIdGet({
     required int projectId,
     required int scheduleId,
     CancelToken? cancelToken,
@@ -290,12 +317,22 @@ _responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/project/{project_id}/schedules/{schedule_id}'.replaceAll('{' r'project_id' '}', projectId.toString()).replaceAll('{' r'schedule_id' '}', scheduleId.toString());
-    final _options = Options(
+    final path = r'/project/{project_id}/schedules/{schedule_id}'
+        .replaceAll(
+          '{'
+          r'project_id'
+          '}',
+          projectId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'schedule_id'
+          '}',
+          scheduleId.toString(),
+        );
+    final options = Options(
       method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -303,7 +340,8 @@ _responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData
             'name': 'cookie',
             'keyName': 'Cookie',
             'where': 'header',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'bearer',
             'keyName': 'Authorization',
@@ -315,48 +353,54 @@ _responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData
       validateStatus: validateStatus,
     );
 
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    Schedule? _responseData;
+    Schedule? responseData;
 
     try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData, 'Schedule', growable: true);
+      final rawData = response.data;
+      responseData = rawData == null
+          ? null
+          : deserialize<Schedule, Schedule>(
+              rawData,
+              'Schedule',
+              growable: true,
+            );
     } catch (error, stackTrace) {
-      throw DioError(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioErrorType.unknown,
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
     return Response<Schedule>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
+      data: responseData,
+      headers: response.headers,
+      isRedirect: response.isRedirect,
+      requestOptions: response.requestOptions,
+      redirects: response.redirects,
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      extra: response.extra,
     );
   }
 
   /// Updates schedule
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [projectId] - Project ID
   /// * [scheduleId] - schedule ID
-  /// * [schedule] 
+  /// * [schedule]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -365,8 +409,8 @@ _responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
   /// Returns a [Future]
-  /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> projectProjectIdSchedulesScheduleIdPut({ 
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<void>> projectProjectIdSchedulesScheduleIdPut({
     required int projectId,
     required int scheduleId,
     required ScheduleRequest schedule,
@@ -377,12 +421,22 @@ _responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/project/{project_id}/schedules/{schedule_id}'.replaceAll('{' r'project_id' '}', projectId.toString()).replaceAll('{' r'schedule_id' '}', scheduleId.toString());
-    final _options = Options(
+    final path = r'/project/{project_id}/schedules/{schedule_id}'
+        .replaceAll(
+          '{'
+          r'project_id'
+          '}',
+          projectId.toString(),
+        )
+        .replaceAll(
+          '{'
+          r'schedule_id'
+          '}',
+          scheduleId.toString(),
+        );
+    final options = Options(
       method: r'PUT',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
+      headers: <String, dynamic>{...?headers},
       extra: <String, dynamic>{
         'secure': <Map<String, String>>[
           {
@@ -390,7 +444,8 @@ _responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData
             'name': 'cookie',
             'keyName': 'Cookie',
             'where': 'header',
-          },{
+          },
+          {
             'type': 'apiKey',
             'name': 'bearer',
             'keyName': 'Authorization',
@@ -403,32 +458,28 @@ _responseData = rawData == null ? null : deserialize<Schedule, Schedule>(rawData
       validateStatus: validateStatus,
     );
 
-    dynamic _bodyData;
+    dynamic bodyData;
 
     try {
-_bodyData=jsonEncode(schedule);
-    } catch(error, stackTrace) {
-      throw DioError(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
-        type: DioErrorType.unknown,
+      bodyData = jsonEncode(schedule);
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: options.compose(_dio.options, path),
+        type: DioExceptionType.unknown,
         error: error,
         stackTrace: stackTrace,
       );
     }
 
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
+    final response = await _dio.request<Object>(
+      path,
+      data: bodyData,
+      options: options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    return _response;
+    return response;
   }
-
 }

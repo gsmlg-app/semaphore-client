@@ -41,7 +41,7 @@ class _KeyStoreScreenState extends State<KeyStoreScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleKeyStore),
+              title: Text(context.l10n!.titleKeyStore),
               actions: getActions(context, isSmall: true),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -96,12 +96,12 @@ class _KeyStoreScreenState extends State<KeyStoreScreen>
                             actions: [
                               AppAdaptiveAction(
                                 icon: Icons.delete,
-                                title: context.l10n.delete,
+                                title: context.l10n!.delete,
                                 onPressed: () {},
                               ),
                               AppAdaptiveAction(
                                 icon: Icons.edit,
-                                title: context.l10n.edit,
+                                title: context.l10n!.edit,
                                 onPressed: () {},
                               ),
                             ],
@@ -123,7 +123,7 @@ class _KeyStoreScreenState extends State<KeyStoreScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleKeyStore),
+              title: Text(context.l10n!.titleKeyStore),
               actions: getActions(context),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -223,7 +223,7 @@ class _KeyStoreScreenState extends State<KeyStoreScreen>
         actions: [
           AppAdaptiveAction(
             icon: Icons.refresh,
-            title: context.l10n.refresh,
+            title: context.l10n!.refresh,
             onPressed: () {
               loadData();
             },
@@ -232,7 +232,7 @@ class _KeyStoreScreenState extends State<KeyStoreScreen>
             AppAdaptiveAction(
               disabled: !autoRefresh,
               icon: Icons.sync_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 stopRefresh();
               },
@@ -241,7 +241,7 @@ class _KeyStoreScreenState extends State<KeyStoreScreen>
             AppAdaptiveAction(
               disabled: autoRefresh,
               icon: Icons.sync_disabled_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 startRefresh();
               },

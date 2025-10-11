@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'project_backup_meta.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,65 +15,32 @@ part 'project_backup_meta.g.dart';
 )
 class ProjectBackupMeta {
   /// Returns a new [ProjectBackupMeta] instance.
-  ProjectBackupMeta({
+  ProjectBackupMeta({this.name, this.alert, this.maxParallelTasks});
 
-     this.name,
-
-     this.alert,
-
-     this.maxParallelTasks,
-  });
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'alert',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'alert', required: false, includeIfNull: false)
   final bool? alert;
 
-
-
-          // minimum: 0
-  @JsonKey(
-    
-    name: r'max_parallel_tasks',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  // minimum: 0
+  @JsonKey(name: r'max_parallel_tasks', required: false, includeIfNull: false)
   final int? maxParallelTasks;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProjectBackupMeta &&
-     other.name == name &&
-     other.alert == alert &&
-     other.maxParallelTasks == maxParallelTasks;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProjectBackupMeta &&
+          other.name == name &&
+          other.alert == alert &&
+          other.maxParallelTasks == maxParallelTasks;
 
   @override
   int get hashCode =>
-    name.hashCode +
-    alert.hashCode +
-    maxParallelTasks.hashCode;
+      name.hashCode + alert.hashCode + maxParallelTasks.hashCode;
 
-  factory ProjectBackupMeta.fromJson(Map<String, dynamic> json) => _$ProjectBackupMetaFromJson(json);
+  factory ProjectBackupMeta.fromJson(Map<String, dynamic> json) =>
+      _$ProjectBackupMetaFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProjectBackupMetaToJson(this);
 
@@ -82,6 +48,4 @@ class ProjectBackupMeta {
   String toString() {
     return toJson().toString();
   }
-
 }
-

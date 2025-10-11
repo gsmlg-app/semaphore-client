@@ -8,7 +8,7 @@ void showProjectForm(BuildContext context, server) {
   showFullScreenDialog(
     context: context,
     title: Text(
-      context.l10n.addProject,
+      context.l10n!.addProject,
     ),
     builder: (context) {
       final projectFormBloc = context.read<ProjectFormBloc>();
@@ -39,15 +39,15 @@ void showProjectForm(BuildContext context, server) {
                   autocorrect: false,
                   enableSuggestions: false,
                   decoration: InputDecoration(
-                    hintText: context.l10n.projectNameLabel,
-                    labelText: context.l10n.projectNameHint,
+                    hintText: context.l10n!.projectNameLabel,
+                    labelText: context.l10n!.projectNameHint,
                   ),
                 ),
                 const SizedBox(height: 20),
                 SwitchFieldBlocBuilder(
                   booleanFieldBloc: projectFormBloc.alert,
                   body: Text(
-                    context.l10n.projectAlertLabel,
+                    context.l10n!.projectAlertLabel,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -59,7 +59,7 @@ void showProjectForm(BuildContext context, server) {
                   autocorrect: false,
                   enableSuggestions: false,
                   decoration:
-                      InputDecoration(labelText: context.l10n.alertChatLabel),
+                      InputDecoration(labelText: context.l10n!.alertChatLabel),
                 ),
                 const SizedBox(height: 20),
                 TextFieldBlocBuilder(
@@ -70,8 +70,8 @@ void showProjectForm(BuildContext context, server) {
                   autocorrect: false,
                   enableSuggestions: false,
                   decoration: InputDecoration(
-                    hintText: context.l10n.maxParallelTasksHint,
-                    labelText: context.l10n.maxParallelTasksLabel,
+                    hintText: context.l10n!.maxParallelTasksHint,
+                    labelText: context.l10n!.maxParallelTasksLabel,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -101,14 +101,14 @@ void showProjectForm(BuildContext context, server) {
                                 minimumSize: const Size.fromHeight(50), // NEW
                               ),
                               onPressed: projectFormBloc.submit,
-                              child: Text(context.l10n.buttonSave),
+                              child: Text(context.l10n!.buttonSave),
                             )
                           : ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 minimumSize: const Size.fromHeight(50), // NEW
                               ),
                               onPressed: null,
-                              child: Text(context.l10n.buttonSave),
+                              child: Text(context.l10n!.buttonSave),
                             );
                     }),
               ],

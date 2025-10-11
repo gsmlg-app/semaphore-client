@@ -16,10 +16,13 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       if (state is TaskLoaded &&
           (state as TaskLoaded).template.id == event.templateId) {
         template = (state as TaskLoaded).template;
-        emit(TaskLoaded(
+        emit(
+          TaskLoaded(
             loading: true,
             template: template,
-            taskList: (state as TaskLoaded).taskList));
+            taskList: (state as TaskLoaded).taskList,
+          ),
+        );
       } else {
         emit(TaskLoading());
       }
@@ -35,21 +38,16 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           emit(TaskError(Exception('Template not found')));
           return;
         }
-        emit(TaskLoading(
-          template: template,
-        ));
+        emit(TaskLoading(template: template));
       }
 
       final projectApi = event.api.getProjectApi();
-      final resp =
-          await projectApi.projectProjectIdTemplatesTemplateIdTasksLastGet(
-        projectId: event.projectId,
-        templateId: event.templateId,
-      );
-      emit(TaskLoaded(
-        template: template,
-        taskList: resp.data ?? [],
-      ));
+      final resp = await projectApi
+          .projectProjectIdTemplatesTemplateIdTasksLastGet(
+            projectId: event.projectId,
+            templateId: event.templateId,
+          );
+      emit(TaskLoaded(template: template, taskList: resp.data ?? []));
     } catch (e) {
       emit(TaskError(e));
     }

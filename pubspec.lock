@@ -1291,7 +1291,7 @@ packages:
     source: hosted
     version: "3.22.1"
   window_manager:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: window_manager
       sha256: "7eb6d6c4164ec08e1bf978d6e733f3cebe792e2a23fb07cbca25c2872bfdbdcd"

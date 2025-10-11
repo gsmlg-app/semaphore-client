@@ -1,8 +1,8 @@
+import 'package:app_locale/app_locale.dart';
 import 'package:flutter/material.dart';
-import 'package:semaphore_client/screens/app/error_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:app_locale/app_locale.dart';
+import 'package:semaphore_client/screens/error/error_screen.dart';
 
 // Test version of SplashScreen that doesn't use Timer
 class TestSplashScreen extends StatelessWidget {

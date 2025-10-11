@@ -28,7 +28,7 @@ class AppSettingsScreen extends StatelessWidget {
         return SafeArea(
           child: CustomScrollView(
             slivers: <Widget>[
-              SliverAppBar(title: Text(context.l10n.settingsTitle)),
+              SliverAppBar(title: Text(context.l10n!.settingsTitle)),
               SliverFillRemaining(
                 child: SettingsList(
                   sections: [
@@ -49,20 +49,20 @@ class AppSettingsScreen extends StatelessWidget {
                           onPressed: (context) {
                             showAppDialog(
                               context: context,
-                              title: Text(context.l10n.appName),
+                              title: Text(context.l10n!.appName),
                               content: Text('App name content'),
                               actions: [
                                 AppDialogAction(
                                   onPressed: (context) {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text(context.l10n.buttonSave),
+                                  child: Text(context.l10n!.buttonSave),
                                 ),
                                 AppDialogAction(
                                   onPressed: (context) {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text(context.l10n.buttonCancel),
+                                  child: Text(context.l10n!.buttonCancel),
                                 ),
                               ],
                             );

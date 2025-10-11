@@ -36,8 +36,9 @@ class ProjectState {
   }) {
     return ProjectState(
       projects: projects == null ? this.projects : projects(),
-      activeProject:
-          activeProject == null ? this.activeProject : activeProject(),
+      activeProject: activeProject == null
+          ? this.activeProject
+          : activeProject(),
       loaded: loaded == null ? this.loaded : loaded(),
     );
   }

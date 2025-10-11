@@ -10,7 +10,10 @@ class TaskOutputBloc extends Bloc<TaskOutputEvent, TaskOutputState> {
     on<TaskOutputLoad>(_onTaskOutputLoad);
   }
 
-  _onTaskOutputLoad(TaskOutputLoad event, Emitter<TaskOutputState> emit) async {
+  Future<void> _onTaskOutputLoad(
+    TaskOutputLoad event,
+    Emitter<TaskOutputState> emit,
+  ) async {
     try {
       if (state is TaskOutputInitial) {
         emit(TaskOutputLoading());
@@ -19,11 +22,15 @@ class TaskOutputBloc extends Bloc<TaskOutputEvent, TaskOutputState> {
       final taskResp = await event.api
           .getProjectApi()
           .projectProjectIdTasksTaskIdGet(
-              projectId: event.projectId, taskId: event.taskId);
+            projectId: event.projectId,
+            taskId: event.taskId,
+          );
       final outputResp = await event.api
           .getProjectApi()
           .projectProjectIdTasksTaskIdOutputGet(
-              projectId: event.projectId, taskId: event.taskId);
+            projectId: event.projectId,
+            taskId: event.taskId,
+          );
       if (taskResp.data == null) {
         emit(TaskOutputError(Exception('Task not exists!')));
         return;

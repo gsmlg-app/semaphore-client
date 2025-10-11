@@ -45,7 +45,7 @@ class _RepositoryScreenState extends State<RepositoryScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleRepository),
+              title: Text(context.l10n!.titleRepository),
               actions: getActions(context, isSmall: true),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -114,12 +114,12 @@ class _RepositoryScreenState extends State<RepositoryScreen>
                             actions: [
                               AppAdaptiveAction(
                                 icon: Icons.delete,
-                                title: context.l10n.delete,
+                                title: context.l10n!.delete,
                                 onPressed: () {},
                               ),
                               AppAdaptiveAction(
                                 icon: Icons.edit,
-                                title: context.l10n.edit,
+                                title: context.l10n!.edit,
                                 onPressed: () {},
                               ),
                             ],
@@ -141,7 +141,7 @@ class _RepositoryScreenState extends State<RepositoryScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleRepository),
+              title: Text(context.l10n!.titleRepository),
               actions: getActions(context),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -266,7 +266,7 @@ class _RepositoryScreenState extends State<RepositoryScreen>
         actions: [
           AppAdaptiveAction(
             icon: Icons.refresh,
-            title: context.l10n.refresh,
+            title: context.l10n!.refresh,
             onPressed: () {
               loadData();
             },
@@ -275,7 +275,7 @@ class _RepositoryScreenState extends State<RepositoryScreen>
             AppAdaptiveAction(
               disabled: !autoRefresh,
               icon: Icons.sync_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 stopRefresh();
               },
@@ -284,7 +284,7 @@ class _RepositoryScreenState extends State<RepositoryScreen>
             AppAdaptiveAction(
               disabled: autoRefresh,
               icon: Icons.sync_disabled_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 startRefresh();
               },

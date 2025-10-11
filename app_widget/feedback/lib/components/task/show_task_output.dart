@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:app_feedback/app_feedback.dart';
 import 'package:intl/intl.dart';
 import 'package:task_output_bloc/task_output.dart';
-import 'package:app_feedback/components/task/status_chip.dart';
 import 'package:app_utils/app_utils.dart';
 
 void showTaskOutput({
@@ -55,7 +54,7 @@ void showTaskOutput({
               width: 8,
             ),
             Text(
-              context.l10n.taskOutput,
+              context.l10n!.taskOutput,
               style: const TextStyle(color: Colors.white),
             ),
           ],
@@ -118,7 +117,7 @@ class TaskOutputView extends StatelessWidget {
     );
   }
 
-  getOutput(List<TaskOutput> output) {
+  Column getOutput(List<TaskOutput> output) {
     const textColor = Colors.white;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

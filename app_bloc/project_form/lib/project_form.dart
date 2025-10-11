@@ -1,3 +1,3 @@
-library project_form;
+library;
 
 export 'bloc.dart';

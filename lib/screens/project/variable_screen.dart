@@ -41,7 +41,7 @@ class _VariableScreenState extends State<VariableScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleVariable),
+              title: Text(context.l10n!.titleVariable),
               actions: getActions(context, isSmall: true),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -95,12 +95,12 @@ class _VariableScreenState extends State<VariableScreen>
                             actions: [
                               AppAdaptiveAction(
                                 icon: Icons.delete,
-                                title: context.l10n.delete,
+                                title: context.l10n!.delete,
                                 onPressed: () {},
                               ),
                               AppAdaptiveAction(
                                 icon: Icons.edit,
-                                title: context.l10n.edit,
+                                title: context.l10n!.edit,
                                 onPressed: () {},
                               ),
                             ],
@@ -122,7 +122,7 @@ class _VariableScreenState extends State<VariableScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleVariable),
+              title: Text(context.l10n!.titleVariable),
               actions: getActions(context),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -218,7 +218,7 @@ class _VariableScreenState extends State<VariableScreen>
         actions: [
           AppAdaptiveAction(
             icon: Icons.refresh,
-            title: context.l10n.refresh,
+            title: context.l10n!.refresh,
             onPressed: () {
               loadData();
             },
@@ -227,7 +227,7 @@ class _VariableScreenState extends State<VariableScreen>
             AppAdaptiveAction(
               disabled: !autoRefresh,
               icon: Icons.sync_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 stopRefresh();
               },
@@ -236,7 +236,7 @@ class _VariableScreenState extends State<VariableScreen>
             AppAdaptiveAction(
               disabled: autoRefresh,
               icon: Icons.sync_disabled_rounded,
-              title: context.l10n.autoRefresh,
+              title: context.l10n!.autoRefresh,
               onPressed: () {
                 startRefresh();
               },

@@ -11,17 +11,26 @@ class TemplateBloc extends Bloc<TemplateEvent, TemplateState> {
   }
 
   Future<void> _templateLoad(
-      TemplateLoad event, Emitter<TemplateState> emit) async {
+    TemplateLoad event,
+    Emitter<TemplateState> emit,
+  ) async {
     if (state is TemplateLoaded) {
-      emit(TemplateLoaded(
-          loading: true, templates: (state as TemplateLoaded).templates));
+      emit(
+        TemplateLoaded(
+          loading: true,
+          templates: (state as TemplateLoaded).templates,
+        ),
+      );
     } else {
       emit(TemplateLoading());
     }
     try {
       final projectApi = event.api.getProjectApi();
       final resp = await projectApi.projectProjectIdTemplatesGet(
-          projectId: event.projectId, sort: 'name', order: 'asc');
+        projectId: event.projectId,
+        sort: 'name',
+        order: 'asc',
+      );
       print(resp.data);
       emit(TemplateLoaded(templates: resp.data ?? []));
     } catch (e) {

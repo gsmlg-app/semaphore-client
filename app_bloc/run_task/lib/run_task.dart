@@ -1,3 +1,3 @@
-library run_task;
+library;
 
 export 'bloc.dart';

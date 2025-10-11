@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'access_key.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,80 +15,35 @@ part 'access_key.g.dart';
 )
 class AccessKey {
   /// Returns a new [AccessKey] instance.
-  AccessKey({
+  AccessKey({this.id, this.name, this.type, this.projectId});
 
-     this.id,
-
-     this.name,
-
-     this.type,
-
-     this.projectId,
-  });
-
-  @JsonKey(
-    
-    name: r'id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'id', required: false, includeIfNull: false)
   final int? id;
 
-
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'type',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'type', required: false, includeIfNull: false)
   final AccessKeyTypeEnum? type;
 
-
-
-  @JsonKey(
-    
-    name: r'project_id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'project_id', required: false, includeIfNull: false)
   final int? projectId;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccessKey &&
-     other.id == id &&
-     other.name == name &&
-     other.type == type &&
-     other.projectId == projectId;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AccessKey &&
+          other.id == id &&
+          other.name == name &&
+          other.type == type &&
+          other.projectId == projectId;
 
   @override
   int get hashCode =>
-    id.hashCode +
-    name.hashCode +
-    type.hashCode +
-    projectId.hashCode;
+      id.hashCode + name.hashCode + type.hashCode + projectId.hashCode;
 
-  factory AccessKey.fromJson(Map<String, dynamic> json) => _$AccessKeyFromJson(json);
+  factory AccessKey.fromJson(Map<String, dynamic> json) =>
+      _$AccessKeyFromJson(json);
 
   Map<String, dynamic> toJson() => _$AccessKeyToJson(this);
 
@@ -97,9 +51,7 @@ class AccessKey {
   String toString() {
     return toJson().toString();
   }
-
 }
-
 
 enum AccessKeyTypeEnum {
   @JsonValue(r'none')
@@ -109,5 +61,3 @@ enum AccessKeyTypeEnum {
   @JsonValue(r'login_password')
   loginPassword,
 }
-
-

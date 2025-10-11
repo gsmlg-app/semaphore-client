@@ -10,7 +10,7 @@ class TeamBloc extends Bloc<TeamEvent, TeamState> {
     on<TeamLoad>(_teamLoad);
   }
 
-  _teamLoad(TeamLoad event, Emitter<TeamState> emit) async {
+  Future<void> _teamLoad(TeamLoad event, Emitter<TeamState> emit) async {
     if (state is TeamLoaded) {
       emit(TeamLoaded(users: (state as TeamLoaded).users, loading: true));
     } else {
@@ -19,7 +19,10 @@ class TeamBloc extends Bloc<TeamEvent, TeamState> {
     try {
       final projectApi = event.api.getProjectApi();
       final resp = await projectApi.projectProjectIdUsersGet(
-          projectId: event.projectId, sort: 'name', order: 'asc');
+        projectId: event.projectId,
+        sort: 'name',
+        order: 'asc',
+      );
 
       print(resp.data);
       emit(TeamLoaded(users: resp.data ?? [], loading: false));

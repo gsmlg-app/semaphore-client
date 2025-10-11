@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'access_key_request_ssh.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,64 +15,31 @@ part 'access_key_request_ssh.g.dart';
 )
 class AccessKeyRequestSsh {
   /// Returns a new [AccessKeyRequestSsh] instance.
-  AccessKeyRequestSsh({
+  AccessKeyRequestSsh({this.login, this.passphrase, this.privateKey});
 
-     this.login,
-
-     this.passphrase,
-
-     this.privateKey,
-  });
-
-  @JsonKey(
-    
-    name: r'login',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'login', required: false, includeIfNull: false)
   final String? login;
 
-
-
-  @JsonKey(
-    
-    name: r'passphrase',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'passphrase', required: false, includeIfNull: false)
   final String? passphrase;
 
-
-
-  @JsonKey(
-    
-    name: r'private_key',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'private_key', required: false, includeIfNull: false)
   final String? privateKey;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccessKeyRequestSsh &&
-     other.login == login &&
-     other.passphrase == passphrase &&
-     other.privateKey == privateKey;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AccessKeyRequestSsh &&
+          other.login == login &&
+          other.passphrase == passphrase &&
+          other.privateKey == privateKey;
 
   @override
   int get hashCode =>
-    login.hashCode +
-    passphrase.hashCode +
-    privateKey.hashCode;
+      login.hashCode + passphrase.hashCode + privateKey.hashCode;
 
-  factory AccessKeyRequestSsh.fromJson(Map<String, dynamic> json) => _$AccessKeyRequestSshFromJson(json);
+  factory AccessKeyRequestSsh.fromJson(Map<String, dynamic> json) =>
+      _$AccessKeyRequestSshFromJson(json);
 
   Map<String, dynamic> toJson() => _$AccessKeyRequestSshToJson(this);
 
@@ -81,6 +47,4 @@ class AccessKeyRequestSsh {
   String toString() {
     return toJson().toString();
   }
-
 }
-

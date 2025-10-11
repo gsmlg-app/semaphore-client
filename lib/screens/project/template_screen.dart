@@ -63,7 +63,7 @@ class _TemplateScreenState extends State<TemplateScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleTemplate),
+              title: Text(context.l10n!.titleTemplate),
               actions: getActions(context, isSmall: true),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -160,7 +160,7 @@ class _TemplateScreenState extends State<TemplateScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              title: Text(context.l10n.titleTemplate),
+              title: Text(context.l10n!.titleTemplate),
               actions: getActions(context),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(2),
@@ -314,7 +314,7 @@ class _TemplateScreenState extends State<TemplateScreen>
         actions: [
           AppAdaptiveAction(
             icon: Icons.refresh,
-            title: context.l10n.refresh,
+            title: context.l10n!.refresh,
             onPressed: () {
               loadData();
             },
@@ -322,7 +322,7 @@ class _TemplateScreenState extends State<TemplateScreen>
           AppAdaptiveAction(
             icon:
                 autoRefresh ? Icons.sync_rounded : Icons.sync_disabled_rounded,
-            title: context.l10n.autoRefresh,
+            title: context.l10n!.autoRefresh,
             onPressed: () =>
                 autoRefresh ? stopRefresh() : startRefresh(),
           ),
@@ -371,7 +371,7 @@ class _TemplateScreenState extends State<TemplateScreen>
           ),
         ),
         task.userName != null
-            ? Text(context.l10n.byUser(task.userName!),
+            ? Text(context.l10n!.byUser(task.userName!),
                 textScaler: const TextScaler.linear(0.8))
             : const SizedBox(),
       ],

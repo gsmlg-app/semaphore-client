@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'user_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,127 +16,66 @@ part 'user_request.g.dart';
 class UserRequest {
   /// Returns a new [UserRequest] instance.
   UserRequest({
+    this.name,
 
-     this.name,
+    this.username,
 
-     this.username,
+    this.email,
 
-     this.email,
+    this.password,
 
-     this.password,
+    this.alert,
 
-     this.alert,
+    this.admin,
 
-     this.admin,
-
-     this.external_,
+    this.external_,
   });
 
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'username',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'username', required: false, includeIfNull: false)
   final String? username;
 
-
-
-  @JsonKey(
-    
-    name: r'email',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'email', required: false, includeIfNull: false)
   final String? email;
 
-
-
-  @JsonKey(
-    
-    name: r'password',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'password', required: false, includeIfNull: false)
   final String? password;
 
-
-
-  @JsonKey(
-    
-    name: r'alert',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'alert', required: false, includeIfNull: false)
   final bool? alert;
 
-
-
-  @JsonKey(
-    
-    name: r'admin',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'admin', required: false, includeIfNull: false)
   final bool? admin;
 
-
-
-  @JsonKey(
-    
-    name: r'external',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'external', required: false, includeIfNull: false)
   final bool? external_;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is UserRequest &&
-     other.name == name &&
-     other.username == username &&
-     other.email == email &&
-     other.password == password &&
-     other.alert == alert &&
-     other.admin == admin &&
-     other.external_ == external_;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserRequest &&
+          other.name == name &&
+          other.username == username &&
+          other.email == email &&
+          other.password == password &&
+          other.alert == alert &&
+          other.admin == admin &&
+          other.external_ == external_;
 
   @override
   int get hashCode =>
-    name.hashCode +
-    username.hashCode +
-    email.hashCode +
-    password.hashCode +
-    alert.hashCode +
-    admin.hashCode +
-    external_.hashCode;
+      name.hashCode +
+      username.hashCode +
+      email.hashCode +
+      password.hashCode +
+      alert.hashCode +
+      admin.hashCode +
+      external_.hashCode;
 
-  factory UserRequest.fromJson(Map<String, dynamic> json) => _$UserRequestFromJson(json);
+  factory UserRequest.fromJson(Map<String, dynamic> json) =>
+      _$UserRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserRequestToJson(this);
 
@@ -145,6 +83,4 @@ class UserRequest {
   String toString() {
     return toJson().toString();
   }
-
 }
-

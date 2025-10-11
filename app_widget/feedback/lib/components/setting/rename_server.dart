@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:app_feedback/app_feedback.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:server_bloc/server.dart';
 import 'package:server_form_bloc/server_form.dart';
 import 'package:app_utils/app_utils.dart';
 import 'package:app_database/app_database.dart';
 import 'package:drift/drift.dart' hide Column;
 
-showRenameServerForm(BuildContext context, SemaphoreServer server) {
+void showRenameServerForm(BuildContext context, SemaphoreServer server) {
   showFullScreenDialog(
     context: context,
     title: Text(
-      context.l10n.renameServer,
+      context.l10n!.renameServer,
     ),
     builder: (context) {
       final serverFormBloc = context.read<ServerFormBloc>();
@@ -27,10 +26,12 @@ showRenameServerForm(BuildContext context, SemaphoreServer server) {
             id: Value(server.id),
             name: Value(name),
           );
-          await (database.update(database.semaphoreServers)..where((s) => s.id.equals(server.id))).write(companion);
+          await (database.update(database.semaphoreServers)
+                ..where((s) => s.id.equals(server.id)))
+              .write(companion);
           Navigator.of(context).pop();
           showSuccessToast(
-              context: context, message: context.l10n.serverRenamed(name));
+              context: context, message: context.l10n!.serverRenamed(name));
         },
         onFailure: (context, state) {
           if (state.failureResponse != null) {
@@ -49,8 +50,8 @@ showRenameServerForm(BuildContext context, SemaphoreServer server) {
                 autocorrect: false,
                 enableSuggestions: false,
                 decoration: InputDecoration(
-                  hintText: context.l10n.serverNameLabel,
-                  labelText: context.l10n.serverNameHint,
+                  hintText: context.l10n!.serverNameLabel,
+                  labelText: context.l10n!.serverNameHint,
                 ),
               ),
               const SizedBox(height: 20),
@@ -73,20 +74,22 @@ showRenameServerForm(BuildContext context, SemaphoreServer server) {
                               id: Value(server.id),
                               name: Value(name),
                             );
-                            await (database.update(database.semaphoreServers)..where((s) => s.id.equals(server.id))).write(companion);
+                            await (database.update(database.semaphoreServers)
+                                  ..where((s) => s.id.equals(server.id)))
+                                .write(companion);
                             Navigator.of(context).pop();
                             showSuccessToast(
                                 context: context,
-                                message: context.l10n.serverRenamed(name));
+                                message: context.l10n!.serverRenamed(name));
                           },
-                          child: Text(context.l10n.buttonSave),
+                          child: Text(context.l10n!.buttonSave),
                         )
                       : ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size.fromHeight(50), // NEW
                           ),
                           onPressed: null,
-                          child: Text(context.l10n.buttonSave),
+                          child: Text(context.l10n!.buttonSave),
                         );
                 },
               ),

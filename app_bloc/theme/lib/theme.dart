@@ -1,3 +1,3 @@
-library theme;
+library;
 
 export 'src/bloc.dart';

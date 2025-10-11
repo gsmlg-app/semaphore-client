@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'runner.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,30 +15,17 @@ part 'runner.g.dart';
 )
 class Runner {
   /// Returns a new [Runner] instance.
-  Runner({
+  Runner({this.token});
 
-     this.token,
-  });
-
-  @JsonKey(
-    
-    name: r'token',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'token', required: false, includeIfNull: false)
   final String? token;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is Runner && other.token == token;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is Runner &&
-     other.token == token;
-
-  @override
-  int get hashCode =>
-    token.hashCode;
+  int get hashCode => token.hashCode;
 
   factory Runner.fromJson(Map<String, dynamic> json) => _$RunnerFromJson(json);
 
@@ -49,6 +35,4 @@ class Runner {
   String toString() {
     return toJson().toString();
   }
-
 }
-

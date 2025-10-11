@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'access_key_request_login_password.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,48 +15,26 @@ part 'access_key_request_login_password.g.dart';
 )
 class AccessKeyRequestLoginPassword {
   /// Returns a new [AccessKeyRequestLoginPassword] instance.
-  AccessKeyRequestLoginPassword({
+  AccessKeyRequestLoginPassword({this.password, this.login});
 
-     this.password,
-
-     this.login,
-  });
-
-  @JsonKey(
-    
-    name: r'password',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'password', required: false, includeIfNull: false)
   final String? password;
 
-
-
-  @JsonKey(
-    
-    name: r'login',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'login', required: false, includeIfNull: false)
   final String? login;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AccessKeyRequestLoginPassword &&
+          other.password == password &&
+          other.login == login;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccessKeyRequestLoginPassword &&
-     other.password == password &&
-     other.login == login;
+  int get hashCode => password.hashCode + login.hashCode;
 
-  @override
-  int get hashCode =>
-    password.hashCode +
-    login.hashCode;
-
-  factory AccessKeyRequestLoginPassword.fromJson(Map<String, dynamic> json) => _$AccessKeyRequestLoginPasswordFromJson(json);
+  factory AccessKeyRequestLoginPassword.fromJson(Map<String, dynamic> json) =>
+      _$AccessKeyRequestLoginPasswordFromJson(json);
 
   Map<String, dynamic> toJson() => _$AccessKeyRequestLoginPasswordToJson(this);
 
@@ -65,6 +42,4 @@ class AccessKeyRequestLoginPassword {
   String toString() {
     return toJson().toString();
   }
-
 }
-

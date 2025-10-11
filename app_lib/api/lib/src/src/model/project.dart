@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'project.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,97 +16,54 @@ part 'project.g.dart';
 class Project {
   /// Returns a new [Project] instance.
   Project({
+    this.id,
 
-     this.id,
+    this.name,
 
-     this.name,
+    this.created,
 
-     this.created,
+    this.alert,
 
-     this.alert,
-
-     this.maxParallelTasks,
+    this.maxParallelTasks,
   });
 
-          // minimum: 1
-  @JsonKey(
-    
-    name: r'id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  // minimum: 1
+  @JsonKey(name: r'id', required: false, includeIfNull: false)
   final int? id;
 
-
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'created',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'created', required: false, includeIfNull: false)
   final String? created;
 
-
-
-  @JsonKey(
-    
-    name: r'alert',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'alert', required: false, includeIfNull: false)
   final bool? alert;
 
-
-
-          // minimum: 0
-  @JsonKey(
-    
-    name: r'max_parallel_tasks',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  // minimum: 0
+  @JsonKey(name: r'max_parallel_tasks', required: false, includeIfNull: false)
   final int? maxParallelTasks;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is Project &&
-     other.id == id &&
-     other.name == name &&
-     other.created == created &&
-     other.alert == alert &&
-     other.maxParallelTasks == maxParallelTasks;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Project &&
+          other.id == id &&
+          other.name == name &&
+          other.created == created &&
+          other.alert == alert &&
+          other.maxParallelTasks == maxParallelTasks;
 
   @override
   int get hashCode =>
-    id.hashCode +
-    name.hashCode +
-    created.hashCode +
-    alert.hashCode +
-    maxParallelTasks.hashCode;
+      id.hashCode +
+      name.hashCode +
+      created.hashCode +
+      alert.hashCode +
+      maxParallelTasks.hashCode;
 
-  factory Project.fromJson(Map<String, dynamic> json) => _$ProjectFromJson(json);
+  factory Project.fromJson(Map<String, dynamic> json) =>
+      _$ProjectFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProjectToJson(this);
 
@@ -115,6 +71,4 @@ class Project {
   String toString() {
     return toJson().toString();
   }
-
 }
-

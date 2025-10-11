@@ -8,7 +8,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'login_metadata.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,33 +16,22 @@ part 'login_metadata.g.dart';
 )
 class LoginMetadata {
   /// Returns a new [LoginMetadata] instance.
-  LoginMetadata({
+  LoginMetadata({this.oidcProviders});
 
-     this.oidcProviders,
-  });
-
-      /// List of OIDC providers
-  @JsonKey(
-    
-    name: r'oidc_providers',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  /// List of OIDC providers
+  @JsonKey(name: r'oidc_providers', required: false, includeIfNull: false)
   final List<LoginMetadataOidcProvidersInner>? oidcProviders;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LoginMetadata && other.oidcProviders == oidcProviders;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is LoginMetadata &&
-     other.oidcProviders == oidcProviders;
+  int get hashCode => oidcProviders.hashCode;
 
-  @override
-  int get hashCode =>
-    oidcProviders.hashCode;
-
-  factory LoginMetadata.fromJson(Map<String, dynamic> json) => _$LoginMetadataFromJson(json);
+  factory LoginMetadata.fromJson(Map<String, dynamic> json) =>
+      _$LoginMetadataFromJson(json);
 
   Map<String, dynamic> toJson() => _$LoginMetadataToJson(this);
 
@@ -51,6 +39,4 @@ class LoginMetadata {
   String toString() {
     return toJson().toString();
   }
-
 }
-

@@ -12,13 +12,14 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
     on<InventoryRemove>(_inventoryRemove);
   }
 
-  void _inventoryLoad(
-    InventoryLoad event,
-    Emitter<InventoryState> emit,
-  ) async {
+  void _inventoryLoad(InventoryLoad event, Emitter<InventoryState> emit) async {
     if (state is InventoryLoaded) {
-      emit(InventoryLoaded(
-          inventorys: (state as InventoryLoaded).inventorys, loading: true));
+      emit(
+        InventoryLoaded(
+          inventorys: (state as InventoryLoaded).inventorys,
+          loading: true,
+        ),
+      );
     } else {
       emit(InventoryLoading());
     }
@@ -37,10 +38,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
     }
   }
 
-  void _inventoryAdd(
-    InventoryAdd event,
-    Emitter<InventoryState> emit,
-  ) async {
+  void _inventoryAdd(InventoryAdd event, Emitter<InventoryState> emit) async {
     if (state is InventoryLoaded) {
       try {
         final currentState = state as InventoryLoaded;
@@ -56,11 +54,16 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
           ),
         );
         final resp = await projectApi.projectProjectIdInventoryPost(
-            projectId: event.projectId, inventory: request);
+          projectId: event.projectId,
+          inventory: request,
+        );
 
-        emit(InventoryLoaded(
+        emit(
+          InventoryLoaded(
             inventorys: [...currentState.inventorys, resp.data!],
-            loading: false));
+            loading: false,
+          ),
+        );
       } catch (e) {
         print(e);
         emit(InventoryError(e));
@@ -79,13 +82,18 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
         final currentState = state as InventoryLoaded;
         final projectApi = event.api.getProjectApi();
         await projectApi.projectProjectIdInventoryInventoryIdDelete(
-            projectId: event.projectId, inventoryId: event.inventory.id!);
+          projectId: event.projectId,
+          inventoryId: event.inventory.id!,
+        );
 
-        emit(InventoryLoaded(
+        emit(
+          InventoryLoaded(
             inventorys: currentState.inventorys
                 .where((i) => i.id != event.inventory.id)
                 .toList(),
-            loading: false));
+            loading: false,
+          ),
+        );
       } catch (e) {
         print(e);
         emit(InventoryError(e));

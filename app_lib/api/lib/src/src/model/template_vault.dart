@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'template_vault.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,64 +15,30 @@ part 'template_vault.g.dart';
 )
 class TemplateVault {
   /// Returns a new [TemplateVault] instance.
-  TemplateVault({
+  TemplateVault({this.id, this.name, this.type});
 
-     this.id,
-
-     this.name,
-
-     this.type,
-  });
-
-  @JsonKey(
-    
-    name: r'id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'id', required: false, includeIfNull: false)
   final int? id;
 
-
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'type',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'type', required: false, includeIfNull: false)
   final TemplateVaultTypeEnum? type;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TemplateVault &&
+          other.id == id &&
+          other.name == name &&
+          other.type == type;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is TemplateVault &&
-     other.id == id &&
-     other.name == name &&
-     other.type == type;
+  int get hashCode => id.hashCode + name.hashCode + type.hashCode;
 
-  @override
-  int get hashCode =>
-    id.hashCode +
-    name.hashCode +
-    type.hashCode;
-
-  factory TemplateVault.fromJson(Map<String, dynamic> json) => _$TemplateVaultFromJson(json);
+  factory TemplateVault.fromJson(Map<String, dynamic> json) =>
+      _$TemplateVaultFromJson(json);
 
   Map<String, dynamic> toJson() => _$TemplateVaultToJson(this);
 
@@ -81,9 +46,7 @@ class TemplateVault {
   String toString() {
     return toJson().toString();
   }
-
 }
-
 
 enum TemplateVaultTypeEnum {
   @JsonValue(r'password')
@@ -91,5 +54,3 @@ enum TemplateVaultTypeEnum {
   @JsonValue(r'script')
   script,
 }
-
-

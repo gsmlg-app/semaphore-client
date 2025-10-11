@@ -1,3 +1,3 @@
-library inventory;
+library;
 
 export 'inventory_bloc.dart';

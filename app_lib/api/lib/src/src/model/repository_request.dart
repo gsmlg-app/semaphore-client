@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'repository_request.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -17,111 +16,59 @@ part 'repository_request.g.dart';
 class RepositoryRequest {
   /// Returns a new [RepositoryRequest] instance.
   RepositoryRequest({
+    this.id,
 
-     this.id,
+    this.name,
 
-     this.name,
+    this.projectId,
 
-     this.projectId,
+    this.gitUrl,
 
-     this.gitUrl,
+    this.gitBranch,
 
-     this.gitBranch,
-
-     this.sshKeyId,
+    this.sshKeyId,
   });
 
-  @JsonKey(
-    
-    name: r'id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'id', required: false, includeIfNull: false)
   final int? id;
 
-
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'project_id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'project_id', required: false, includeIfNull: false)
   final int? projectId;
 
-
-
-  @JsonKey(
-    
-    name: r'git_url',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'git_url', required: false, includeIfNull: false)
   final String? gitUrl;
 
-
-
-  @JsonKey(
-    
-    name: r'git_branch',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'git_branch', required: false, includeIfNull: false)
   final String? gitBranch;
 
-
-
-  @JsonKey(
-    
-    name: r'ssh_key_id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'ssh_key_id', required: false, includeIfNull: false)
   final int? sshKeyId;
 
-
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is RepositoryRequest &&
-     other.id == id &&
-     other.name == name &&
-     other.projectId == projectId &&
-     other.gitUrl == gitUrl &&
-     other.gitBranch == gitBranch &&
-     other.sshKeyId == sshKeyId;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RepositoryRequest &&
+          other.id == id &&
+          other.name == name &&
+          other.projectId == projectId &&
+          other.gitUrl == gitUrl &&
+          other.gitBranch == gitBranch &&
+          other.sshKeyId == sshKeyId;
 
   @override
   int get hashCode =>
-    id.hashCode +
-    name.hashCode +
-    projectId.hashCode +
-    gitUrl.hashCode +
-    gitBranch.hashCode +
-    sshKeyId.hashCode;
+      id.hashCode +
+      name.hashCode +
+      projectId.hashCode +
+      gitUrl.hashCode +
+      gitBranch.hashCode +
+      sshKeyId.hashCode;
 
-  factory RepositoryRequest.fromJson(Map<String, dynamic> json) => _$RepositoryRequestFromJson(json);
+  factory RepositoryRequest.fromJson(Map<String, dynamic> json) =>
+      _$RepositoryRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$RepositoryRequestToJson(this);
 
@@ -129,6 +76,4 @@ class RepositoryRequest {
   String toString() {
     return toJson().toString();
   }
-
 }
-

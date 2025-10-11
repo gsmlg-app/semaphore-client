@@ -1,3 +1,3 @@
-library server_form;
+library;
 
 export 'bloc.dart';

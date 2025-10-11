@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:quick_actions/quick_actions.dart' as quick_actions;
 import 'system_tray_manager.dart';
@@ -9,11 +8,7 @@ class ShortcutItem {
   final String localizedTitle;
   final String? icon;
 
-  ShortcutItem({
-    required this.type,
-    required this.localizedTitle,
-    this.icon,
-  });
+  ShortcutItem({required this.type, required this.localizedTitle, this.icon});
 }
 
 /// Quick actions manager for mobile applications
@@ -40,16 +35,18 @@ class QuickActionsManager {
   /// Set shortcut items
   Future<void> setShortcutItems(List<ShortcutItem> items) async {
     if (!_isInitialized) return;
-    
+
     // Convert our ShortcutItem to the quick_actions package ShortcutItem
-    final quickActionsItems = items.map((item) => 
-      quick_actions.ShortcutItem(
-        type: item.type,
-        localizedTitle: item.localizedTitle,
-        icon: item.icon,
-      )
-    ).toList();
-    
+    final quickActionsItems = items
+        .map(
+          (item) => quick_actions.ShortcutItem(
+            type: item.type,
+            localizedTitle: item.localizedTitle,
+            icon: item.icon,
+          ),
+        )
+        .toList();
+
     await _quickActions.setShortcutItems(quickActionsItems);
   }
 

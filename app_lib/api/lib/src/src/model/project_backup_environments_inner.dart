@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'project_backup_environments_inner.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,48 +15,26 @@ part 'project_backup_environments_inner.g.dart';
 )
 class ProjectBackupEnvironmentsInner {
   /// Returns a new [ProjectBackupEnvironmentsInner] instance.
-  ProjectBackupEnvironmentsInner({
+  ProjectBackupEnvironmentsInner({this.name, this.json});
 
-     this.name,
-
-     this.json,
-  });
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'json',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'json', required: false, includeIfNull: false)
   final String? json;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProjectBackupEnvironmentsInner &&
+          other.name == name &&
+          other.json == json;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ProjectBackupEnvironmentsInner &&
-     other.name == name &&
-     other.json == json;
+  int get hashCode => name.hashCode + json.hashCode;
 
-  @override
-  int get hashCode =>
-    name.hashCode +
-    json.hashCode;
-
-  factory ProjectBackupEnvironmentsInner.fromJson(Map<String, dynamic> json) => _$ProjectBackupEnvironmentsInnerFromJson(json);
+  factory ProjectBackupEnvironmentsInner.fromJson(Map<String, dynamic> json) =>
+      _$ProjectBackupEnvironmentsInnerFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProjectBackupEnvironmentsInnerToJson(this);
 
@@ -65,6 +42,4 @@ class ProjectBackupEnvironmentsInner {
   String toString() {
     return toJson().toString();
   }
-
 }
-

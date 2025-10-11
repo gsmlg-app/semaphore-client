@@ -18,7 +18,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     on<RemoveProject>(_onRemoveProject);
   }
 
-  _onLoadProjects(
+  Future<void> _onLoadProjects(
     LoadProjects event,
     Emitter<ProjectState> emit,
   ) async {
@@ -26,23 +26,24 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     emit(state.copyWith(projects: projectsResponse.data ?? [], loaded: true));
   }
 
-  _onSelectProject(
+  Future<void> _onSelectProject(
     SelectProject event,
     Emitter<ProjectState> emit,
   ) async {
     emit(state.copyWithGetter(activeProject: () => event.project));
   }
 
-  _onAddProject(
+  Future<void> _onAddProject(
     AddProject event,
     Emitter<ProjectState> emit,
   ) async {
-    final _ =
-        await api.getProjectsApi().projectsPost(project: event.projectRequest);
+    final _ = await api.getProjectsApi().projectsPost(
+      project: event.projectRequest,
+    );
     add(LoadProjects());
   }
 
-  _onUpdateProject(
+  Future<void> _onUpdateProject(
     UpdateProject event,
     Emitter<ProjectState> emit,
   ) async {
@@ -51,33 +52,40 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     add(LoadProjects());
   }
 
-  _onGetProject(
+  Future<void> _onGetProject(
     GetProject event,
     Emitter<ProjectState> emit,
   ) async {
-    final projectResponse = await api
-        .getProjectApi()
-        .projectProjectIdGet(projectId: event.projectId);
-    emit(state.copyWithGetter(
+    final projectResponse = await api.getProjectApi().projectProjectIdGet(
+      projectId: event.projectId,
+    );
+    emit(
+      state.copyWithGetter(
         projects: () => state.projects
-            .map<Project>((project) => projectResponse.data?.id != null &&
-                    project.id == projectResponse.data!.id
-                ? projectResponse.data!
-                : project)
+            .map<Project>(
+              (project) =>
+                  projectResponse.data?.id != null &&
+                      project.id == projectResponse.data!.id
+                  ? projectResponse.data!
+                  : project,
+            )
             .toList(),
-        activeProject: () => projectResponse.data?.id != null &&
+        activeProject: () =>
+            projectResponse.data?.id != null &&
                 state.activeProject?.id == projectResponse.data!.id
             ? projectResponse.data!
-            : state.activeProject));
+            : state.activeProject,
+      ),
+    );
   }
 
-  _onRemoveProject(
+  Future<void> _onRemoveProject(
     RemoveProject event,
     Emitter<ProjectState> emit,
   ) async {
-    final _ = await api
-        .getProjectApi()
-        .projectProjectIdDelete(projectId: event.projectId);
+    final _ = await api.getProjectApi().projectProjectIdDelete(
+      projectId: event.projectId,
+    );
     add(LoadProjects());
   }
 }

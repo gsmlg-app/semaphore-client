@@ -1,4 +1,4 @@
-library app_utils;
+library;
 
 export 'src/platform_ext.dart';
 export 'src/auto_refresh_state.dart';

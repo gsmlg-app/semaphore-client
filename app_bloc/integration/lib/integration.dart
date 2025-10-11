@@ -1,3 +1,3 @@
-library integration;
+library;
 
 export 'integration_bloc.dart';

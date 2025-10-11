@@ -26,7 +26,7 @@ class SettingsSelectBrightness extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           slivers: <Widget>[
             SliverAppBar(
-              title: Text(context.l10n.titleSelectAppearance),
+              title: Text(context.l10n!.titleSelectAppearance),
             ),
             SliverList(
               delegate: SliverChildListDelegate([
@@ -43,7 +43,7 @@ class SettingsSelectBrightness extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              context.l10n.settingsTitle,
+              context.l10n!.settingsTitle,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             SizedBox(

@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:window_manager/window_manager.dart';
 
 /// Stub SystemTray class for compilation
 class SystemTray {
@@ -32,18 +30,12 @@ class MenuItem {
   final String label;
   final Function(dynamic)? onClicked;
 
-  MenuItem({
-    required this.label,
-    this.onClicked,
-  });
+  MenuItem({required this.label, this.onClicked});
 }
 
 /// MenuItemLabel class for compatibility
 class MenuItemLabel extends MenuItem {
-  MenuItemLabel({
-    required String label,
-    Function(dynamic)? onClicked,
-  }) : super(label: label, onClicked: onClicked);
+  MenuItemLabel({required super.label, super.onClicked});
 }
 
 /// MenuSeparator class for compatibility
@@ -69,10 +61,7 @@ class SystemTrayManager {
     if (_isInitialized || !PlatformExt.isDesktop) return;
     _systemTray = SystemTray();
 
-    await _systemTray.initSystemTray(
-      toolTip: toolTip,
-      iconPath: iconPath,
-    );
+    await _systemTray.initSystemTray(toolTip: toolTip, iconPath: iconPath);
 
     final Menu menu = Menu();
     await menu.buildFrom(menuItems);
@@ -100,7 +89,8 @@ class SystemTrayManager {
 
 /// Extension for platform detection
 extension PlatformExt on Platform {
-  static bool get isDesktop => Platform.isLinux || Platform.isWindows || Platform.isMacOS;
+  static bool get isDesktop =>
+      Platform.isLinux || Platform.isWindows || Platform.isMacOS;
   static bool get isMobile => Platform.isIOS || Platform.isAndroid;
   static bool get isIOS => Platform.isIOS;
   static bool get isAndroid => Platform.isAndroid;

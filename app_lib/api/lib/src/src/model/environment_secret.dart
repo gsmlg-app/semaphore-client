@@ -7,7 +7,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'environment_secret.g.dart';
 
-
 @JsonSerializable(
   checked: true,
   createToJson: true,
@@ -16,64 +15,30 @@ part 'environment_secret.g.dart';
 )
 class EnvironmentSecret {
   /// Returns a new [EnvironmentSecret] instance.
-  EnvironmentSecret({
+  EnvironmentSecret({this.id, this.name, this.type});
 
-     this.id,
-
-     this.name,
-
-     this.type,
-  });
-
-  @JsonKey(
-    
-    name: r'id',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'id', required: false, includeIfNull: false)
   final int? id;
 
-
-
-  @JsonKey(
-    
-    name: r'name',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'name', required: false, includeIfNull: false)
   final String? name;
 
-
-
-  @JsonKey(
-    
-    name: r'type',
-    required: false,
-    includeIfNull: false
-  )
-
-
+  @JsonKey(name: r'type', required: false, includeIfNull: false)
   final EnvironmentSecretTypeEnum? type;
 
-
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is EnvironmentSecret &&
+          other.id == id &&
+          other.name == name &&
+          other.type == type;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is EnvironmentSecret &&
-     other.id == id &&
-     other.name == name &&
-     other.type == type;
+  int get hashCode => id.hashCode + name.hashCode + type.hashCode;
 
-  @override
-  int get hashCode =>
-    id.hashCode +
-    name.hashCode +
-    type.hashCode;
-
-  factory EnvironmentSecret.fromJson(Map<String, dynamic> json) => _$EnvironmentSecretFromJson(json);
+  factory EnvironmentSecret.fromJson(Map<String, dynamic> json) =>
+      _$EnvironmentSecretFromJson(json);
 
   Map<String, dynamic> toJson() => _$EnvironmentSecretToJson(this);
 
@@ -81,9 +46,7 @@ class EnvironmentSecret {
   String toString() {
     return toJson().toString();
   }
-
 }
-
 
 enum EnvironmentSecretTypeEnum {
   @JsonValue(r'env')
@@ -91,5 +54,3 @@ enum EnvironmentSecretTypeEnum {
   @JsonValue(r'var')
   var_,
 }
-
-
