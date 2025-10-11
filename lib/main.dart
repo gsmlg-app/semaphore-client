@@ -4,6 +4,7 @@ import 'package:app_theme/app_theme.dart';
 import 'package:app_utils/app_utils.dart' hide PlatformExt;
 import 'package:app_locale/app_locale.dart';
 import 'package:app_database/app_database.dart';
+import 'package:app_locale/app_locale.dart';
 import 'package:desktop_tray/desktop_tray.dart';
 import 'package:desktop_tray/src/system_tray_manager.dart' show PlatformExt;
 import 'package:semaphore_client/app.dart';
@@ -50,17 +51,13 @@ void main() async {
   }
 
   final sharedPrefs = await SharedPreferences.getInstance();
-  final database = AppDatabase();
-  final objectBox = await ObjectBox.create();
+  final database = await AppDatabase.createWithMigration();
 
   runApp(
     MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AppDatabase>(
           create: (BuildContext context) => database,
-        ),
-        RepositoryProvider<ObjectBox>(
-          create: (BuildContext context) => objectBox,
         ),
         RepositoryProvider<SharedPreferences>(
           create: (BuildContext context) => sharedPrefs,
@@ -76,7 +73,7 @@ void main() async {
             BlocProvider<SemaphoreServerBloc>(
               create: (BuildContext context) => SemaphoreServerBloc(
                 SemaphoreServerState(),
-                context.read<ObjectBox>(),
+                context.read<AppDatabase>(),
                 context.read<SharedPreferences>(),
               ),
             ),

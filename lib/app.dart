@@ -62,6 +62,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     systemTrayManager = SystemTrayManager();
 
     final l10n = context.l10n;
+    if (l10n == null) return;
 
     await systemTrayManager.initialize(
       toolTip: l10n.appName,
@@ -91,13 +92,16 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       //     state.activeServer!.api, state.activeProject!.projectId!));
     });
 
-    await quickActionsManager.setShortcutItems([
-      ShortcutItem(
-        type: 'run_task',
-        localizedTitle: context.l10n.runTask,
-        icon: 'play_arrow',
-      ),
-    ]);
+    final l10n = context.l10n;
+    if (l10n != null) {
+      await quickActionsManager.setShortcutItems([
+        ShortcutItem(
+          type: 'run_task',
+          localizedTitle: l10n.runTask,
+          icon: 'play_arrow',
+        ),
+      ]);
+    }
   }
 
   @override

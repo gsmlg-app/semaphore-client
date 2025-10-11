@@ -5,13 +5,17 @@
 - Format: `melos run format`
 - Analyze: `melos run analyze`
 - Build: `melos run build-all`
+- Generate code: `melos run build-all` (build_runner with delete-conflicting-outputs)
+- Prepare project: `melos run prepare` (bootstrap + gen-l10n + build-all)
 
 # Code Style Guidelines
 - Use flutter_lints from analysis_options.yaml
-- Import order: dart, package, local
-- Use single quotes for strings
+- Import order: dart, package, local (as seen in main.dart)
+- Use single quotes for strings (enabled in analysis_options.yaml)
 - Prefer const constructors
-- Use BLoC pattern for state management
-- Error handling: try/catch with logging
+- Use BLoC pattern for state management (flutter_bloc dependency)
+- Error handling: try/catch with logging (logging package available)
 - Naming: PascalCase for classes, camelCase for variables
 - Types: always specify return types and parameter types
+- Workspace structure: monorepo with app_lib, app_bloc, app_widget packages
+- Use melos for workspace management and dependency coordination

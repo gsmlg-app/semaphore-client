@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:app_database/app_database.dart';
-import 'package:app_database/objectbox.g.dart';
-import 'package:app_database/objectbox_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SemaphoreServerState {
@@ -16,26 +14,8 @@ class SemaphoreServerState {
   bool get hasActiveProject => activeProject != null;
 
   factory SemaphoreServerState.fromSavedStats(
-      ObjectBox box, SharedPreferences prefs) {
-    Box<SemaphoreServer> serverBox = box.store.box<SemaphoreServer>();
-    final servers = serverBox.getAll();
-    if (servers.isEmpty) {
-      return SemaphoreServerState(loaded: true);
-    } else {
-      int? serverId = prefs.getInt('active_server_id');
-      final activeServer =
-          servers.where((server) => server.id == serverId).firstOrNull;
-
-      int? projectId = prefs.getInt('active_server_project_id');
-      final activeProject = activeServer?.projects
-          .where((project) => project.projectId == projectId)
-          .firstOrNull;
-      return SemaphoreServerState(
-          servers: servers,
-          activeServer: activeServer,
-          activeProject: activeProject,
-          loaded: true);
-    }
+      AppDatabase database, SharedPreferences prefs) {
+    return SemaphoreServerState(loaded: true);
   }
 
   SemaphoreServerState(

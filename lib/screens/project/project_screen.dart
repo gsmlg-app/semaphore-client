@@ -18,6 +18,7 @@ import 'package:semaphore_client/screens/project/schedule_screen.dart';
 import 'package:semaphore_client/screens/project/team_screen.dart';
 import 'package:semaphore_client/screens/project/template_screen.dart';
 import 'package:semaphore_client/screens/project/variable_screen.dart';
+import 'package:app_database/server.dart';
 
 class ProjectScreen extends StatelessWidget {
   const ProjectScreen({super.key});

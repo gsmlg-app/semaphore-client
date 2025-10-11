@@ -10,6 +10,7 @@ import 'package:app_feedback/components/setting/root_setting_list.dart';
 import 'package:app_feedback/components/setting/server_form.dart';
 import 'package:app_utils/app_utils.dart';
 import 'package:semaphore_client/screens/settings/settings_screen.dart';
+import 'package:app_database/app_database.dart';
 
 class SettingsSelectServer extends StatelessWidget {
   static const name = 'Select Server';
@@ -158,33 +159,7 @@ class SettingsSelectServer extends StatelessWidget {
                           ),
                         ],
                       ),
-                      // ignore: unchecked_use_of_nullable_value
-                      tiles: (server.projects ?? []).isEmpty
-                          ? [
-                              SettingsTile(
-                                leading: const Icon(Icons.add),
-                                title: Text(context.l10n.addProject),
-                              )
-                            ]
-                          // ignore: unchecked_use_of_nullable_value
-                          : (server.projects ?? [])
-                              .map(
-                                (project) => SettingsTile.checkTile(
-                                  leading: const Icon(Icons.rocket_launch),
-                                  title: Text(project.name ?? 'Unknown'),
-                                  checked:
-                                      // ignore: unchecked_use_of_nullable_value
-                                      state.activeServer?.id == server.id &&
-                                          state.activeProject?.projectId ==
-                                              project.projectId,
-                                  onPressed: (context) {
-                                    context
-                                        .read<SemaphoreServerBloc>()
-                                        .add(SelectServer(server, project));
-                                  },
-                                ),
-                              )
-                              .toList(),
+                      tiles: [_buildProjectTiles(context, server, state)],
                     );
                   }).toList()
                 : [
@@ -203,6 +178,65 @@ class SettingsSelectServer extends StatelessWidget {
                     ),
                   ],
           ),
+        );
+      },
+    );
+  }
+
+  Widget _buildProjectTiles(BuildContext context, SemaphoreServer server, SemaphoreServerState state) {
+    final database = context.read<AppDatabase>();
+    
+    return FutureBuilder<List<SemaphoreProject>>(
+      future: server.getProjects(database),
+      builder: (context, snapshot) {
+        List<SettingsTile> tiles = [
+          SettingsTile(
+            leading: const Icon(Icons.add),
+            title: Text(context.l10n.addProject),
+          ),
+        ];
+        
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          tiles.add(
+            SettingsTile(
+              leading: const CircularProgressIndicator(),
+              title: const Text('Loading projects...'),
+            ),
+          );
+        } else if (snapshot.hasError) {
+          tiles.add(
+            SettingsTile(
+              leading: const Icon(Icons.error),
+              title: Text('Error: ${snapshot.error}'),
+            ),
+          );
+        } else {
+          final projects = snapshot.data ?? [];
+          if (projects.isEmpty) {
+            tiles.add(
+              SettingsTile(
+                leading: const Icon(Icons.info),
+                title: Text('No projects found'),
+              ),
+            );
+          } else {
+            tiles.addAll(projects.map((project) => SettingsTile.checkTile(
+              leading: const Icon(Icons.rocket_launch),
+              title: Text(project.name ?? 'Unknown'),
+              checked:
+                  state.activeServer?.id == server.id &&
+                  state.activeProject?.projectId == project.projectId,
+              onPressed: (context) {
+                context
+                    .read<SemaphoreServerBloc>()
+                    .add(SelectServer(server, project));
+              },
+            )));
+          }
+        }
+        
+        return Column(
+          children: tiles,
         );
       },
     );

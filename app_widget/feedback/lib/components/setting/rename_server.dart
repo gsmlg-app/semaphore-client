@@ -4,7 +4,8 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:server_bloc/server.dart';
 import 'package:server_form_bloc/server_form.dart';
 import 'package:app_utils/app_utils.dart';
-import 'package:app_database/server.dart';
+import 'package:app_database/app_database.dart';
+import 'package:drift/drift.dart' hide Column;
 
 showRenameServerForm(BuildContext context, SemaphoreServer server) {
   showFullScreenDialog(
@@ -19,10 +20,14 @@ showRenameServerForm(BuildContext context, SemaphoreServer server) {
         formBloc: serverFormBloc,
         onSubmitting: (context, state) {},
         onSubmissionFailed: (context, state) {},
-        onSuccess: (context, state) {
+        onSuccess: (context, state) async {
           final name = state.successResponse!;
-          server.name = name;
-          context.read<SemaphoreServerBloc>().add(UpdateServer(server));
+          final database = context.read<AppDatabase>();
+          final companion = SemaphoreServersCompanion(
+            id: Value(server.id),
+            name: Value(name),
+          );
+          await (database.update(database.semaphoreServers)..where((s) => s.id.equals(server.id))).write(companion);
           Navigator.of(context).pop();
           showSuccessToast(
               context: context, message: context.l10n.serverRenamed(name));
@@ -61,12 +66,14 @@ showRenameServerForm(BuildContext context, SemaphoreServer server) {
                                 Theme.of(context).colorScheme.primary,
                             minimumSize: const Size.fromHeight(50), // NEW
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             final name = state.value;
-                            server.name = name;
-                            context
-                                .read<SemaphoreServerBloc>()
-                                .add(UpdateServer(server));
+                            final database = context.read<AppDatabase>();
+                            final companion = SemaphoreServersCompanion(
+                              id: Value(server.id),
+                              name: Value(name),
+                            );
+                            await (database.update(database.semaphoreServers)..where((s) => s.id.equals(server.id))).write(companion);
                             Navigator.of(context).pop();
                             showSuccessToast(
                                 context: context,

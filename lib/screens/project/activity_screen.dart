@@ -5,6 +5,7 @@ import 'package:activity_bloc/activity.dart';
 import 'package:server_bloc/server.dart';
 import 'package:semaphore_client/destination.dart';
 import 'package:app_utils/app_utils.dart';
+import 'package:app_database/server.dart';
 import 'package:semaphore_client/screens/project/project_screen.dart';
 
 class ActivityScreen extends StatefulWidget {

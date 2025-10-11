@@ -13,6 +13,7 @@ import 'package:app_feedback/components/data_cell/repository_name.dart';
 import 'package:app_feedback/components/data_cell/variable_group_name.dart';
 import 'package:semaphore_client/destination.dart';
 import 'package:app_feedback/components/task/run_task.dart';
+import 'package:app_database/app_database.dart';
 import 'package:app_feedback/components/task/show_task_output.dart';
 import 'package:app_feedback/components/task/status_chip.dart';
 import 'package:app_utils/app_utils.dart';

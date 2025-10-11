@@ -4,7 +4,8 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:server_bloc/server.dart';
 import 'package:server_form_bloc/server_form.dart';
 import 'package:app_utils/app_utils.dart';
-import 'package:app_database/server.dart';
+import 'package:app_database/app_database.dart';
+import 'package:drift/drift.dart' hide Column;
 
 void showServerForm(BuildContext context) {
   showFullScreenDialog(
@@ -17,13 +18,17 @@ void showServerForm(BuildContext context) {
         formBloc: serverFormBloc,
         onSubmitting: (context, state) {},
         onSubmissionFailed: (context, state) {},
-        onSuccess: (context, state) {
+        onSuccess: (context, state) async {
           final token = state.successResponse!;
-          final server = SemaphoreServer()
-            ..name = serverFormBloc.name.value
-            ..apiUrl = serverFormBloc.apiUrl.value
-            ..username = serverFormBloc.username.value
-            ..token = token;
+          final database = context.read<AppDatabase>();
+          final serverCompanion = SemaphoreServersCompanion.insert(
+            name: Value(serverFormBloc.name.value),
+            apiUrl: Value(serverFormBloc.apiUrl.value),
+            username: Value(serverFormBloc.username.value),
+            token: Value(token),
+          );
+          final serverId = await database.into(database.semaphoreServers).insert(serverCompanion);
+          final server = await (database.select(database.semaphoreServers)..where((s) => s.id.equals(serverId))).getSingle();
           context.read<SemaphoreServerBloc>().add(AddServer(server));
           Navigator.of(context).pop();
           showSuccessToast(context: context, message: context.l10n.serverAdded);
