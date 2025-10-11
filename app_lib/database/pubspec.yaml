@@ -7,10 +7,15 @@ environment:
 resolution: workspace
 
 dependencies:
+  flutter:
+    sdk: flutter
   drift: ^2.26.2
   drift_flutter: ^0.2.5
   path_provider: ^2.1.5
   sqlite3_flutter_libs: ^0.5.25
+  app_api: any
+  dio: ^5.3.1
+  app_utils: any
 
 dev_dependencies:
   flutter_test:

@@ -154,6 +154,7 @@ melos:
     analyze:
       run: flutter analyze --fatal-infos
       exec:
+        concurrency: 1
         orderDependents: true
       description: Run `flutter analyze` for all packages.
 

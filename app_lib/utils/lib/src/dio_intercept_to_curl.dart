@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:logging/logging.dart';
 
 class DioInterceptToCurl extends Interceptor {
   final bool? printOnSuccess;
   final bool convertFormData;
+  static final _log = Logger('DioInterceptToCurl');
 
   DioInterceptToCurl({this.printOnSuccess, this.convertFormData = true});
 
@@ -27,9 +29,9 @@ class DioInterceptToCurl extends Interceptor {
   void _renderCurlRepresentation(RequestOptions requestOptions) {
     // add a breakpoint here so all errors can break
     try {
-      print(_cURLRepresentation(requestOptions));
+      _log.info(_cURLRepresentation(requestOptions));
     } catch (err) {
-      print('unable to create a CURL representation of the requestOptions');
+      _log.warning('unable to create a CURL representation of the requestOptions');
     }
   }
 

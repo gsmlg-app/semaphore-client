@@ -10,8 +10,10 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  
+
   dio: ^5.3.1
+  app_locale: any
+  logging: any
 
 dev_dependencies:
   flutter_test:
