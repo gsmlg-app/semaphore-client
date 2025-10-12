@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_adaptive_widgets/gsmlg_adaptive_widgets.dart';
+import 'package:settings_ui/gsmlg_settings.dart';
+import 'package:theme_bloc/theme_bloc.dart';
 import 'package:semaphore_client/destination.dart';
-import 'package:app_feedback/components/setting/root_setting_list.dart';
 import 'package:app_utils/app_utils.dart';
 import 'package:semaphore_client/screens/settings/settings_screen.dart';
 
@@ -32,7 +34,7 @@ class SettingsSelectBrightness extends StatelessWidget {
               delegate: SliverChildListDelegate([
                 SizedBox(
                   height: MediaQuery.of(context).size.height,
-                  child: const RootSettingList(),
+                  child: _buildBrightnessSettings(context),
                 ),
               ]),
             ),
@@ -48,7 +50,7 @@ class SettingsSelectBrightness extends StatelessWidget {
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height,
-              child: const RootSettingList(),
+              child: _buildBrightnessSettings(context),
             ),
           ],
         ),
@@ -56,6 +58,46 @@ class SettingsSelectBrightness extends StatelessWidget {
       largeSecondaryBody: (_) => SafeArea(
         child: Container(),
       ),
+    );
+  }
+
+  Widget _buildBrightnessSettings(BuildContext context) {
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, state) {
+        return SettingsList(
+          sections: [
+            SettingsSection(
+              title: Text(context.l10n!.titleSelectAppearance),
+              tiles: [
+                SettingsTile.checkTile(
+                  leading: const Icon(Icons.brightness_auto),
+                  title: const Text('System'),
+                  checked: state.themeMode == ThemeMode.system,
+                  onPressed: (context) {
+                    context.read<ThemeBloc>().add(const ChangeThemeMode(ThemeMode.system));
+                  },
+                ),
+                SettingsTile.checkTile(
+                  leading: const Icon(Icons.light_mode),
+                  title: const Text('Light'),
+                  checked: state.themeMode == ThemeMode.light,
+                  onPressed: (context) {
+                    context.read<ThemeBloc>().add(const ChangeThemeMode(ThemeMode.light));
+                  },
+                ),
+                SettingsTile.checkTile(
+                  leading: const Icon(Icons.dark_mode),
+                  title: const Text('Dark'),
+                  checked: state.themeMode == ThemeMode.dark,
+                  onPressed: (context) {
+                    context.read<ThemeBloc>().add(const ChangeThemeMode(ThemeMode.dark));
+                  },
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

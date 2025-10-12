@@ -115,6 +115,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
 
 # generate icon with `dart run flutter_launcher_icons:main``
 flutter_launcher_icons:

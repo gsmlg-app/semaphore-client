@@ -1,0 +1,6 @@
+arb-dir: app_lib/locale/lib/arb
+template-arb-file: app_en.arb
+nullable-getter: false
+output-dir: lib/.dart_tool/flutter_gen/gen_l10n
+output-localization-file: app_localizations.dart
+output-class: AppLocalizations

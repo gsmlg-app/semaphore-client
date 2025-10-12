@@ -17,6 +17,7 @@ import 'package:semaphore_client/screens/project/team_screen.dart';
 import 'package:semaphore_client/screens/project/template_screen.dart';
 import 'package:semaphore_client/screens/project/template_task_screen.dart';
 import 'package:semaphore_client/screens/project/variable_screen.dart';
+import 'package:semaphore_client/screens/server/server_screen.dart';
 import 'package:semaphore_client/screens/settings/select_server.dart';
 GoRoute projectRoutes = GoRoute(
   name: ProjectScreen.name,
@@ -31,7 +32,7 @@ GoRoute projectRoutes = GoRoute(
           message: const Text('Please add a server and select a project first'),
         );
       });
-      return SettingsSelectServer.fullPath;
+      return ServerScreen.path;
     }
     return null;
   },

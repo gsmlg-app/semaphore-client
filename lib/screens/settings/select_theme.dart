@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_adaptive_widgets/gsmlg_adaptive_widgets.dart';
+import 'package:settings_ui/gsmlg_settings.dart';
+import 'package:theme_bloc/theme_bloc.dart';
+import 'package:app_theme/app_theme.dart';
 import 'package:semaphore_client/destination.dart';
-import 'package:app_feedback/components/setting/root_setting_list.dart';
 import 'package:app_utils/app_utils.dart';
 import 'package:semaphore_client/screens/settings/settings_screen.dart';
 
@@ -32,7 +35,7 @@ class SettingsSelectTheme extends StatelessWidget {
               delegate: SliverChildListDelegate([
                 SizedBox(
                   height: MediaQuery.of(context).size.height,
-                  child: const RootSettingList(),
+                  child: _buildThemeSettings(context),
                 ),
               ]),
             ),
@@ -48,7 +51,7 @@ class SettingsSelectTheme extends StatelessWidget {
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height,
-              child: const RootSettingList(),
+              child: _buildThemeSettings(context),
             ),
           ],
         ),
@@ -56,6 +59,33 @@ class SettingsSelectTheme extends StatelessWidget {
       largeSecondaryBody: (_) => SafeArea(
         child: Container(),
       ),
+    );
+  }
+
+  Widget _buildThemeSettings(BuildContext context) {
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, state) {
+        return SettingsList(
+          sections: [
+            SettingsSection(
+              title: Text(context.l10n!.titleSelectColorTheme),
+              tiles: themeList.map((theme) {
+                return SettingsTile.checkTile(
+                  leading: Icon(
+                    Icons.palette,
+                    color: theme.lightTheme.colorScheme.primary,
+                  ),
+                  title: Text(theme.name),
+                  checked: state.theme.name == theme.name,
+                  onPressed: (context) {
+                    context.read<ThemeBloc>().add(ChangeTheme(theme));
+                  },
+                );
+              }).toList(),
+            ),
+          ],
+        );
+      },
     );
   }
 }

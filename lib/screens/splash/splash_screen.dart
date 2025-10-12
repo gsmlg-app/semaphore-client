@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:semaphore_client/screens/settings/settings_screen.dart';
+import 'package:semaphore_client/screens/server/server_screen.dart';
 import 'package:server_bloc/server.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -21,9 +21,9 @@ class SplashScreen extends StatelessWidget {
           listener: (context, state) {
             if (state.loaded) {
               if (state.activeServer != null) {
-                context.goNamed(SettingsScreen.name);
+                context.goNamed(ServerScreen.name);
               } else {
-                context.goNamed(SettingsScreen.name);
+                context.goNamed(ServerScreen.name);
               }
             } else {
               context.read<SemaphoreServerBloc>().add(LoadServers());

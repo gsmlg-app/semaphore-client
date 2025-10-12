@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:semaphore_client/screens/error/error_screen.dart';
 import 'package:semaphore_client/screens/project/routes.dart';
+import 'package:semaphore_client/screens/server/server_screen.dart';
 import 'package:semaphore_client/screens/settings/select_brightness.dart';
 import 'package:semaphore_client/screens/settings/select_server.dart';
 import 'package:semaphore_client/screens/settings/select_theme.dart';
@@ -41,6 +42,16 @@ List<GoRoute> routes = [
       return MaterialPage<void>(
         key: state.pageKey,
         child: ErrorScreen(routerState: state),
+      );
+    },
+  ),
+  GoRoute(
+    name: ServerScreen.name,
+    path: ServerScreen.path,
+    pageBuilder: (context, state) {
+      return NoTransitionPage<void>(
+        key: state.pageKey,
+        child: const ServerScreen(),
       );
     },
   ),

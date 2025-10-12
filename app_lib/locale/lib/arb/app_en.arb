@@ -6,6 +6,7 @@
     "exit": "Exit",
     "destinationProject": "Project",
     "destinationSetting": "Setting",
+    "destinationServer": "Server",
     "settingsTitle": "Setting",
     "smenuTheme": "Theme",
     "titleSelectAppearance": "Select Appearance",
