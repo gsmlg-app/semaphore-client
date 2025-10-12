@@ -30,7 +30,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       AppLogger().d('History data: ${resp.data}');
       emit(HistoryLoaded(history: resp.data ?? []));
     } catch (e) {
-      AppLogger().e('Failed to load history', error: e);
+      AppLogger().e('Failed to load history', e);
       emit(HistoryError(e));
     }
   }

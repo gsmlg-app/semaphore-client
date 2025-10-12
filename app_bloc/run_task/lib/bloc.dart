@@ -120,7 +120,7 @@ class RunTaskFormBloc extends FormBloc<Task, String> {
         emitFailure(failureResponse: 'Failed to create task');
       }
     } catch (e) {
-      AppLogger().e('Failed to submit task', error: e);
+      AppLogger().e('Failed to submit task', e);
       emitFailure(failureResponse: e.toString());
     }
   }

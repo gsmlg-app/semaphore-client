@@ -34,7 +34,7 @@ class IntegrationBloc extends Bloc<IntegrationEvent, IntegrationState> {
       AppLogger().d('Integration data: ${resp.data}');
       emit(IntegrationLoaded(integrations: resp.data ?? [], loading: false));
     } catch (e) {
-      AppLogger().e('Failed to load integrations', error: e);
+      AppLogger().e('Failed to load integrations', e);
       emit(IntegrationError(e));
     }
   }

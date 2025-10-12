@@ -36,7 +36,7 @@ class VariableBloc extends Bloc<VariableEvent, VariableState> {
       AppLogger().d('Variable data: ${resp.data}');
       emit(VariableLoaded(variables: resp.data ?? [], loading: false));
     } catch (e) {
-      AppLogger().e('Failed to load variables', error: e);
+      AppLogger().e('Failed to load variables', e);
       emit(VariableError(e));
     }
   }

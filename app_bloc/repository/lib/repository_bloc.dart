@@ -36,7 +36,7 @@ class RepositoryBloc extends Bloc<RepositoryEvent, RepositoryState> {
       AppLogger().d('Repository data: ${resp.data}');
       emit(RepositoryLoaded(repositorys: resp.data ?? [], loading: false));
     } catch (e) {
-      AppLogger().e('Failed to load repositories', error: e);
+      AppLogger().e('Failed to load repositories', e);
       emit(RepositoryError(e));
     }
   }

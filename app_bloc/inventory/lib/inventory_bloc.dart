@@ -34,7 +34,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       AppLogger().d('Inventory data: ${resp.data}');
       emit(InventoryLoaded(inventorys: resp.data ?? [], loading: false));
     } catch (e) {
-      AppLogger().e('Failed to load inventory', error: e);
+      AppLogger().e('Failed to load inventory', e);
       emit(InventoryError(e));
     }
   }
@@ -66,7 +66,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
           ),
         );
       } catch (e) {
-        AppLogger().e('Failed to add inventory', error: e);
+        AppLogger().e('Failed to add inventory', e);
         emit(InventoryError(e));
       }
     } else {
@@ -96,7 +96,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
           ),
         );
       } catch (e) {
-        AppLogger().e('Failed to remove inventory', error: e);
+        AppLogger().e('Failed to remove inventory', e);
         emit(InventoryError(e));
       }
     } else {

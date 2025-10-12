@@ -33,7 +33,7 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
       AppLogger().d('Activity data: ${resp.data}');
       emit(ActivityLoaded(activities: resp.data ?? [], loading: false));
     } catch (e) {
-      AppLogger().e('Failed to load activities', error: e);
+      AppLogger().e('Failed to load activities', e);
       emit(ActivityError(e));
     }
   }

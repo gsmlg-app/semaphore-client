@@ -33,7 +33,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       AppLogger().d('Schedule data: ${resp.data}');
       emit(ScheduleLoaded(schedules: resp.data ?? [], loading: false));
     } catch (e) {
-      AppLogger().e('Failed to load schedules', error: e);
+      AppLogger().e('Failed to load schedules', e);
       emit(ScheduleError(e));
     }
   }

@@ -28,7 +28,7 @@ class TeamBloc extends Bloc<TeamEvent, TeamState> {
       AppLogger().d('Team data: ${resp.data}');
       emit(TeamLoaded(users: resp.data ?? [], loading: false));
     } catch (e) {
-      AppLogger().e('Failed to load team', error: e);
+      AppLogger().e('Failed to load team', e);
       emit(TeamError(e));
     }
   }

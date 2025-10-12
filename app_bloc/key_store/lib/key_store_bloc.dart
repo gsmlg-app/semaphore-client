@@ -36,7 +36,7 @@ class KeyStoreBloc extends Bloc<KeyStoreEvent, KeyStoreState> {
       AppLogger().d('Key store response: ${resp.data}');
       emit(KeyStoreLoaded(accessKeys: resp.data ?? [], loading: false));
     } catch (e) {
-      AppLogger().e('Failed to load key store', error: e);
+      AppLogger().e('Failed to load key store', e);
       emit(KeyStoreError(e));
     }
   }

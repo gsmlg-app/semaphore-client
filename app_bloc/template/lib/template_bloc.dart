@@ -35,7 +35,7 @@ class TemplateBloc extends Bloc<TemplateEvent, TemplateState> {
       AppLogger().d('Template data: ${resp.data}');
       emit(TemplateLoaded(templates: resp.data ?? []));
     } catch (e) {
-      AppLogger().e('Failed to load templates', error: e);
+      AppLogger().e('Failed to load templates', e);
       emit(TemplateError(e));
     }
   }

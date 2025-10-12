@@ -183,7 +183,7 @@ class SemaphoreServerBloc
 
       emitter(state.copyWith(servers: servers));
     } catch (e, s) {
-      AppLogger().e('Failed to load projects', error: e, stackTrace: s);
+      AppLogger().e('Failed to load projects', e, s);
     }
   }
 }
