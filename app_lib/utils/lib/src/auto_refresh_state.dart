@@ -24,8 +24,16 @@ mixin AutoRefreshMixin<T extends StatefulWidget>
 
   @override
   void dispose() {
-    stopRefresh();
+    // Cancel timer first to prevent any timer callbacks during disposal
+    _autoRefreshTimer?.cancel();
+    _autoRefreshTimer = null;
+
+    // Remove observer before calling setState
     WidgetsBinding.instance.removeObserver(this);
+
+    // Update state without setState to avoid lifecycle issues
+    autoRefresh = false;
+
     super.dispose();
   }
 
@@ -46,7 +54,8 @@ mixin AutoRefreshMixin<T extends StatefulWidget>
       throw Exception('autoRefreshDuration must be at least 1 second');
     }
     _autoRefreshTimer = Timer(autoRefreshDuration, () {
-      if (autoRefresh) {
+      // Check if widget is still mounted and timer hasn't been cancelled
+      if (mounted && _autoRefreshTimer != null && autoRefresh) {
         loadData();
         refresh();
       }
@@ -55,6 +64,8 @@ mixin AutoRefreshMixin<T extends StatefulWidget>
 
   void stopRefresh() {
     _autoRefreshTimer?.cancel();
+    _autoRefreshTimer = null;
+
     if (mounted) {
       setState(() {
         autoRefresh = false;
@@ -70,12 +81,13 @@ mixin AutoRefreshMixin<T extends StatefulWidget>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     AppLogger().d('LifeCycleManager<AppLifecycleState<$state>>');
     if (state == AppLifecycleState.resumed) {
-      if (autoRefresh) {
+      if (autoRefresh && mounted) {
         refresh();
       }
     } else if (state == AppLifecycleState.inactive) {
       if (autoRefresh) {
         _autoRefreshTimer?.cancel();
+        _autoRefreshTimer = null;
       }
     }
   }
