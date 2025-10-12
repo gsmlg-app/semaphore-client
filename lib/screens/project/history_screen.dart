@@ -230,8 +230,13 @@ class _HistoryScreenState extends State<HistoryScreen>
 
     // Try to extract a user-friendly message from common errors
     if (errorMessage.contains('SocketException')) {
-      errorMessage = 'Network connection failed';
-      errorDetails = 'Please check your internet connection and try again.';
+      if (errorMessage.contains('No route to host') || errorMessage.contains('Host not found')) {
+        errorMessage = 'Server not found';
+        errorDetails = 'The server hostname could not be resolved. Please check the server URL and your internet connection.';
+      } else {
+        errorMessage = 'Network connection failed';
+        errorDetails = 'Please check your internet connection and try again.';
+      }
     } else if (errorMessage.contains('TimeoutException')) {
       errorMessage = 'Request timed out';
       errorDetails = 'The server took too long to respond. Please try again.';
@@ -244,6 +249,9 @@ class _HistoryScreenState extends State<HistoryScreen>
     } else if (errorMessage.contains('500')) {
       errorMessage = 'Server error';
       errorDetails = 'The server encountered an error. Please try again later.';
+    } else if (errorMessage.contains('DioException')) {
+      errorMessage = 'Connection failed';
+      errorDetails = 'Unable to connect to the server. Please check your internet connection and server status.';
     }
 
     return Padding(
