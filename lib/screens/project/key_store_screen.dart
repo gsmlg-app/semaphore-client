@@ -7,6 +7,7 @@ import 'package:semaphore_client/destination.dart';
 import 'package:app_utils/app_utils.dart';
 import 'package:app_database/server.dart';
 import 'package:semaphore_client/screens/project/project_screen.dart';
+import 'package:app_error/app_error.dart';
 
 class KeyStoreScreen extends StatefulWidget {
   const KeyStoreScreen({super.key});
@@ -74,11 +75,9 @@ class _KeyStoreScreenState extends State<KeyStoreScreen>
                   }
                   if (state is KeyStoreError) {
                     return SliverFillRemaining(
-                      child: Text(
-                        state.error.toString(),
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
+                      child: AppErrorWidget(
+                        error: state.error,
+                        onRetry: () => loadData(),
                       ),
                     );
                   }

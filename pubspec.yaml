@@ -37,6 +37,7 @@ workspace:
   - app_bloc/variable
   - app_widget/adaptive
   - app_widget/artwork
+  - app_widget/error
   - app_widget/feedback
   - app_widget/server
   - app_widget/web_view
@@ -97,6 +98,7 @@ dependencies:
   template_bloc: any
   variable_bloc: any
   app_artwork: any
+  app_error: any
   app_feedback: any
   app_adaptive_widgets: any
   app_server: any

@@ -19,6 +19,7 @@ import 'package:app_feedback/components/task/status_chip.dart';
 import 'package:app_utils/app_utils.dart';
 import 'package:semaphore_client/screens/project/project_screen.dart';
 import 'package:semaphore_client/screens/project/template_task_screen.dart';
+import 'package:app_error/app_error.dart';
 import 'package:app_api/semaphore_api.dart';
 
 class TemplateScreen extends StatefulWidget {
@@ -97,11 +98,9 @@ class _TemplateScreenState extends State<TemplateScreen>
                 }
                 if (state is TemplateError) {
                   return SliverFillRemaining(
-                    child: Text(
-                      state.error.toString(),
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
+                    child: AppErrorWidget(
+                      error: state.error,
+                      onRetry: () => loadData(),
                     ),
                   );
                 }
@@ -194,11 +193,9 @@ class _TemplateScreenState extends State<TemplateScreen>
                 }
                 if (state is TemplateError) {
                   return SliverFillRemaining(
-                    child: Text(
-                      state.error.toString(),
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
+                    child: AppErrorWidget(
+                      error: state.error,
+                      onRetry: () => loadData(),
                     ),
                   );
                 }

@@ -10,6 +10,7 @@ import 'package:app_feedback/components/inventory/edit_inventory.dart';
 import 'package:app_utils/app_utils.dart';
 import 'package:app_database/server.dart';
 import 'package:semaphore_client/screens/project/project_screen.dart';
+import 'package:app_error/app_error.dart';
 import 'package:app_api/semaphore_api.dart';
 
 class InventoryScreen extends StatefulWidget {
@@ -78,11 +79,9 @@ class _InventoryScreenState extends State<InventoryScreen>
                   }
                   if (state is InventoryError) {
                     return SliverFillRemaining(
-                      child: Text(
-                        state.error.toString(),
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
+                      child: AppErrorWidget(
+                        error: state.error,
+                        onRetry: () => loadData(),
                       ),
                     );
                   }
@@ -176,6 +175,14 @@ class _InventoryScreenState extends State<InventoryScreen>
                   return const SliverFillRemaining(
                     child: Center(
                       child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+                if (state is InventoryError) {
+                  return SliverFillRemaining(
+                    child: AppErrorWidget(
+                      error: state.error,
+                      onRetry: () => loadData(),
                     ),
                   );
                 }

@@ -12,6 +12,7 @@ import 'package:app_feedback/components/task/task_time.dart';
 import 'package:app_utils/app_utils.dart';
 import 'package:app_database/server.dart';
 import 'package:semaphore_client/screens/project/project_screen.dart';
+import 'package:app_error/app_error.dart';
 
 class TemplateTaskScreen extends StatefulWidget {
   const TemplateTaskScreen({super.key, required this.templateId});
@@ -124,11 +125,9 @@ class _TemplateTaskScreenState extends State<TemplateTaskScreen>
                 }
                 if (state is TaskError) {
                   return SliverFillRemaining(
-                    child: Text(
-                      state.error.toString(),
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
+                    child: AppErrorWidget(
+                      error: state.error,
+                      onRetry: () => loadData(),
                     ),
                   );
                 }
