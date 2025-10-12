@@ -3,33 +3,59 @@ import 'package:semaphore_client/screens/settings/settings_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:theme_bloc/theme_bloc.dart';
+import 'package:server_bloc/server.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_locale/app_locale.dart';
+import 'package:app_database/app_database.dart';
 
 void main() {
   group('SettingsScreen', () {
     late ThemeBloc themeBloc;
     late SharedPreferences sharedPreferences;
+    late AppDatabase database;
+    late SemaphoreServerBloc serverBloc;
 
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
       sharedPreferences = await SharedPreferences.getInstance();
+      database = AppDatabase.forTesting();
       themeBloc = ThemeBloc(sharedPreferences);
+      serverBloc = SemaphoreServerBloc(
+        SemaphoreServerState(),
+        database,
+        sharedPreferences,
+      );
     });
 
     tearDown(() {
       themeBloc.close();
+      serverBloc.close();
       sharedPreferences.clear();
+      database.close();
     });
 
     testWidgets('renders correctly with basic components', (
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        RepositoryProvider<SharedPreferences>(
-          create: (context) => sharedPreferences,
-          child: BlocProvider<ThemeBloc>(
-            create: (context) => themeBloc,
+        MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider<SharedPreferences>(
+              create: (context) => sharedPreferences,
+            ),
+            RepositoryProvider<AppDatabase>(
+              create: (context) => database,
+            ),
+          ],
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<ThemeBloc>(
+                create: (context) => themeBloc,
+              ),
+              BlocProvider<SemaphoreServerBloc>(
+                create: (context) => serverBloc,
+              ),
+            ],
             child: MaterialApp(
               localizationsDelegates: AppLocale.localizationsDelegates,
               supportedLocales: AppLocale.supportedLocales,
@@ -45,10 +71,24 @@ void main() {
 
     testWidgets('displays settings sections', (WidgetTester tester) async {
       await tester.pumpWidget(
-        RepositoryProvider<SharedPreferences>(
-          create: (context) => sharedPreferences,
-          child: BlocProvider<ThemeBloc>(
-            create: (context) => themeBloc,
+        MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider<SharedPreferences>(
+              create: (context) => sharedPreferences,
+            ),
+            RepositoryProvider<AppDatabase>(
+              create: (context) => database,
+            ),
+          ],
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<ThemeBloc>(
+                create: (context) => themeBloc,
+              ),
+              BlocProvider<SemaphoreServerBloc>(
+                create: (context) => serverBloc,
+              ),
+            ],
             child: MaterialApp(
               localizationsDelegates: AppLocale.localizationsDelegates,
               supportedLocales: AppLocale.supportedLocales,
@@ -58,15 +98,29 @@ void main() {
         ),
       );
 
-      expect(find.text('App Setting'), findsAtLeastNWidgets(1));
+      expect(find.text('Semaphore'), findsAtLeastNWidgets(1));
     });
 
     testWidgets('shows appearance option', (WidgetTester tester) async {
       await tester.pumpWidget(
-        RepositoryProvider<SharedPreferences>(
-          create: (context) => sharedPreferences,
-          child: BlocProvider<ThemeBloc>(
-            create: (context) => themeBloc,
+        MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider<SharedPreferences>(
+              create: (context) => sharedPreferences,
+            ),
+            RepositoryProvider<AppDatabase>(
+              create: (context) => database,
+            ),
+          ],
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<ThemeBloc>(
+                create: (context) => themeBloc,
+              ),
+              BlocProvider<SemaphoreServerBloc>(
+                create: (context) => serverBloc,
+              ),
+            ],
             child: MaterialApp(
               localizationsDelegates: AppLocale.localizationsDelegates,
               supportedLocales: AppLocale.supportedLocales,
@@ -76,15 +130,29 @@ void main() {
         ),
       );
 
-      expect(find.byIcon(Icons.brightness_medium), findsOneWidget);
+      expect(find.byIcon(Icons.brightness_6), findsOneWidget);
     });
 
     testWidgets('shows accent color option', (WidgetTester tester) async {
       await tester.pumpWidget(
-        RepositoryProvider<SharedPreferences>(
-          create: (context) => sharedPreferences,
-          child: BlocProvider<ThemeBloc>(
-            create: (context) => themeBloc,
+        MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider<SharedPreferences>(
+              create: (context) => sharedPreferences,
+            ),
+            RepositoryProvider<AppDatabase>(
+              create: (context) => database,
+            ),
+          ],
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<ThemeBloc>(
+                create: (context) => themeBloc,
+              ),
+              BlocProvider<SemaphoreServerBloc>(
+                create: (context) => serverBloc,
+              ),
+            ],
             child: MaterialApp(
               localizationsDelegates: AppLocale.localizationsDelegates,
               supportedLocales: AppLocale.supportedLocales,
@@ -94,17 +162,31 @@ void main() {
         ),
       );
 
-      expect(find.byIcon(Icons.format_paint), findsOneWidget);
+      expect(find.byIcon(Icons.color_lens), findsOneWidget);
     });
 
     testWidgets('app settings tile has correct icon', (
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        RepositoryProvider<SharedPreferences>(
-          create: (context) => sharedPreferences,
-          child: BlocProvider<ThemeBloc>(
-            create: (context) => themeBloc,
+        MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider<SharedPreferences>(
+              create: (context) => sharedPreferences,
+            ),
+            RepositoryProvider<AppDatabase>(
+              create: (context) => database,
+            ),
+          ],
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<ThemeBloc>(
+                create: (context) => themeBloc,
+              ),
+              BlocProvider<SemaphoreServerBloc>(
+                create: (context) => serverBloc,
+              ),
+            ],
             child: MaterialApp(
               localizationsDelegates: AppLocale.localizationsDelegates,
               supportedLocales: AppLocale.supportedLocales,
@@ -114,7 +196,7 @@ void main() {
         ),
       );
 
-      expect(find.byIcon(Icons.api), findsOneWidget);
+      expect(find.byIcon(Icons.computer), findsOneWidget);
     });
   });
 }

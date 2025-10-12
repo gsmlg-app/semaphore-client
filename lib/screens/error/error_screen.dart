@@ -32,7 +32,7 @@ class ErrorScreen extends StatelessWidget {
               margin: const EdgeInsets.only(top: 32),
               child: ElevatedButton(
                 onPressed: () {
-                  context.go('/splash');
+                  context.go('/');
                 },
                 child: const Text('Back to Home'),
               ),
