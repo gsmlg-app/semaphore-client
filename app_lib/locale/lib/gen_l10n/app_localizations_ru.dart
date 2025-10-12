@@ -27,6 +27,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get destinationSetting => 'Настройка';
 
   @override
+  String get destinationServer => 'Server';
+
+  @override
   String get settingsTitle => 'Настройка';
 
   @override
@@ -39,7 +42,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get titleSelectColorTheme => 'Выберите акцентный цвет';
 
   @override
-  String get smenuSemaphore => 'Ansible Semaphore';
+  String get smenuSemaphore => 'Server';
+
+  @override
+  String get smenuServer => 'Server';
 
   @override
   String get smenuSemaphoreServer => 'Сервер';

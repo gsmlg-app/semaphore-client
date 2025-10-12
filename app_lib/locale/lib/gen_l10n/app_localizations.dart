@@ -156,6 +156,12 @@ abstract class AppLocalizations {
   /// **'Setting'**
   String get destinationSetting;
 
+  /// No description provided for @destinationServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Server'**
+  String get destinationServer;
+
   /// No description provided for @settingsTitle.
   ///
   /// In en, this message translates to:
@@ -183,8 +189,14 @@ abstract class AppLocalizations {
   /// No description provided for @smenuSemaphore.
   ///
   /// In en, this message translates to:
-  /// **'Semaphore'**
+  /// **'Server'**
   String get smenuSemaphore;
+
+  /// No description provided for @smenuServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Server'**
+  String get smenuServer;
 
   /// No description provided for @smenuSemaphoreServer.
   ///

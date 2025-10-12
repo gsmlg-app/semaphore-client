@@ -27,6 +27,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get destinationSetting => '설정';
 
   @override
+  String get destinationServer => 'Server';
+
+  @override
   String get settingsTitle => '설정';
 
   @override
@@ -39,7 +42,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get titleSelectColorTheme => '색상 테마 선택';
 
   @override
-  String get smenuSemaphore => 'Ansible Semaphore';
+  String get smenuSemaphore => 'Server';
+
+  @override
+  String get smenuServer => 'Server';
 
   @override
   String get smenuSemaphoreServer => '서버';

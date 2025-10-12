@@ -23,11 +23,13 @@ import 'package:team_bloc/team.dart';
 import 'package:template_bloc/template.dart';
 import 'package:theme_bloc/theme.dart';
 import 'package:variable_bloc/variable.dart';
-import 'package:window_manager/window_manager.dart';
+// import 'package:window_manager/window_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Window manager disabled for now
+  /*
   if (PlatformExt.isDesktop) {
     await windowManager.ensureInitialized();
 
@@ -43,6 +45,7 @@ void main() async {
       await windowManager.show();
     });
   }
+  */
 
   final sharedPrefs = await SharedPreferences.getInstance();
   final database = await AppDatabase.createWithMigration();

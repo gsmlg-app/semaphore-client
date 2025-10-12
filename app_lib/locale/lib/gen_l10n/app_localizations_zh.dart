@@ -27,6 +27,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get destinationSetting => '设置';
 
   @override
+  String get destinationServer => 'Server';
+
+  @override
   String get settingsTitle => '设置';
 
   @override
@@ -39,7 +42,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get titleSelectColorTheme => '选择主题色';
 
   @override
-  String get smenuSemaphore => 'Ansible Semaphore';
+  String get smenuSemaphore => 'Server';
+
+  @override
+  String get smenuServer => 'Server';
 
   @override
   String get smenuSemaphoreServer => '服务器';
@@ -334,7 +340,10 @@ class AppLocalizationsZhHans extends AppLocalizationsZh {
   String get titleSelectColorTheme => '选择强调色';
 
   @override
-  String get smenuSemaphore => 'Ansible Semaphore';
+  String get smenuSemaphore => 'Server';
+
+  @override
+  String get smenuServer => 'Server';
 
   @override
   String get smenuSemaphoreServer => '服务器';
@@ -560,7 +569,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get titleSelectColorTheme => '選擇強調顏色';
 
   @override
-  String get smenuSemaphore => 'Ansible Semaphore';
+  String get smenuSemaphore => 'Server';
+
+  @override
+  String get smenuServer => 'Server';
 
   @override
   String get smenuSemaphoreServer => '伺服器';

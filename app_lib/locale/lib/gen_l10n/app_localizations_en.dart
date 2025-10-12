@@ -27,6 +27,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get destinationSetting => 'Setting';
 
   @override
+  String get destinationServer => 'Server';
+
+  @override
   String get settingsTitle => 'Setting';
 
   @override
@@ -39,7 +42,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get titleSelectColorTheme => 'Select Accent Color';
 
   @override
-  String get smenuSemaphore => 'Semaphore';
+  String get smenuSemaphore => 'Server';
+
+  @override
+  String get smenuServer => 'Server';
 
   @override
   String get smenuSemaphoreServer => 'Server';

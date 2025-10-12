@@ -27,6 +27,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get destinationSetting => 'Nastavení';
 
   @override
+  String get destinationServer => 'Server';
+
+  @override
   String get settingsTitle => 'Nastavení';
 
   @override
@@ -39,7 +42,10 @@ class AppLocalizationsCs extends AppLocalizations {
   String get titleSelectColorTheme => 'Vyberte barevnou paletu';
 
   @override
-  String get smenuSemaphore => 'Ansible Semaphore';
+  String get smenuSemaphore => 'Server';
+
+  @override
+  String get smenuServer => 'Server';
 
   @override
   String get smenuSemaphoreServer => 'Server';

@@ -27,8 +27,13 @@ class _HistoryScreenState extends State<HistoryScreen>
   @override
   void loadData() {
     final state = context.read<SemaphoreServerBloc>().state;
-    context.read<HistoryBloc>().add(
-        HistoryLoad(state.activeServer!.api, state.activeProject!.projectId!));
+    final activeServer = state.activeServer;
+    final activeProject = state.activeProject;
+
+    if (activeServer != null && activeProject != null && activeProject.projectId != null) {
+      context.read<HistoryBloc>().add(
+          HistoryLoad(activeServer.api, activeProject.projectId!));
+    }
   }
 
   List<Widget> getActions(BuildContext context,
@@ -104,104 +109,178 @@ class _HistoryScreenState extends State<HistoryScreen>
               listener: (context, state) {
                 loadData();
               },
-              builder: (context, serverState) =>
-                  BlocBuilder<HistoryBloc, HistoryState>(
-                      builder: (context, state) {
-                if (state is HistoryInitial || state is HistoryLoading) {
+              builder: (context, serverState) {
+                final activeServer = serverState.activeServer;
+                final activeProject = serverState.activeProject;
+
+                if (activeServer == null || activeProject == null) {
                   return const SliverFillRemaining(
                     child: Center(
-                      child: CircularProgressIndicator.adaptive(),
+                      child: Text('No server or project selected'),
                     ),
                   );
                 }
-                if (state is HistoryError) {
-                  return SliverFillRemaining(
-                      child: Text(
-                        state.error.toString(),
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
+
+                return BlocBuilder<HistoryBloc, HistoryState>(
+                  builder: (context, state) {
+                    if (state is HistoryInitial || state is HistoryLoading) {
+                      return const SliverFillRemaining(
+                        child: Center(
+                          child: CircularProgressIndicator.adaptive(),
                         ),
-                      ),
-                  );
-                }
-                if (state is HistoryLoaded) {
-                  return SliverList.builder(
-                    itemCount: state.history.length,
-                    itemBuilder: (context, index) {
-                      final history = state.history[index];
-                      return ListTile(
-                          leading: StatusChip(status: history.status),
-                          title: RichText(
-                            text: TextSpan(
-                              children: [
-                                WidgetSpan(
-                                  child: GestureDetector(
-                                    child: Text(
-                                      '#${history.id}',
+                      );
+                    }
+                    if (state is HistoryError) {
+                      return SliverFillRemaining(
+                        child: _buildErrorWidget(context, state.error),
+                      );
+                    }
+                    if (state is HistoryLoaded) {
+                      return SliverList.builder(
+                        itemCount: state.history.length,
+                        itemBuilder: (context, index) {
+                          final history = state.history[index];
+                          return ListTile(
+                              leading: StatusChip(status: history.status),
+                              title: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    WidgetSpan(
+                                      child: GestureDetector(
+                                        child: Text(
+                                          '#${history.id}',
+                                        ),
+                                        onTap: () => showTaskOutput(
+                                          context: context,
+                                          api: activeServer.api,
+                                          projectId: activeProject.projectId!,
+                                          taskId: history.id!,
+                                        ),
+                                      ),
                                     ),
-                                    onTap: () => showTaskOutput(
-                                      context: context,
-                                      api: serverState.activeServer!.api,
-                                      projectId:
-                                          serverState.activeProject!.projectId!,
-                                      taskId: history.id!,
+                                    const WidgetSpan(child: Icon(Icons.arrow_back)),
+                                    WidgetSpan(
+                                      child: GestureDetector(
+                                        child: Text('${history.tplAlias}'),
+                                        onTap: () => context.goNamed(
+                                          TemplateTaskScreen.name,
+                                          pathParameters: {
+                                            'templateId':
+                                                history.templateId.toString(),
+                                          },
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                                const WidgetSpan(child: Icon(Icons.arrow_back)),
-                                WidgetSpan(
-                                  child: GestureDetector(
-                                    child: Text('${history.tplAlias}'),
-                                    onTap: () => context.goNamed(
-                                      TemplateTaskScreen.name,
-                                      pathParameters: {
-                                        'templateId':
-                                            history.templateId.toString(),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TaskTimeWidget(task: history),
+                                  TaskEnvWidget(task: history),
+                                ],
+                              ),
+                              trailing: history.status == 'running' ||
+                                      history.status == 'waiting'
+                                  ? IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.stop),
+                                    )
+                                  : IconButton(
+                                      tooltip: context.l10n!.rerunTask,
+                                      icon: const Icon(Icons.replay),
+                                      onPressed: () {
+                                        final serverState = context.read<SemaphoreServerBloc>().state;
+                                        final currentServer = serverState.activeServer;
+                                        if (currentServer != null) {
+                                          showRunTaskFrom(
+                                            context: context,
+                                            api: currentServer.api,
+                                            projectId: activeProject.projectId!,
+                                            templateId: history.templateId!,
+                                            task: history,
+                                          );
+                                        }
                                       },
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TaskTimeWidget(task: history),
-                              TaskEnvWidget(task: history),
-                            ],
-                          ),
-                          trailing: history.status == 'running' ||
-                                  history.status == 'waiting'
-                              ? IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.stop),
-                                )
-                                : IconButton(
-                                  tooltip: context.l10n!.rerunTask,
-                                  icon: const Icon(Icons.replay),
-                                  onPressed: () {
-                                    showRunTaskFrom(
-                                      context: context,
-                                      api: context
-                                          .read<SemaphoreServerBloc>()
-                                          .state
-                                          .activeServer!
-                                          .api,
-                                      projectId: 1, // history.projectId!,
-                                      templateId: history.templateId!,
-                                      task: history,
-                                    );
-                                  },
-                                ));
-                    },
-                  );
-                }
-                return const SizedBox();
-              }),
+                                    ));
+                        },
+                      );
+                    }
+                    return const SizedBox();
+                  },
+                );
+              },
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildErrorWidget(BuildContext context, dynamic error) {
+    String errorMessage = 'An unexpected error occurred';
+    String errorDetails = '';
+
+    if (error is Exception) {
+      errorMessage = error.toString();
+    } else if (error is String) {
+      errorMessage = error;
+    }
+
+    // Try to extract a user-friendly message from common errors
+    if (errorMessage.contains('SocketException')) {
+      errorMessage = 'Network connection failed';
+      errorDetails = 'Please check your internet connection and try again.';
+    } else if (errorMessage.contains('TimeoutException')) {
+      errorMessage = 'Request timed out';
+      errorDetails = 'The server took too long to respond. Please try again.';
+    } else if (errorMessage.contains('404')) {
+      errorMessage = 'Not found';
+      errorDetails = 'The requested resource could not be found.';
+    } else if (errorMessage.contains('401') || errorMessage.contains('403')) {
+      errorMessage = 'Authentication failed';
+      errorDetails = 'Please check your server credentials and try again.';
+    } else if (errorMessage.contains('500')) {
+      errorMessage = 'Server error';
+      errorDetails = 'The server encountered an error. Please try again later.';
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.error_outline,
+            size: 64,
+            color: Theme.of(context).colorScheme.error,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            errorMessage,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              color: Theme.of(context).colorScheme.error,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          if (errorDetails.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              errorDetails,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+          const SizedBox(height: 24),
+          ElevatedButton.icon(
+            onPressed: () => loadData(),
+            icon: const Icon(Icons.refresh),
+            label: const Text('Retry'),
+          ),
+        ],
       ),
     );
   }

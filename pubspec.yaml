@@ -38,6 +38,7 @@ workspace:
   - app_widget/adaptive
   - app_widget/artwork
   - app_widget/feedback
+  - app_widget/server
   - app_widget/web_view
   - app_plugins/desktop_tray
   - third_party/form_bloc
@@ -98,6 +99,7 @@ dependencies:
   app_artwork: any
   app_feedback: any
   app_adaptive_widgets: any
+  app_server: any
   settings_ui: any
   app_web_view: any
   desktop_tray: any

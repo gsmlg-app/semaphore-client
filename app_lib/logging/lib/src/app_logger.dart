@@ -75,7 +75,7 @@ class AppLogger {
       loggingLevel,
       message,
       error,
-      stackTrace ?? (error != null ? Chain.current() : null),
+      stackTrace ?? (error != null ? StackTrace.current : null),
     );
   }
 

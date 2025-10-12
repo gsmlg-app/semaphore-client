@@ -30,9 +30,13 @@ mixin AutoRefreshMixin<T extends StatefulWidget>
   }
 
   void startRefresh() {
-    setState(() {
+    if (mounted) {
+      setState(() {
+        autoRefresh = true;
+      });
+    } else {
       autoRefresh = true;
-    });
+    }
 
     refresh();
   }
@@ -51,9 +55,13 @@ mixin AutoRefreshMixin<T extends StatefulWidget>
 
   void stopRefresh() {
     _autoRefreshTimer?.cancel();
-    setState(() {
+    if (mounted) {
+      setState(() {
+        autoRefresh = false;
+      });
+    } else {
       autoRefresh = false;
-    });
+    }
   }
 
   void loadData();
