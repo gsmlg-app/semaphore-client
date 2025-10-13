@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:theme_bloc/theme_bloc.dart';
+import 'package:app_theme/app_theme.dart';
 import 'package:app_utils/app_utils.dart';
 import 'package:semaphore_client/screens/settings/select_brightness.dart';
 import 'package:semaphore_client/screens/settings/select_theme.dart';
@@ -25,6 +26,7 @@ class RootSettingList extends StatelessWidget {
                   SettingsTile.navigation(
                     leading: const Icon(Icons.brightness_6),
                     title: Text(context.l10n!.titleSelectAppearance),
+                    value: Text(state.themeMode.title),
                     onPressed: (context) {
                       context.goNamed(SettingsSelectBrightness.name);
                     },
@@ -32,6 +34,7 @@ class RootSettingList extends StatelessWidget {
                   SettingsTile.navigation(
                     leading: const Icon(Icons.color_lens),
                     title: Text(context.l10n!.titleSelectColorTheme),
+                    value: Text(state.theme.name),
                     onPressed: (context) {
                       context.goNamed(SettingsSelectTheme.name);
                     },
