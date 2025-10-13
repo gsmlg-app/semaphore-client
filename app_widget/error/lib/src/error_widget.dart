@@ -38,8 +38,8 @@ class AppErrorWidget extends StatelessWidget {
           Text(
             title ?? errorMessage,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: Theme.of(context).colorScheme.error,
-            ),
+                  color: Theme.of(context).colorScheme.error,
+                ),
             textAlign: TextAlign.center,
           ),
           if (subtitle?.isNotEmpty == true) ...[
@@ -47,8 +47,8 @@ class AppErrorWidget extends StatelessWidget {
             Text(
               subtitle!,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
               textAlign: TextAlign.center,
             ),
           ],
@@ -57,8 +57,8 @@ class AppErrorWidget extends StatelessWidget {
             Text(
               errorDetails,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
               textAlign: TextAlign.center,
             ),
           ],
@@ -85,7 +85,8 @@ class AppErrorWidget extends StatelessWidget {
 
     // Try to extract a user-friendly message from common errors
     if (errorMessage.contains('SocketException')) {
-      if (errorMessage.contains('No route to host') || errorMessage.contains('Host not found')) {
+      if (errorMessage.contains('No route to host') ||
+          errorMessage.contains('Host not found')) {
         return 'Server not found';
       } else {
         return 'Network connection failed';
@@ -110,7 +111,8 @@ class AppErrorWidget extends StatelessWidget {
 
     // Try to extract a user-friendly message from common errors
     if (errorMessage.contains('SocketException')) {
-      if (errorMessage.contains('No route to host') || errorMessage.contains('Host not found')) {
+      if (errorMessage.contains('No route to host') ||
+          errorMessage.contains('Host not found')) {
         return 'The server hostname could not be resolved. Please check the server URL and your internet connection.';
       } else {
         return 'Please check your internet connection and try again.';

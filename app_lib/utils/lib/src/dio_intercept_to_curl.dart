@@ -31,7 +31,9 @@ class DioInterceptToCurl extends Interceptor {
     try {
       _log.info(_cURLRepresentation(requestOptions));
     } catch (err) {
-      _log.warning('unable to create a CURL representation of the requestOptions');
+      _log.warning(
+        'unable to create a CURL representation of the requestOptions',
+      );
     }
   }
 

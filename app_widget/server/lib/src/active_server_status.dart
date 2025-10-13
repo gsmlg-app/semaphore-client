@@ -11,10 +11,13 @@ class ActiveServerStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<SemaphoreServerBloc, SemaphoreServerState, ({
-      SemaphoreServer? activeServer,
-      SemaphoreProject? activeProject,
-    })>(
+    return BlocSelector<
+        SemaphoreServerBloc,
+        SemaphoreServerState,
+        ({
+          SemaphoreServer? activeServer,
+          SemaphoreProject? activeProject,
+        })>(
       selector: (state) => (
         activeServer: state.activeServer,
         activeProject: state.activeProject,

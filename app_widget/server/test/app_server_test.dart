@@ -16,7 +16,8 @@ void main() {
       // expect(find.byType(ServerCard), findsOneWidget);
     });
 
-    testWidgets('ActiveServerStatus builds correctly', (WidgetTester tester) async {
+    testWidgets('ActiveServerStatus builds correctly',
+        (WidgetTester tester) async {
       // TODO: Implement widget tests
       // await tester.pumpWidget(const ActiveServerStatus());
       // expect(find.byType(ActiveServerStatus), findsOneWidget);

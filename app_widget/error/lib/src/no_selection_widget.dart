@@ -28,8 +28,8 @@ class NoSelectionWidget extends StatelessWidget {
             Text(
               message,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-              ),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
               textAlign: TextAlign.center,
             ),
           ],

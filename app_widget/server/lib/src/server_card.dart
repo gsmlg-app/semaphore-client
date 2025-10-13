@@ -113,9 +113,7 @@ class ServerCard extends StatelessWidget {
                   showRenameServerForm(context, server);
                 }
                 if (value == context.l10n!.refresh) {
-                  context
-                      .read<SemaphoreServerBloc>()
-                      .add(LoadProjects(server));
+                  context.read<SemaphoreServerBloc>().add(LoadProjects(server));
                 }
                 if (value == context.l10n!.delete) {
                   _showDeleteServer(context, server);

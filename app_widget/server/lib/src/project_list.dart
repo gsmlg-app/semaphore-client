@@ -66,19 +66,22 @@ class ProjectList extends StatelessWidget {
             }
 
             return Column(
-              children: projects.map((project) => CheckboxListTile(
-                secondary: const Icon(Icons.rocket_launch),
-                title: Text(project.name ?? 'Unknown'),
-                value: serverState.activeServer?.id == server.id &&
-                    serverState.activeProject?.projectId == project.projectId,
-                onChanged: (bool? value) {
-                  if (value == true) {
-                    context
-                        .read<SemaphoreServerBloc>()
-                        .add(SelectServer(server, project));
-                  }
-                },
-              )).toList(),
+              children: projects
+                  .map((project) => CheckboxListTile(
+                        secondary: const Icon(Icons.rocket_launch),
+                        title: Text(project.name ?? 'Unknown'),
+                        value: serverState.activeServer?.id == server.id &&
+                            serverState.activeProject?.projectId ==
+                                project.projectId,
+                        onChanged: (bool? value) {
+                          if (value == true) {
+                            context
+                                .read<SemaphoreServerBloc>()
+                                .add(SelectServer(server, project));
+                          }
+                        },
+                      ))
+                  .toList(),
             );
           },
         );

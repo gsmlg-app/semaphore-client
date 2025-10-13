@@ -33,8 +33,8 @@ class ServerList extends StatelessWidget {
                   Text(
                     'Tap the + button to add your first Semaphore server',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                     textAlign: TextAlign.center,
                   ),
                 ],

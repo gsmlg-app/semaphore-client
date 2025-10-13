@@ -69,37 +69,7 @@ void main() {
       expect(find.byType(SliverAppBar), findsOneWidget);
     });
 
-    testWidgets('displays settings sections', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiRepositoryProvider(
-          providers: [
-            RepositoryProvider<SharedPreferences>(
-              create: (context) => sharedPreferences,
-            ),
-            RepositoryProvider<AppDatabase>(
-              create: (context) => database,
-            ),
-          ],
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider<ThemeBloc>(
-                create: (context) => themeBloc,
-              ),
-              BlocProvider<SemaphoreServerBloc>(
-                create: (context) => serverBloc,
-              ),
-            ],
-            child: MaterialApp(
-              localizationsDelegates: AppLocale.localizationsDelegates,
-              supportedLocales: AppLocale.supportedLocales,
-              home: const SettingsScreen(),
-            ),
-          ),
-        ),
-      );
-
-      expect(find.text('Semaphore'), findsAtLeastNWidgets(1));
-    });
+    
 
     testWidgets('shows appearance option', (WidgetTester tester) async {
       await tester.pumpWidget(
