@@ -23,18 +23,18 @@ class _ActivityScreenState extends State<ActivityScreen>
   void loadData() {
     final state = context.read<SemaphoreServerBloc>().state;
     context.read<ActivityBloc>().add(
-        ActivityLoad(state.activeServer!.api, state.activeProject!.projectId!));
+      ActivityLoad(state.activeServer!.api, state.activeProject!.projectId!),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
-      selectedIndex:
-          Destinations.indexOf(const Key(ProjectScreen.name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-        idx,
+      selectedIndex: Destinations.indexOf(
+        const Key(ProjectScreen.name),
         context,
       ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       smallBody: (context) => SafeArea(
         child: CustomScrollView(
@@ -61,8 +61,12 @@ class _ActivityScreenState extends State<ActivityScreen>
                   previous.activeProject != current.activeProject &&
                   current.activeProject != null,
               listener: (context, state) {
-                context.read<ActivityBloc>().add(ActivityLoad(
-                    state.activeServer!.api, state.activeProject!.projectId!));
+                context.read<ActivityBloc>().add(
+                  ActivityLoad(
+                    state.activeServer!.api,
+                    state.activeProject!.projectId!,
+                  ),
+                );
               },
               child: BlocBuilder<ActivityBloc, ActivityState>(
                 builder: (context, state) {
@@ -124,9 +128,7 @@ class _ActivityScreenState extends State<ActivityScreen>
               builder: (context, state) {
                 if (state is ActivityInitial || state is ActivityLoading) {
                   return const SliverFillRemaining(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
                 if (state is ActivityLoaded) {
@@ -152,13 +154,16 @@ class _ActivityScreenState extends State<ActivityScreen>
     );
   }
 
-  List<Widget> getActions(BuildContext context,
-      {bool isSmall = false, bool isLarge = false}) {
+  List<Widget> getActions(
+    BuildContext context, {
+    bool isSmall = false,
+    bool isLarge = false,
+  }) {
     final size = isSmall
         ? AppAdaptiveActionSize.small
         : isLarge
-            ? AppAdaptiveActionSize.large
-            : AppAdaptiveActionSize.medium;
+        ? AppAdaptiveActionSize.large
+        : AppAdaptiveActionSize.medium;
     return [
       AppAdaptiveActionList(
         size: size,

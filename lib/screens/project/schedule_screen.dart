@@ -25,18 +25,18 @@ class _ScheduleScreenState extends State<ScheduleScreen>
   void loadData() {
     final state = context.read<SemaphoreServerBloc>().state;
     context.read<ScheduleBloc>().add(
-        ScheduleLoad(state.activeServer!.api, state.activeProject!.projectId!));
+      ScheduleLoad(state.activeServer!.api, state.activeProject!.projectId!),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
-      selectedIndex:
-          Destinations.indexOf(const Key(ProjectScreen.name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-        idx,
+      selectedIndex: Destinations.indexOf(
+        const Key(ProjectScreen.name),
         context,
       ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       smallBody: (context) => SafeArea(
         child: CustomScrollView(
@@ -63,8 +63,12 @@ class _ScheduleScreenState extends State<ScheduleScreen>
                   previous.activeProject != current.activeProject &&
                   current.activeProject != null,
               listener: (context, state) {
-                context.read<ScheduleBloc>().add(ScheduleLoad(
-                    state.activeServer!.api, state.activeProject!.projectId!));
+                context.read<ScheduleBloc>().add(
+                  ScheduleLoad(
+                    state.activeServer!.api,
+                    state.activeProject!.projectId!,
+                  ),
+                );
               },
               child: BlocBuilder<ScheduleBloc, ScheduleState>(
                 builder: (context, state) {
@@ -90,22 +94,20 @@ class _ScheduleScreenState extends State<ScheduleScreen>
                         final schedule = state.schedules[index];
                         return ListTile(
                           leading: (schedule.active == true)
-                              ? const Icon(Icons.check_circle,
-                                  color: Colors.green)
+                              ? const Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                )
                               : const Icon(Icons.stop, color: Colors.grey),
                           title: Text(schedule.name ?? '--'),
                           subtitle: Row(
                             children: [
-                              Text(
-                                schedule.cronFormat ?? '--',
-                              ),
+                              Text(schedule.cronFormat ?? '--'),
                               const SizedBox(width: 24),
                               Text(
                                 schedule.tplName ?? '--',
                                 style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurface
+                                  color: Theme.of(context).colorScheme.onSurface
                                       .withValues(alpha: 0.6),
                                 ),
                               ),
@@ -161,9 +163,7 @@ class _ScheduleScreenState extends State<ScheduleScreen>
               builder: (context, state) {
                 if (state is ScheduleInitial || state is ScheduleLoading) {
                   return const SliverFillRemaining(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
                 if (state is ScheduleError) {
@@ -181,7 +181,7 @@ class _ScheduleScreenState extends State<ScheduleScreen>
                     child: DataTable(
                       columns: const [
                         DataColumn(
-                          label: Text(''), 
+                          label: Text(''),
                           columnWidth: FixedColumnWidth(24),
                         ),
                         DataColumn(label: Text('Name')),
@@ -191,62 +191,63 @@ class _ScheduleScreenState extends State<ScheduleScreen>
                       ],
                       rows: [
                         for (final schedule in state.schedules)
-                          DataRow(cells: [
-                            DataCell(
-                              Icon(
-                                schedule.active == true
-                                    ? Icons.check_circle
-                                    : Icons.stop,
-                                color: schedule.active == true
-                                    ? Colors.green
-                                    : Colors.grey,
-                              ),
-                            ),
-                            DataCell(
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(
-                                  schedule.name ?? 'N/A',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                          DataRow(
+                            cells: [
+                              DataCell(
+                                Icon(
+                                  schedule.active == true
+                                      ? Icons.check_circle
+                                      : Icons.stop,
+                                  color: schedule.active == true
+                                      ? Colors.green
+                                      : Colors.grey,
                                 ),
                               ),
-                            ),
-                            DataCell(
-                              Text(schedule.cronFormat ?? 'N/A'),
-                            ),
-                            DataCell(
-                              TextButton(
-                                onPressed: () {
-                                  context.goNamed(
-                                    TemplateTaskScreen.name,
-                                    pathParameters: {
-                                      'templateId':
-                                          schedule.templateId?.toString() ?? '',
-                                    },
-                                  );
-                                },
-                                child: Text(
-                                  schedule.tplName ?? 'N/A',
-                                  overflow: TextOverflow.ellipsis,
+                              DataCell(
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Text(
+                                    schedule.name ?? 'N/A',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ),
-                            ),
-                            DataCell(
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    onPressed: () {},
+                              DataCell(Text(schedule.cronFormat ?? 'N/A')),
+                              DataCell(
+                                TextButton(
+                                  onPressed: () {
+                                    context.goNamed(
+                                      TemplateTaskScreen.name,
+                                      pathParameters: {
+                                        'templateId':
+                                            schedule.templateId?.toString() ??
+                                            '',
+                                      },
+                                    );
+                                  },
+                                  child: Text(
+                                    schedule.tplName ?? 'N/A',
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  IconButton(
-                                    icon: const Icon(Icons.edit),
-                                    onPressed: () {},
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ]),
+                              DataCell(
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.edit),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   );
@@ -262,13 +263,16 @@ class _ScheduleScreenState extends State<ScheduleScreen>
     );
   }
 
-  List<Widget> getActions(BuildContext context,
-      {bool isSmall = false, bool isLarge = false}) {
+  List<Widget> getActions(
+    BuildContext context, {
+    bool isSmall = false,
+    bool isLarge = false,
+  }) {
     final size = isSmall
         ? AppAdaptiveActionSize.small
         : isLarge
-            ? AppAdaptiveActionSize.large
-            : AppAdaptiveActionSize.medium;
+        ? AppAdaptiveActionSize.large
+        : AppAdaptiveActionSize.medium;
     return [
       AppAdaptiveActionList(
         size: size,

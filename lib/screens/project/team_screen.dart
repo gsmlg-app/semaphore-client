@@ -23,18 +23,18 @@ class _TeamScreenState extends State<TeamScreen>
   void loadData() {
     final state = context.read<SemaphoreServerBloc>().state;
     context.read<TeamBloc>().add(
-        TeamLoad(state.activeServer!.api, state.activeProject!.projectId!));
+      TeamLoad(state.activeServer!.api, state.activeProject!.projectId!),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
-      selectedIndex:
-          Destinations.indexOf(const Key(ProjectScreen.name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-        idx,
+      selectedIndex: Destinations.indexOf(
+        const Key(ProjectScreen.name),
         context,
       ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       smallBody: (context) => SafeArea(
         child: CustomScrollView(
@@ -61,57 +61,62 @@ class _TeamScreenState extends State<TeamScreen>
                   previous.activeProject != current.activeProject &&
                   current.activeProject != null,
               listener: (context, state) {
-                context.read<TeamBloc>().add(TeamLoad(
-                    state.activeServer!.api, state.activeProject!.projectId!));
+                context.read<TeamBloc>().add(
+                  TeamLoad(
+                    state.activeServer!.api,
+                    state.activeProject!.projectId!,
+                  ),
+                );
               },
-              child:
-                  BlocBuilder<TeamBloc, TeamState>(builder: (context, state) {
-                if (state is TeamInitial || state is TeamLoading) {
-                  return const SliverFillRemaining(
-                    child: Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    ),
-                  );
-                }
-                if (state is TeamError) {
-                  return SliverFillRemaining(
-                    child: AppErrorWidget(
-                      error: state.error,
-                      onRetry: () => loadData(),
-                    ),
-                  );
-                }
-                if (state is TeamLoaded) {
-                  return SliverList.builder(
-                    itemCount: state.users.length,
-                    itemBuilder: (context, index) {
-                      final team = state.users[index];
-                      return ListTile(
-                        leading: const Icon(Icons.account_box),
-                        title: Text(team.name ?? '--'),
-                        subtitle: Wrap(
-                          children: [
-                            Text(team.username ?? '--'),
-                            const SizedBox(width: 8),
-                            Text(team.role?.name ?? '--'),
-                          ],
-                        ),
-                        trailing: AppAdaptiveActionList(
-                          size: AppAdaptiveActionSize.small,
-                          actions: [
-                            AppAdaptiveAction(
-                              icon: Icons.delete,
-                              title: context.l10n!.delete,
-                              onPressed: () {},
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                }
-                return const Center(child: Text('--'));
-              }),
+              child: BlocBuilder<TeamBloc, TeamState>(
+                builder: (context, state) {
+                  if (state is TeamInitial || state is TeamLoading) {
+                    return const SliverFillRemaining(
+                      child: Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      ),
+                    );
+                  }
+                  if (state is TeamError) {
+                    return SliverFillRemaining(
+                      child: AppErrorWidget(
+                        error: state.error,
+                        onRetry: () => loadData(),
+                      ),
+                    );
+                  }
+                  if (state is TeamLoaded) {
+                    return SliverList.builder(
+                      itemCount: state.users.length,
+                      itemBuilder: (context, index) {
+                        final team = state.users[index];
+                        return ListTile(
+                          leading: const Icon(Icons.account_box),
+                          title: Text(team.name ?? '--'),
+                          subtitle: Wrap(
+                            children: [
+                              Text(team.username ?? '--'),
+                              const SizedBox(width: 8),
+                              Text(team.role?.name ?? '--'),
+                            ],
+                          ),
+                          trailing: AppAdaptiveActionList(
+                            size: AppAdaptiveActionSize.small,
+                            actions: [
+                              AppAdaptiveAction(
+                                icon: Icons.delete,
+                                title: context.l10n!.delete,
+                                onPressed: () {},
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  return const Center(child: Text('--'));
+                },
+              ),
             ),
           ],
         ),
@@ -140,9 +145,7 @@ class _TeamScreenState extends State<TeamScreen>
               builder: (context, state) {
                 if (state is TeamInitial || state is TeamLoading) {
                   return const SliverFillRemaining(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
                 if (state is TeamError) {
@@ -164,34 +167,32 @@ class _TeamScreenState extends State<TeamScreen>
                       ],
                       rows: [
                         for (final user in state.users)
-                          DataRow(cells: [
-                            DataCell(
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(
-                                  user.name ?? 'N/A',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                          DataRow(
+                            cells: [
+                              DataCell(
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Text(
+                                    user.name ?? 'N/A',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ),
-                            ),
-                            DataCell(
-                              Text(user.username ?? '--'),
-                            ),
-                            DataCell(
-                              Text(user.role?.name ?? '--'),
-                            ),
-                            DataCell(
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    onPressed: () {},
-                                  ),
-                                ],
+                              DataCell(Text(user.username ?? '--')),
+                              DataCell(Text(user.role?.name ?? '--')),
+                              DataCell(
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ]),
+                            ],
+                          ),
                       ],
                     ),
                   );
@@ -207,13 +208,16 @@ class _TeamScreenState extends State<TeamScreen>
     );
   }
 
-  List<Widget> getActions(BuildContext context,
-      {bool isSmall = false, bool isLarge = false}) {
+  List<Widget> getActions(
+    BuildContext context, {
+    bool isSmall = false,
+    bool isLarge = false,
+  }) {
     final size = isSmall
         ? AppAdaptiveActionSize.small
         : isLarge
-            ? AppAdaptiveActionSize.large
-            : AppAdaptiveActionSize.medium;
+        ? AppAdaptiveActionSize.large
+        : AppAdaptiveActionSize.medium;
     return [
       AppAdaptiveActionList(
         size: size,

@@ -12,17 +12,12 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
       selectedIndex: Destinations.indexOf(const Key(name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-            idx,
-            context,
-          ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       body: (context) => SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
-            SliverAppBar(
-              title: Text(context.l10n!.settingsTitle),
-            ),
+            SliverAppBar(title: Text(context.l10n!.settingsTitle)),
             SliverList(
               delegate: SliverChildListDelegate([
                 SizedBox(
@@ -54,9 +49,7 @@ class SettingsScreen extends StatelessWidget {
           ],
         ),
       ),
-      largeSecondaryBody: (_) => SafeArea(
-        child: Container(),
-      ),
+      largeSecondaryBody: (_) => SafeArea(child: Container()),
     );
   }
 }

@@ -15,10 +15,7 @@ class ServerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
       selectedIndex: Destinations.indexOf(const Key(name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-            idx,
-            context,
-          ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       body: (context) => Stack(
         children: [
@@ -85,9 +82,7 @@ class ServerScreen extends StatelessWidget {
           ),
         ],
       ),
-      largeSecondaryBody: (_) => SafeArea(
-        child: Container(),
-      ),
+      largeSecondaryBody: (_) => SafeArea(child: Container()),
     );
   }
 

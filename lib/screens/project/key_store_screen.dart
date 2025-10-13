@@ -23,18 +23,18 @@ class _KeyStoreScreenState extends State<KeyStoreScreen>
   void loadData() {
     final state = context.read<SemaphoreServerBloc>().state;
     context.read<KeyStoreBloc>().add(
-        KeyStoreLoad(state.activeServer!.api, state.activeProject!.projectId!));
+      KeyStoreLoad(state.activeServer!.api, state.activeProject!.projectId!),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
-      selectedIndex:
-          Destinations.indexOf(const Key(ProjectScreen.name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-        idx,
+      selectedIndex: Destinations.indexOf(
+        const Key(ProjectScreen.name),
         context,
       ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       smallBody: (context) => SafeArea(
         child: CustomScrollView(
@@ -61,8 +61,12 @@ class _KeyStoreScreenState extends State<KeyStoreScreen>
                   previous.activeProject != current.activeProject &&
                   current.activeProject != null,
               listener: (context, state) {
-                context.read<KeyStoreBloc>().add(KeyStoreLoad(
-                    state.activeServer!.api, state.activeProject!.projectId!));
+                context.read<KeyStoreBloc>().add(
+                  KeyStoreLoad(
+                    state.activeServer!.api,
+                    state.activeProject!.projectId!,
+                  ),
+                );
               },
               child: BlocBuilder<KeyStoreBloc, KeyStoreState>(
                 builder: (context, state) {
@@ -140,9 +144,7 @@ class _KeyStoreScreenState extends State<KeyStoreScreen>
               builder: (context, state) {
                 if (state is KeyStoreInitial || state is KeyStoreLoading) {
                   return const SliverFillRemaining(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
                 if (state is KeyStoreError) {
@@ -165,35 +167,35 @@ class _KeyStoreScreenState extends State<KeyStoreScreen>
                       ],
                       rows: [
                         for (final accessKey in state.accessKeys)
-                          DataRow(cells: [
-                            DataCell(
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(
-                                  accessKey.name ?? 'N/A',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                          DataRow(
+                            cells: [
+                              DataCell(
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Text(
+                                    accessKey.name ?? 'N/A',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ),
-                            ),
-                            DataCell(
-                              Text(accessKey.type?.name ?? '--'),
-                            ),
-                            DataCell(
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    onPressed: () {},
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.edit),
-                                    onPressed: () {},
-                                  ),
-                                ],
+                              DataCell(Text(accessKey.type?.name ?? '--')),
+                              DataCell(
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.edit),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ]),
+                            ],
+                          ),
                       ],
                     ),
                   );
@@ -209,13 +211,16 @@ class _KeyStoreScreenState extends State<KeyStoreScreen>
     );
   }
 
-  List<Widget> getActions(BuildContext context,
-      {bool isSmall = false, bool isLarge = false}) {
+  List<Widget> getActions(
+    BuildContext context, {
+    bool isSmall = false,
+    bool isLarge = false,
+  }) {
     final size = isSmall
         ? AppAdaptiveActionSize.small
         : isLarge
-            ? AppAdaptiveActionSize.large
-            : AppAdaptiveActionSize.medium;
+        ? AppAdaptiveActionSize.large
+        : AppAdaptiveActionSize.medium;
     return [
       AppAdaptiveActionList(
         size: size,

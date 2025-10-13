@@ -65,23 +65,39 @@ class ProjectList extends StatelessWidget {
               );
             }
 
-            return Column(
-              children: projects
-                  .map((project) => CheckboxListTile(
-                        secondary: const Icon(Icons.rocket_launch),
-                        title: Text(project.name ?? 'Unknown'),
-                        value: serverState.activeServer?.id == server.id &&
-                            serverState.activeProject?.projectId ==
-                                project.projectId,
-                        onChanged: (bool? value) {
-                          if (value == true) {
-                            context
-                                .read<SemaphoreServerBloc>()
-                                .add(SelectServer(server, project));
-                          }
-                        },
-                      ))
-                  .toList(),
+            return Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: Column(
+                children: projects
+                    .map((project) => RadioListTile<int?>(
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4.0),
+                          dense: true,
+                          secondary: const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: Icon(Icons.rocket_launch, size: 16),
+                          ),
+                          title: Text(
+                            project.name ?? 'Unknown',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          value: project.projectId,
+                          groupValue: serverState.activeServer?.id ==
+                                      server.id &&
+                                  serverState.activeProject?.projectId != null
+                              ? serverState.activeProject!.projectId
+                              : null,
+                          onChanged: (int? value) {
+                            if (value != null) {
+                              context
+                                  .read<SemaphoreServerBloc>()
+                                  .add(SelectServer(server, project));
+                            }
+                          },
+                        ))
+                    .toList(),
+              ),
             );
           },
         );

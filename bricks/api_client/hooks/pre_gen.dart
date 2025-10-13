@@ -12,14 +12,17 @@ void run(HookContext context) {
 
   // Validate package naming conventions
   if (!_isValidPackageName(packageName)) {
-    throw ArgumentError('❌ Invalid package name: "$packageName". '
-        'Must be a valid Dart package name (lowercase letters, numbers, underscores only)');
+    throw ArgumentError(
+      '❌ Invalid package name: "$packageName". '
+      'Must be a valid Dart package name (lowercase letters, numbers, underscores only)',
+    );
   }
 
   // Check for reserved keywords
   if (_isDartReservedKeyword(packageName)) {
     throw ArgumentError(
-        '❌ Package name "$packageName" is a Dart reserved keyword');
+      '❌ Package name "$packageName" is a Dart reserved keyword',
+    );
   }
 
   // Convert to different cases for template usage
@@ -113,17 +116,20 @@ bool _isDartReservedKeyword(String name) {
     'yield',
     'dynamic',
     'implements',
-    'set'
+    'set',
   };
   return reservedKeywords.contains(name.toLowerCase());
 }
 
 String _toPascalCase(String input) {
   if (input.isEmpty) return input;
-  return input.split('_').map((word) {
-    if (word.isEmpty) return word;
-    return word[0].toUpperCase() + word.substring(1).toLowerCase();
-  }).join('');
+  return input
+      .split('_')
+      .map((word) {
+        if (word.isEmpty) return word;
+        return word[0].toUpperCase() + word.substring(1).toLowerCase();
+      })
+      .join('');
 }
 
 String _toCamelCase(String input) {

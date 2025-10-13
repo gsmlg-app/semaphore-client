@@ -16,20 +16,17 @@ class SettingsSelectBrightness extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
-      selectedIndex:
-          Destinations.indexOf(const Key(SettingsScreen.name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-            idx,
-            context,
-          ),
+      selectedIndex: Destinations.indexOf(
+        const Key(SettingsScreen.name),
+        context,
+      ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       body: (context) => SafeArea(
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: <Widget>[
-            SliverAppBar(
-              title: Text(context.l10n!.titleSelectAppearance),
-            ),
+            SliverAppBar(title: Text(context.l10n!.titleSelectAppearance)),
             SliverList(
               delegate: SliverChildListDelegate([
                 SizedBox(
@@ -55,9 +52,7 @@ class SettingsSelectBrightness extends StatelessWidget {
           ],
         ),
       ),
-      largeSecondaryBody: (_) => SafeArea(
-        child: Container(),
-      ),
+      largeSecondaryBody: (_) => SafeArea(child: Container()),
     );
   }
 
@@ -74,7 +69,9 @@ class SettingsSelectBrightness extends StatelessWidget {
                   title: const Text('System'),
                   checked: state.themeMode == ThemeMode.system,
                   onPressed: (context) {
-                    context.read<ThemeBloc>().add(const ChangeThemeMode(ThemeMode.system));
+                    context.read<ThemeBloc>().add(
+                      const ChangeThemeMode(ThemeMode.system),
+                    );
                   },
                 ),
                 SettingsTile.checkTile(
@@ -82,7 +79,9 @@ class SettingsSelectBrightness extends StatelessWidget {
                   title: const Text('Light'),
                   checked: state.themeMode == ThemeMode.light,
                   onPressed: (context) {
-                    context.read<ThemeBloc>().add(const ChangeThemeMode(ThemeMode.light));
+                    context.read<ThemeBloc>().add(
+                      const ChangeThemeMode(ThemeMode.light),
+                    );
                   },
                 ),
                 SettingsTile.checkTile(
@@ -90,7 +89,9 @@ class SettingsSelectBrightness extends StatelessWidget {
                   title: const Text('Dark'),
                   checked: state.themeMode == ThemeMode.dark,
                   onPressed: (context) {
-                    context.read<ThemeBloc>().add(const ChangeThemeMode(ThemeMode.dark));
+                    context.read<ThemeBloc>().add(
+                      const ChangeThemeMode(ThemeMode.dark),
+                    );
                   },
                 ),
               ],

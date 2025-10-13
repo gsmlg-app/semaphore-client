@@ -16,8 +16,8 @@ class Destinations {
         ),
         NavigationDestination(
           key: const Key(ProjectScreen.name),
-          icon: const Icon(Icons.work_outline),
-          selectedIcon: const Icon(Icons.work),
+          icon: const Icon(Icons.rocket_launch_outlined),
+          selectedIcon: const Icon(Icons.rocket_launch),
           label: context.l10n!.destinationProject,
         ),
         NavigationDestination(

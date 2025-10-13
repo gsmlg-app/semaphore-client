@@ -22,6 +22,7 @@ class HistoryScreen extends StatefulWidget {
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();
 }
+
 class _HistoryScreenState extends State<HistoryScreen>
     with WidgetsBindingObserver, AutoRefreshMixin {
   @override
@@ -30,19 +31,25 @@ class _HistoryScreenState extends State<HistoryScreen>
     final activeServer = state.activeServer;
     final activeProject = state.activeProject;
 
-    if (activeServer != null && activeProject != null && activeProject.projectId != null) {
+    if (activeServer != null &&
+        activeProject != null &&
+        activeProject.projectId != null) {
       context.read<HistoryBloc>().add(
-          HistoryLoad(activeServer.api, activeProject.projectId!));
+        HistoryLoad(activeServer.api, activeProject.projectId!),
+      );
     }
   }
 
-  List<Widget> getActions(BuildContext context,
-      {bool isSmall = false, bool isLarge = false}) {
+  List<Widget> getActions(
+    BuildContext context, {
+    bool isSmall = false,
+    bool isLarge = false,
+  }) {
     final size = isSmall
         ? AppAdaptiveActionSize.small
         : isLarge
-            ? AppAdaptiveActionSize.large
-            : AppAdaptiveActionSize.medium;
+        ? AppAdaptiveActionSize.large
+        : AppAdaptiveActionSize.medium;
     return [
       AppAdaptiveActionList(
         size: size,
@@ -75,12 +82,11 @@ class _HistoryScreenState extends State<HistoryScreen>
   @override
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
-      selectedIndex:
-          Destinations.indexOf(const Key(ProjectScreen.name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-        idx,
+      selectedIndex: Destinations.indexOf(
+        const Key(ProjectScreen.name),
         context,
       ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       body: (context) => SafeArea(
         child: CustomScrollView(
@@ -115,9 +121,7 @@ class _HistoryScreenState extends State<HistoryScreen>
 
                 if (activeServer == null || activeProject == null) {
                   return const SliverFillRemaining(
-                    child: Center(
-                      child: Text('No server or project selected'),
-                    ),
+                    child: Center(child: Text('No server or project selected')),
                   );
                 }
 
@@ -141,69 +145,74 @@ class _HistoryScreenState extends State<HistoryScreen>
                         itemBuilder: (context, index) {
                           final history = state.history[index];
                           return ListTile(
-                              leading: StatusChip(status: history.status),
-                              title: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                      child: GestureDetector(
-                                        child: Text(
-                                          '#${history.id}',
-                                        ),
-                                        onTap: () => showTaskOutput(
-                                          context: context,
-                                          api: activeServer.api,
-                                          projectId: activeProject.projectId!,
-                                          taskId: history.id!,
-                                        ),
-                                      ),
-                                    ),
-                                    const WidgetSpan(child: Icon(Icons.arrow_back)),
-                                    WidgetSpan(
-                                      child: GestureDetector(
-                                        child: Text('${history.tplAlias}'),
-                                        onTap: () => context.goNamed(
-                                          TemplateTaskScreen.name,
-                                          pathParameters: {
-                                            'templateId':
-                                                history.templateId.toString(),
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            leading: StatusChip(status: history.status),
+                            title: RichText(
+                              text: TextSpan(
                                 children: [
-                                  TaskTimeWidget(task: history),
-                                  TaskEnvWidget(task: history),
+                                  WidgetSpan(
+                                    child: GestureDetector(
+                                      child: Text('#${history.id}'),
+                                      onTap: () => showTaskOutput(
+                                        context: context,
+                                        api: activeServer.api,
+                                        projectId: activeProject.projectId!,
+                                        taskId: history.id!,
+                                      ),
+                                    ),
+                                  ),
+                                  const WidgetSpan(
+                                    child: Icon(Icons.arrow_back),
+                                  ),
+                                  WidgetSpan(
+                                    child: GestureDetector(
+                                      child: Text('${history.tplAlias}'),
+                                      onTap: () => context.goNamed(
+                                        TemplateTaskScreen.name,
+                                        pathParameters: {
+                                          'templateId': history.templateId
+                                              .toString(),
+                                        },
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
-                              trailing: history.status == 'running' ||
-                                      history.status == 'waiting'
-                                  ? IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.stop),
-                                    )
-                                  : IconButton(
-                                      tooltip: context.l10n!.rerunTask,
-                                      icon: const Icon(Icons.replay),
-                                      onPressed: () {
-                                        final serverState = context.read<SemaphoreServerBloc>().state;
-                                        final currentServer = serverState.activeServer;
-                                        if (currentServer != null) {
-                                          showRunTaskFrom(
-                                            context: context,
-                                            api: currentServer.api,
-                                            projectId: activeProject.projectId!,
-                                            templateId: history.templateId!,
-                                            task: history,
-                                          );
-                                        }
-                                      },
-                                    ));
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TaskTimeWidget(task: history),
+                                TaskEnvWidget(task: history),
+                              ],
+                            ),
+                            trailing:
+                                history.status == 'running' ||
+                                    history.status == 'waiting'
+                                ? IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.stop),
+                                  )
+                                : IconButton(
+                                    tooltip: context.l10n!.rerunTask,
+                                    icon: const Icon(Icons.replay),
+                                    onPressed: () {
+                                      final serverState = context
+                                          .read<SemaphoreServerBloc>()
+                                          .state;
+                                      final currentServer =
+                                          serverState.activeServer;
+                                      if (currentServer != null) {
+                                        showRunTaskFrom(
+                                          context: context,
+                                          api: currentServer.api,
+                                          projectId: activeProject.projectId!,
+                                          templateId: history.templateId!,
+                                          task: history,
+                                        );
+                                      }
+                                    },
+                                  ),
+                          );
                         },
                       );
                     }
@@ -230,9 +239,11 @@ class _HistoryScreenState extends State<HistoryScreen>
 
     // Try to extract a user-friendly message from common errors
     if (errorMessage.contains('SocketException')) {
-      if (errorMessage.contains('No route to host') || errorMessage.contains('Host not found')) {
+      if (errorMessage.contains('No route to host') ||
+          errorMessage.contains('Host not found')) {
         errorMessage = 'Server not found';
-        errorDetails = 'The server hostname could not be resolved. Please check the server URL and your internet connection.';
+        errorDetails =
+            'The server hostname could not be resolved. Please check the server URL and your internet connection.';
       } else {
         errorMessage = 'Network connection failed';
         errorDetails = 'Please check your internet connection and try again.';
@@ -251,7 +262,8 @@ class _HistoryScreenState extends State<HistoryScreen>
       errorDetails = 'The server encountered an error. Please try again later.';
     } else if (errorMessage.contains('DioException')) {
       errorMessage = 'Connection failed';
-      errorDetails = 'Unable to connect to the server. Please check your internet connection and server status.';
+      errorDetails =
+          'Unable to connect to the server. Please check your internet connection and server status.';
     }
 
     return Padding(

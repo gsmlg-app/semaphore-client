@@ -46,7 +46,9 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     }
     WidgetsBinding.instance.addObserver(this);
     if (WidgetsBinding.instance.lifecycleState != null) {
-      AppLogger().d('App lifecycle state: ${WidgetsBinding.instance.lifecycleState!}');
+      AppLogger().d(
+        'App lifecycle state: ${WidgetsBinding.instance.lifecycleState!}',
+      );
     }
   }
 

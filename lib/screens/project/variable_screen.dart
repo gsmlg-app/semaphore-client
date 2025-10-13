@@ -23,18 +23,18 @@ class _VariableScreenState extends State<VariableScreen>
   void loadData() {
     final state = context.read<SemaphoreServerBloc>().state;
     context.read<VariableBloc>().add(
-        VariableLoad(state.activeServer!.api, state.activeProject!.projectId!));
+      VariableLoad(state.activeServer!.api, state.activeProject!.projectId!),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
-      selectedIndex:
-          Destinations.indexOf(const Key(ProjectScreen.name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-        idx,
+      selectedIndex: Destinations.indexOf(
+        const Key(ProjectScreen.name),
         context,
       ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       smallBody: (context) => SafeArea(
         child: CustomScrollView(
@@ -61,8 +61,12 @@ class _VariableScreenState extends State<VariableScreen>
                   previous.activeProject != current.activeProject &&
                   current.activeProject != null,
               listener: (context, state) {
-                context.read<VariableBloc>().add(VariableLoad(
-                    state.activeServer!.api, state.activeProject!.projectId!));
+                context.read<VariableBloc>().add(
+                  VariableLoad(
+                    state.activeServer!.api,
+                    state.activeProject!.projectId!,
+                  ),
+                );
               },
               child: BlocBuilder<VariableBloc, VariableState>(
                 builder: (context, state) {
@@ -139,9 +143,7 @@ class _VariableScreenState extends State<VariableScreen>
               builder: (context, state) {
                 if (state is VariableInitial || state is VariableLoading) {
                   return const SliverFillRemaining(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
                 if (state is VariableError) {
@@ -163,32 +165,34 @@ class _VariableScreenState extends State<VariableScreen>
                       ],
                       rows: [
                         for (final variable in state.variables)
-                          DataRow(cells: [
-                            DataCell(
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(
-                                  variable.name ?? 'N/A',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                          DataRow(
+                            cells: [
+                              DataCell(
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Text(
+                                    variable.name ?? 'N/A',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ),
-                            ),
-                            DataCell(
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    onPressed: () {},
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.edit),
-                                    onPressed: () {},
-                                  ),
-                                ],
+                              DataCell(
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.edit),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ]),
+                            ],
+                          ),
                       ],
                     ),
                   );
@@ -204,13 +208,16 @@ class _VariableScreenState extends State<VariableScreen>
     );
   }
 
-  List<Widget> getActions(BuildContext context,
-      {bool isSmall = false, bool isLarge = false}) {
+  List<Widget> getActions(
+    BuildContext context, {
+    bool isSmall = false,
+    bool isLarge = false,
+  }) {
     final size = isSmall
         ? AppAdaptiveActionSize.small
         : isLarge
-            ? AppAdaptiveActionSize.large
-            : AppAdaptiveActionSize.medium;
+        ? AppAdaptiveActionSize.large
+        : AppAdaptiveActionSize.medium;
     return [
       AppAdaptiveActionList(
         size: size,

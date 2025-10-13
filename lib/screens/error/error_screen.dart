@@ -17,16 +17,19 @@ class ErrorScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               alignment: Alignment.topLeft,
-              child: Text('Error:',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(color: Theme.of(context).colorScheme.error)),
+              child: Text(
+                'Error:',
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Text(routerState.error.toString(),
-                  style: Theme.of(context).textTheme.bodyLarge),
+              child: Text(
+                routerState.error.toString(),
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
             ),
             Container(
               margin: const EdgeInsets.only(top: 32),

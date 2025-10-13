@@ -17,20 +17,17 @@ class SettingsSelectTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
-      selectedIndex:
-          Destinations.indexOf(const Key(SettingsScreen.name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-            idx,
-            context,
-          ),
+      selectedIndex: Destinations.indexOf(
+        const Key(SettingsScreen.name),
+        context,
+      ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       body: (context) => SafeArea(
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: <Widget>[
-            SliverAppBar(
-              title: Text(context.l10n!.titleSelectColorTheme),
-            ),
+            SliverAppBar(title: Text(context.l10n!.titleSelectColorTheme)),
             SliverList(
               delegate: SliverChildListDelegate([
                 SizedBox(
@@ -56,9 +53,7 @@ class SettingsSelectTheme extends StatelessWidget {
           ],
         ),
       ),
-      largeSecondaryBody: (_) => SafeArea(
-        child: Container(),
-      ),
+      largeSecondaryBody: (_) => SafeArea(child: Container()),
     );
   }
 

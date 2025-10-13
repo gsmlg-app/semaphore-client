@@ -25,20 +25,21 @@ class _RepositoryScreenState extends State<RepositoryScreen>
   void loadData() {
     final state = context.read<SemaphoreServerBloc>().state;
     context.read<KeyStoreBloc>().add(
-        KeyStoreLoad(state.activeServer!.api, state.activeProject!.projectId!));
-    context.read<RepositoryBloc>().add(RepositoryLoad(
-        state.activeServer!.api, state.activeProject!.projectId!));
+      KeyStoreLoad(state.activeServer!.api, state.activeProject!.projectId!),
+    );
+    context.read<RepositoryBloc>().add(
+      RepositoryLoad(state.activeServer!.api, state.activeProject!.projectId!),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
-      selectedIndex:
-          Destinations.indexOf(const Key(ProjectScreen.name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-        idx,
+      selectedIndex: Destinations.indexOf(
+        const Key(ProjectScreen.name),
         context,
       ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       smallBody: (context) => SafeArea(
         child: CustomScrollView(
@@ -65,12 +66,17 @@ class _RepositoryScreenState extends State<RepositoryScreen>
                   previous.activeProject != current.activeProject &&
                   current.activeProject != null,
               listener: (context, state) {
-                context.read<RepositoryBloc>().add(RepositoryLoad(
-                    state.activeServer!.api, state.activeProject!.projectId!));
+                context.read<RepositoryBloc>().add(
+                  RepositoryLoad(
+                    state.activeServer!.api,
+                    state.activeProject!.projectId!,
+                  ),
+                );
               },
               child: BlocBuilder<RepositoryBloc, RepositoryState>(
                 builder: (context, state) {
-                  if (state is RepositoryInitial || state is RepositoryLoading) {
+                  if (state is RepositoryInitial ||
+                      state is RepositoryLoading) {
                     return const SliverFillRemaining(
                       child: Center(
                         child: CircularProgressIndicator.adaptive(),
@@ -103,7 +109,9 @@ class _RepositoryScreenState extends State<RepositoryScreen>
                               Text(
                                 repository.gitBranch ?? '--',
                                 style: TextStyle(
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.secondary,
                                 ),
                               ),
                             ],
@@ -159,10 +167,9 @@ class _RepositoryScreenState extends State<RepositoryScreen>
                 scrollDirection: Axis.horizontal,
                 child: BlocBuilder<RepositoryBloc, RepositoryState>(
                   builder: (context, state) {
-                    if (state is RepositoryInitial || state is RepositoryLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                    if (state is RepositoryInitial ||
+                        state is RepositoryLoading) {
+                      return const Center(child: CircularProgressIndicator());
                     }
                     if (state is RepositoryError) {
                       return Center(
@@ -188,54 +195,58 @@ class _RepositoryScreenState extends State<RepositoryScreen>
                         ],
                         rows: [
                           for (final repo in state.repositorys)
-                            DataRow(cells: [
-                              DataCell(
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Text(
-                                    repo.name ?? 'N/A',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Wrap(
-                                  children: [
-                                    Text(
-                                      repo.gitUrl ?? 'N/A',
+                            DataRow(
+                              cells: [
+                                DataCell(
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Text(
+                                      repo.name ?? 'N/A',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                  ],
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  repo.gitBranch ?? 'N/A',
-                                  style: TextStyle(
-                                    color: Theme.of(context).colorScheme.secondary,
                                   ),
                                 ),
-                              ),
-                              DataCell(
-                                KeyStoreName(accessKeyId: repo.sshKeyId),
-                              ),
-                              DataCell(
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.delete),
-                                      onPressed: () {},
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      onPressed: () {},
-                                    ),
-                                  ],
+                                DataCell(
+                                  Wrap(
+                                    children: [
+                                      Text(
+                                        repo.gitUrl ?? 'N/A',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ]),
+                                DataCell(
+                                  Text(
+                                    repo.gitBranch ?? 'N/A',
+                                    style: TextStyle(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.secondary,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                  KeyStoreName(accessKeyId: repo.sshKeyId),
+                                ),
+                                DataCell(
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.delete),
+                                        onPressed: () {},
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.edit),
+                                        onPressed: () {},
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                         ],
                       );
                     }
@@ -250,13 +261,16 @@ class _RepositoryScreenState extends State<RepositoryScreen>
     );
   }
 
-  List<Widget> getActions(BuildContext context,
-      {bool isSmall = false, bool isLarge = false}) {
+  List<Widget> getActions(
+    BuildContext context, {
+    bool isSmall = false,
+    bool isLarge = false,
+  }) {
     final size = isSmall
         ? AppAdaptiveActionSize.small
         : isLarge
-            ? AppAdaptiveActionSize.large
-            : AppAdaptiveActionSize.medium;
+        ? AppAdaptiveActionSize.large
+        : AppAdaptiveActionSize.medium;
     return [
       AppAdaptiveActionList(
         size: size,

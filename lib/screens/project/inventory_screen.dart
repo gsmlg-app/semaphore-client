@@ -26,19 +26,19 @@ class _InventoryScreenState extends State<InventoryScreen>
   @override
   void loadData() {
     final state = context.read<SemaphoreServerBloc>().state;
-    context.read<InventoryBloc>().add(InventoryLoad(
-        state.activeServer!.api, state.activeProject!.projectId!));
+    context.read<InventoryBloc>().add(
+      InventoryLoad(state.activeServer!.api, state.activeProject!.projectId!),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
-      selectedIndex:
-          Destinations.indexOf(const Key(ProjectScreen.name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-        idx,
+      selectedIndex: Destinations.indexOf(
+        const Key(ProjectScreen.name),
         context,
       ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       smallBody: (context) => SafeArea(
         child: CustomScrollView(
@@ -65,8 +65,12 @@ class _InventoryScreenState extends State<InventoryScreen>
                   previous.activeProject != current.activeProject &&
                   current.activeProject != null,
               listener: (context, state) {
-                context.read<InventoryBloc>().add(InventoryLoad(
-                    state.activeServer!.api, state.activeProject!.projectId!));
+                context.read<InventoryBloc>().add(
+                  InventoryLoad(
+                    state.activeServer!.api,
+                    state.activeProject!.projectId!,
+                  ),
+                );
               },
               child: BlocBuilder<InventoryBloc, InventoryState>(
                 builder: (context, state) {
@@ -95,9 +99,13 @@ class _InventoryScreenState extends State<InventoryScreen>
                           title: Text(inventory.name ?? '--'),
                           subtitle: Row(
                             children: [
-                              Text(inventory.type?.name
-                                      .replaceAll(RegExp(r'_$'), '') ??
-                                  '--'),
+                              Text(
+                                inventory.type?.name.replaceAll(
+                                      RegExp(r'_$'),
+                                      '',
+                                    ) ??
+                                    '--',
+                              ),
                               const SizedBox(width: 8),
                               if (inventory.type == InventoryTypeEnum.file)
                                 Text(inventory.inventory ?? '--'),
@@ -120,20 +128,20 @@ class _InventoryScreenState extends State<InventoryScreen>
                                 icon: Icons.edit,
                                 title: context.l10n!.edit,
                                 onPressed: () {
-                                   showEditInventory(
-                                     context: context,
-                                     api: context
-                                         .read<SemaphoreServerBloc>()
-                                         .state
-                                         .activeServer!
-                                         .api,
-                                     projectId: context
-                                         .read<SemaphoreServerBloc>()
-                                         .state
-                                         .activeProject!
-                                         .projectId!,
-                                     inventory: inventory,
-                                   );
+                                  showEditInventory(
+                                    context: context,
+                                    api: context
+                                        .read<SemaphoreServerBloc>()
+                                        .state
+                                        .activeServer!
+                                        .api,
+                                    projectId: context
+                                        .read<SemaphoreServerBloc>()
+                                        .state
+                                        .activeProject!
+                                        .projectId!,
+                                    inventory: inventory,
+                                  );
                                 },
                               ),
                             ],
@@ -173,9 +181,7 @@ class _InventoryScreenState extends State<InventoryScreen>
               builder: (context, state) {
                 if (state is InventoryInitial || state is InventoryLoading) {
                   return const SliverFillRemaining(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
                 if (state is InventoryError) {
@@ -197,59 +203,63 @@ class _InventoryScreenState extends State<InventoryScreen>
                       ],
                       rows: [
                         for (final inventory in state.inventorys)
-                          DataRow(cells: [
-                            DataCell(
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(
-                                  inventory.name ?? 'N/A',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                          DataRow(
+                            cells: [
+                              DataCell(
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Text(
+                                    inventory.name ?? 'N/A',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ),
-                            ),
-                            DataCell(
-                              Text(
-                                inventory.type?.name
-                                        .replaceAll(RegExp(r'_$'), '') ??
-                                    '--',
+                              DataCell(
+                                Text(
+                                  inventory.type?.name.replaceAll(
+                                        RegExp(r'_$'),
+                                        '',
+                                      ) ??
+                                      '--',
+                                ),
                               ),
-                            ),
-                            DataCell(
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    onPressed: () {
-                                      showDeleteInventory(
-                                        context: context,
-                                        inventory: inventory,
-                                      );
-                                    },
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.edit),
-                                    onPressed: () {
-                                       showEditInventory(
-                                         context: context,
-                                         api: context
-                                             .read<SemaphoreServerBloc>()
-                                             .state
-                                             .activeServer!
-                                             .api,
-                                         projectId: context
-                                             .read<SemaphoreServerBloc>()
-                                             .state
-                                             .activeProject!
-                                             .projectId!,
-                                         inventory: inventory,
-                                       );
-                                    },
-                                  ),
-                                ],
+                              DataCell(
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      onPressed: () {
+                                        showDeleteInventory(
+                                          context: context,
+                                          inventory: inventory,
+                                        );
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.edit),
+                                      onPressed: () {
+                                        showEditInventory(
+                                          context: context,
+                                          api: context
+                                              .read<SemaphoreServerBloc>()
+                                              .state
+                                              .activeServer!
+                                              .api,
+                                          projectId: context
+                                              .read<SemaphoreServerBloc>()
+                                              .state
+                                              .activeProject!
+                                              .projectId!,
+                                          inventory: inventory,
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ]),
+                            ],
+                          ),
                       ],
                     ),
                   );
@@ -265,13 +275,16 @@ class _InventoryScreenState extends State<InventoryScreen>
     );
   }
 
-  List<Widget> getActions(BuildContext context,
-      {bool isSmall = false, bool isLarge = false}) {
+  List<Widget> getActions(
+    BuildContext context, {
+    bool isSmall = false,
+    bool isLarge = false,
+  }) {
     final size = isSmall
         ? AppAdaptiveActionSize.small
         : isLarge
-            ? AppAdaptiveActionSize.large
-            : AppAdaptiveActionSize.medium;
+        ? AppAdaptiveActionSize.large
+        : AppAdaptiveActionSize.medium;
     return [
       AppAdaptiveActionList(
         size: size,
@@ -280,16 +293,19 @@ class _InventoryScreenState extends State<InventoryScreen>
             icon: Icons.add,
             title: context.l10n!.add,
             onPressed: () {
-               showCreateInventory(
-                 context: context,
-                 api:
-                     context.read<SemaphoreServerBloc>().state.activeServer!.api,
-                 projectId: context
-                     .read<SemaphoreServerBloc>()
-                     .state
-                     .activeProject!
-                     .projectId!,
-               );
+              showCreateInventory(
+                context: context,
+                api: context
+                    .read<SemaphoreServerBloc>()
+                    .state
+                    .activeServer!
+                    .api,
+                projectId: context
+                    .read<SemaphoreServerBloc>()
+                    .state
+                    .activeProject!
+                    .projectId!,
+              );
             },
           ),
           AppAdaptiveAction(

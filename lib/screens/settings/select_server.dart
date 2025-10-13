@@ -22,12 +22,11 @@ class SettingsSelectServer extends StatelessWidget {
   Widget build(BuildContext context) {
     final serverBloc = context.read<SemaphoreServerBloc>();
     return AppAdaptiveScaffold(
-      selectedIndex:
-          Destinations.indexOf(const Key(SettingsScreen.name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-            idx,
-            context,
-          ),
+      selectedIndex: Destinations.indexOf(
+        const Key(SettingsScreen.name),
+        context,
+      ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       body: (context) => SafeArea(
         child: CustomScrollView(
@@ -48,9 +47,7 @@ class SettingsSelectServer extends StatelessWidget {
               ],
             ),
             SliverList(
-              delegate: SliverChildListDelegate([
-                buildServerSection(context),
-              ]),
+              delegate: SliverChildListDelegate([buildServerSection(context)]),
             ),
           ],
         ),
@@ -69,9 +66,7 @@ class SettingsSelectServer extends StatelessWidget {
           ],
         ),
       ),
-      largeSecondaryBody: (_) => SafeArea(
-        child: Container(),
-      ),
+      largeSecondaryBody: (_) => SafeArea(child: Container()),
     );
   }
 
@@ -124,9 +119,9 @@ class SettingsSelectServer extends StatelessWidget {
                                 showRenameServerForm(context, server);
                               }
                               if (value == context.l10n!.refresh) {
-                                context
-                                    .read<SemaphoreServerBloc>()
-                                    .add(LoadProjects(server));
+                                context.read<SemaphoreServerBloc>().add(
+                                  LoadProjects(server),
+                                );
                               }
                               if (value == context.l10n!.delete) {
                                 showDeleteServer(context, server);
@@ -183,9 +178,13 @@ class SettingsSelectServer extends StatelessWidget {
     );
   }
 
-  Widget _buildProjectTiles(BuildContext context, SemaphoreServer server, SemaphoreServerState state) {
+  Widget _buildProjectTiles(
+    BuildContext context,
+    SemaphoreServer server,
+    SemaphoreServerState state,
+  ) {
     final database = context.read<AppDatabase>();
-    
+
     return FutureBuilder<List<SemaphoreProject>>(
       future: server.getProjects(database),
       builder: (context, snapshot) {
@@ -195,7 +194,7 @@ class SettingsSelectServer extends StatelessWidget {
             title: Text(context.l10n!.addProject),
           ),
         ];
-        
+
         if (snapshot.connectionState == ConnectionState.waiting) {
           tiles.add(
             SettingsTile(
@@ -220,24 +219,26 @@ class SettingsSelectServer extends StatelessWidget {
               ),
             );
           } else {
-            tiles.addAll(projects.map((project) => SettingsTile.checkTile(
-              leading: const Icon(Icons.rocket_launch),
-              title: Text(project.name ?? 'Unknown'),
-              checked:
-                  state.activeServer?.id == server.id &&
-                  state.activeProject?.projectId == project.projectId,
-              onPressed: (context) {
-                context
-                    .read<SemaphoreServerBloc>()
-                    .add(SelectServer(server, project));
-              },
-            )));
+            tiles.addAll(
+              projects.map(
+                (project) => SettingsTile.checkTile(
+                  leading: const Icon(Icons.rocket_launch),
+                  title: Text(project.name ?? 'Unknown'),
+                  checked:
+                      state.activeServer?.id == server.id &&
+                      state.activeProject?.projectId == project.projectId,
+                  onPressed: (context) {
+                    context.read<SemaphoreServerBloc>().add(
+                      SelectServer(server, project),
+                    );
+                  },
+                ),
+              ),
+            );
           }
         }
-        
-        return Column(
-          children: tiles,
-        );
+
+        return Column(children: tiles);
       },
     );
   }
@@ -251,9 +252,7 @@ class SettingsSelectServer extends StatelessWidget {
           title: Text(context.l10n!.smenuSemaphore),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Remove Server ${server.name ?? 'Unknown'}?'),
-            ],
+            children: [Text('Remove Server ${server.name ?? 'Unknown'}?')],
           ),
           actions: <Widget>[
             TextButton(
@@ -267,9 +266,9 @@ class SettingsSelectServer extends StatelessWidget {
                   action: SnackBarAction(
                     label: context.l10n!.undo,
                     onPressed: () {
-                      context
-                          .read<SemaphoreServerBloc>()
-                          .add(AddServer(server));
+                      context.read<SemaphoreServerBloc>().add(
+                        AddServer(server),
+                      );
                     },
                   ),
                 );

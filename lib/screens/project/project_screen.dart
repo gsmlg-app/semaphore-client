@@ -28,18 +28,13 @@ class ProjectScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
       selectedIndex: Destinations.indexOf(const Key(name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-        idx,
-        context,
-      ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       body: (context) => SafeArea(
         child: BlocBuilder<SemaphoreServerBloc, SemaphoreServerState>(
           builder: (context, state) => CustomScrollView(
             slivers: <Widget>[
-              SliverAppBar(
-                title: Text(context.l10n!.projectPageTitle),
-              ),
+              SliverAppBar(title: Text(context.l10n!.projectPageTitle)),
               SliverList(
                 delegate: SliverChildListDelegate([
                   ListTile(
@@ -68,9 +63,12 @@ class ProjectScreen extends StatelessWidget {
                     leading: const Icon(Icons.history),
                     title: Text(context.l10n!.titleHistory),
                     onTap: () {
-                      context.read<HistoryBloc>().add(HistoryLoad(
+                      context.read<HistoryBloc>().add(
+                        HistoryLoad(
                           state.activeServer!.api,
-                          state.activeProject!.projectId!));
+                          state.activeProject!.projectId!,
+                        ),
+                      );
                       context.goNamed(HistoryScreen.name);
                     },
                   ),
@@ -78,9 +76,12 @@ class ProjectScreen extends StatelessWidget {
                     leading: const Icon(Icons.event_note),
                     title: Text(context.l10n!.titleActivity),
                     onTap: () {
-                      context.read<ActivityBloc>().add(ActivityLoad(
+                      context.read<ActivityBloc>().add(
+                        ActivityLoad(
                           state.activeServer!.api,
-                          state.activeProject!.projectId!));
+                          state.activeProject!.projectId!,
+                        ),
+                      );
                       context.goNamed(ActivityScreen.name);
                     },
                   ),
@@ -88,9 +89,12 @@ class ProjectScreen extends StatelessWidget {
                     leading: const Icon(Icons.receipt),
                     title: Text(context.l10n!.titleTemplate),
                     onTap: () {
-                      context.read<TemplateBloc>().add(TemplateLoad(
+                      context.read<TemplateBloc>().add(
+                        TemplateLoad(
                           state.activeServer!.api,
-                          state.activeProject!.projectId!));
+                          state.activeProject!.projectId!,
+                        ),
+                      );
                       context.goNamed(TemplateScreen.name);
                     },
                   ),
@@ -143,9 +147,9 @@ class ProjectScreen extends StatelessWidget {
                       context.goNamed(TeamScreen.name);
                     },
                   ),
-                 ]),
-               ),
-             ],
+                ]),
+              ),
+            ],
           ),
         ),
       ),

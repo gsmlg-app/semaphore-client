@@ -22,19 +22,19 @@ class _IntegrationScreenState extends State<IntegrationScreen>
   @override
   void loadData() {
     final state = context.read<SemaphoreServerBloc>().state;
-    context.read<IntegrationBloc>().add(IntegrationLoad(
-        state.activeServer!.api, state.activeProject!.projectId!));
+    context.read<IntegrationBloc>().add(
+      IntegrationLoad(state.activeServer!.api, state.activeProject!.projectId!),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return AppAdaptiveScaffold(
-      selectedIndex:
-          Destinations.indexOf(const Key(ProjectScreen.name), context),
-      onSelectedIndexChange: (idx) => Destinations.changeHandler(
-        idx,
+      selectedIndex: Destinations.indexOf(
+        const Key(ProjectScreen.name),
         context,
       ),
+      onSelectedIndexChange: (idx) => Destinations.changeHandler(idx, context),
       destinations: Destinations.navs(context),
       smallBody: (context) => SafeArea(
         child: CustomScrollView(
@@ -61,8 +61,12 @@ class _IntegrationScreenState extends State<IntegrationScreen>
                   previous.activeProject != current.activeProject &&
                   current.activeProject != null,
               listener: (context, state) {
-                context.read<IntegrationBloc>().add(IntegrationLoad(
-                    state.activeServer!.api, state.activeProject!.projectId!));
+                context.read<IntegrationBloc>().add(
+                  IntegrationLoad(
+                    state.activeServer!.api,
+                    state.activeProject!.projectId!,
+                  ),
+                );
               },
               child: BlocBuilder<IntegrationBloc, IntegrationState>(
                 builder: (context, state) {
@@ -90,8 +94,9 @@ class _IntegrationScreenState extends State<IntegrationScreen>
                         return ListTile(
                           leading: const Icon(Icons.merge_type),
                           title: Text(integration.name ?? '--'),
-                          subtitle:
-                              Text(integration.templateId?.toString() ?? '--'),
+                          subtitle: Text(
+                            integration.templateId?.toString() ?? '--',
+                          ),
                         );
                       },
                     );
@@ -125,11 +130,10 @@ class _IntegrationScreenState extends State<IntegrationScreen>
             ),
             BlocBuilder<IntegrationBloc, IntegrationState>(
               builder: (context, state) {
-                if (state is IntegrationInitial || state is IntegrationLoading) {
+                if (state is IntegrationInitial ||
+                    state is IntegrationLoading) {
                   return const SliverFillRemaining(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
                 if (state is IntegrationError) {
@@ -152,35 +156,39 @@ class _IntegrationScreenState extends State<IntegrationScreen>
                       ],
                       rows: [
                         for (final integration in state.integrations)
-                          DataRow(cells: [
-                            DataCell(
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(
-                                  integration.name ?? 'N/A',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                          DataRow(
+                            cells: [
+                              DataCell(
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Text(
+                                    integration.name ?? 'N/A',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ),
-                            ),
-                            DataCell(
-                              Text(integration.templateId?.toString() ?? '--'),
-                            ),
-                            DataCell(
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    onPressed: () {},
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.edit),
-                                    onPressed: () {},
-                                  ),
-                                ],
+                              DataCell(
+                                Text(
+                                  integration.templateId?.toString() ?? '--',
+                                ),
                               ),
-                            ),
-                          ]),
+                              DataCell(
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.edit),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   );
@@ -196,13 +204,16 @@ class _IntegrationScreenState extends State<IntegrationScreen>
     );
   }
 
-  List<Widget> getActions(BuildContext context,
-      {bool isSmall = false, bool isLarge = false}) {
+  List<Widget> getActions(
+    BuildContext context, {
+    bool isSmall = false,
+    bool isLarge = false,
+  }) {
     final size = isSmall
         ? AppAdaptiveActionSize.small
         : isLarge
-            ? AppAdaptiveActionSize.large
-            : AppAdaptiveActionSize.medium;
+        ? AppAdaptiveActionSize.large
+        : AppAdaptiveActionSize.medium;
     return [
       AppAdaptiveActionList(
         size: size,

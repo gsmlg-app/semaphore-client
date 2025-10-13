@@ -68,7 +68,7 @@ void main() {
             'mocktail: ^1.0.3',
           ];
 
-final isValid = await BrickTestUtils.validatePubspec(
+          final isValid = await BrickTestUtils.validatePubspec(
             tempDir,
             'test_form_form_bloc',
             expectedDependencies,
@@ -89,17 +89,12 @@ final isValid = await BrickTestUtils.validatePubspec(
       final generator = await MasonGenerator.fromBrick(brick);
       await generator.generate(
         DirectoryGeneratorTarget(tempDir),
-        vars: {
-          'name': 'test_form',
-          'output_directory': 'app_bloc',
-        },
+        vars: {'name': 'test_form', 'output_directory': 'app_bloc'},
       );
 
-      final libFile = File(path.join(
-        tempDir.path,
-        'lib',
-        'test_form_form_bloc.dart',
-      ));
+      final libFile = File(
+        path.join(tempDir.path, 'lib', 'test_form_form_bloc.dart'),
+      );
       expect(await libFile.exists(), isTrue);
 
       final libContent = await libFile.readAsString();
@@ -113,24 +108,18 @@ final isValid = await BrickTestUtils.validatePubspec(
       final generator = await MasonGenerator.fromBrick(brick);
       await generator.generate(
         DirectoryGeneratorTarget(tempDir),
-        vars: {
-          'name': 'test_form',
-          'output_directory': 'app_bloc',
-        },
+        vars: {'name': 'test_form', 'output_directory': 'app_bloc'},
       );
 
-      final blocFile = File(path.join(
-        tempDir.path,
-        'lib',
-        'src',
-        'bloc.dart',
-      ));
+      final blocFile = File(path.join(tempDir.path, 'lib', 'src', 'bloc.dart'));
       expect(await blocFile.exists(), isTrue);
 
       final blocContent = await blocFile.readAsString();
       expect(blocContent, contains('class TestFormFormBloc'));
-      expect(blocContent,
-          contains('extends Bloc<TestFormFormEvent, TestFormFormState>'));
+      expect(
+        blocContent,
+        contains('extends Bloc<TestFormFormEvent, TestFormFormState>'),
+      );
       expect(blocContent, contains('on<TestFormFieldChanged>'));
       expect(blocContent, contains('on<TestFormFormSubmitted>'));
       expect(blocContent, contains('on<TestFormFormValidated>'));
@@ -146,18 +135,12 @@ final isValid = await BrickTestUtils.validatePubspec(
       final generator = await MasonGenerator.fromBrick(brick);
       await generator.generate(
         DirectoryGeneratorTarget(tempDir),
-        vars: {
-          'name': 'test_form',
-          'output_directory': 'app_bloc',
-        },
+        vars: {'name': 'test_form', 'output_directory': 'app_bloc'},
       );
 
-      final eventFile = File(path.join(
-        tempDir.path,
-        'lib',
-        'src',
-        'event.dart',
-      ));
+      final eventFile = File(
+        path.join(tempDir.path, 'lib', 'src', 'event.dart'),
+      );
       expect(await eventFile.exists(), isTrue);
 
       final eventContent = await eventFile.readAsString();
@@ -174,18 +157,12 @@ final isValid = await BrickTestUtils.validatePubspec(
       final generator = await MasonGenerator.fromBrick(brick);
       await generator.generate(
         DirectoryGeneratorTarget(tempDir),
-        vars: {
-          'name': 'test_form',
-          'output_directory': 'app_bloc',
-        },
+        vars: {'name': 'test_form', 'output_directory': 'app_bloc'},
       );
 
-      final stateFile = File(path.join(
-        tempDir.path,
-        'lib',
-        'src',
-        'state.dart',
-      ));
+      final stateFile = File(
+        path.join(tempDir.path, 'lib', 'src', 'state.dart'),
+      );
       expect(await stateFile.exists(), isTrue);
 
       final stateContent = await stateFile.readAsString();
@@ -213,17 +190,18 @@ final isValid = await BrickTestUtils.validatePubspec(
             'output_directory': 'app_bloc',
           });
 
-          final blocFile = File(path.join(
-            tempDir.path,
-            'lib',
-            'src',
-            'bloc.dart',
-          ));
+          final blocFile = File(
+            path.join(tempDir.path, 'lib', 'src', 'bloc.dart'),
+          );
 
           final blocContent = await blocFile.readAsString();
           expect(blocContent, contains('class UserRegistrationFormBloc'));
-          expect(blocContent,
-              contains('extends Bloc<UserRegistrationFormEvent, UserRegistrationFormState>'));
+          expect(
+            blocContent,
+            contains(
+              'extends Bloc<UserRegistrationFormEvent, UserRegistrationFormState>',
+            ),
+          );
           expect(blocContent, contains('on<UserRegistrationFieldChanged>'));
           expect(blocContent, contains('on<UserRegistrationFormSubmitted>'));
           expect(blocContent, contains('on<UserRegistrationFormValidated>'));
@@ -236,22 +214,20 @@ final isValid = await BrickTestUtils.validatePubspec(
       final generator = await MasonGenerator.fromBrick(brick);
       await generator.generate(
         DirectoryGeneratorTarget(tempDir),
-        vars: {
-          'name': 'test_form',
-          'output_directory': 'app_bloc',
-        },
+        vars: {'name': 'test_form', 'output_directory': 'app_bloc'},
       );
 
-      final testFile = File(path.join(
-        tempDir.path,
-        'test',
-        'test_form_form_bloc_test.dart',
-      ));
+      final testFile = File(
+        path.join(tempDir.path, 'test', 'test_form_form_bloc_test.dart'),
+      );
       expect(await testFile.exists(), isTrue);
 
       final testContent = await testFile.readAsString();
       expect(testContent, contains("import 'package:test/test.dart'"));
-      expect(testContent, contains("import 'package:bloc_test/bloc_test.dart'"));
+      expect(
+        testContent,
+        contains("import 'package:bloc_test/bloc_test.dart'"),
+      );
       expect(testContent, contains('group(TestFormFormBloc'));
     });
   });

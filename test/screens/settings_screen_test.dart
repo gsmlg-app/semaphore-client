@@ -43,15 +43,11 @@ void main() {
             RepositoryProvider<SharedPreferences>(
               create: (context) => sharedPreferences,
             ),
-            RepositoryProvider<AppDatabase>(
-              create: (context) => database,
-            ),
+            RepositoryProvider<AppDatabase>(create: (context) => database),
           ],
           child: MultiBlocProvider(
             providers: [
-              BlocProvider<ThemeBloc>(
-                create: (context) => themeBloc,
-              ),
+              BlocProvider<ThemeBloc>(create: (context) => themeBloc),
               BlocProvider<SemaphoreServerBloc>(
                 create: (context) => serverBloc,
               ),
@@ -69,8 +65,6 @@ void main() {
       expect(find.byType(SliverAppBar), findsOneWidget);
     });
 
-    
-
     testWidgets('shows appearance option', (WidgetTester tester) async {
       await tester.pumpWidget(
         MultiRepositoryProvider(
@@ -78,15 +72,11 @@ void main() {
             RepositoryProvider<SharedPreferences>(
               create: (context) => sharedPreferences,
             ),
-            RepositoryProvider<AppDatabase>(
-              create: (context) => database,
-            ),
+            RepositoryProvider<AppDatabase>(create: (context) => database),
           ],
           child: MultiBlocProvider(
             providers: [
-              BlocProvider<ThemeBloc>(
-                create: (context) => themeBloc,
-              ),
+              BlocProvider<ThemeBloc>(create: (context) => themeBloc),
               BlocProvider<SemaphoreServerBloc>(
                 create: (context) => serverBloc,
               ),
@@ -110,15 +100,11 @@ void main() {
             RepositoryProvider<SharedPreferences>(
               create: (context) => sharedPreferences,
             ),
-            RepositoryProvider<AppDatabase>(
-              create: (context) => database,
-            ),
+            RepositoryProvider<AppDatabase>(create: (context) => database),
           ],
           child: MultiBlocProvider(
             providers: [
-              BlocProvider<ThemeBloc>(
-                create: (context) => themeBloc,
-              ),
+              BlocProvider<ThemeBloc>(create: (context) => themeBloc),
               BlocProvider<SemaphoreServerBloc>(
                 create: (context) => serverBloc,
               ),
@@ -144,15 +130,11 @@ void main() {
             RepositoryProvider<SharedPreferences>(
               create: (context) => sharedPreferences,
             ),
-            RepositoryProvider<AppDatabase>(
-              create: (context) => database,
-            ),
+            RepositoryProvider<AppDatabase>(create: (context) => database),
           ],
           child: MultiBlocProvider(
             providers: [
-              BlocProvider<ThemeBloc>(
-                create: (context) => themeBloc,
-              ),
+              BlocProvider<ThemeBloc>(create: (context) => themeBloc),
               BlocProvider<SemaphoreServerBloc>(
                 create: (context) => serverBloc,
               ),

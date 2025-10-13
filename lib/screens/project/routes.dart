@@ -19,6 +19,7 @@ import 'package:semaphore_client/screens/project/template_task_screen.dart';
 import 'package:semaphore_client/screens/project/variable_screen.dart';
 import 'package:semaphore_client/screens/server/server_screen.dart';
 import 'package:semaphore_client/screens/settings/select_server.dart';
+
 GoRoute projectRoutes = GoRoute(
   name: ProjectScreen.name,
   path: ProjectScreen.path,
