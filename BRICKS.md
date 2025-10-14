@@ -214,7 +214,7 @@ context.read<UserListBloc>().add(UserListEventBatchDelete(['user-1', 'user-2']))
 ---
 
 ### 5. Form BLoC Brick (`form_bloc`)
-Creates a form BLoC package with validation and submission logic for managing form state.
+Creates a comprehensive form BLoC package using the advanced `form_bloc` library with dynamic field generation, validation, submission logic, and support for multiple field types.
 
 **Usage:**
 ```bash
@@ -224,16 +224,51 @@ mason make form_bloc --name FormName [options]
 **Variables:**
 - `name` (required): Form name (e.g., "Login", "Registration", "Profile")
 - `output_directory` (default: "app_bloc"): Where to create the bloc package
-- `has_submission` (default: true): Include form submission logic
-- `has_validation` (default: true): Include field validation
+- `fields` (default: ["email:email", "password:password"]): List of fields in format "name:field_type[:options]"
+
+**Field Types:**
+| Field Type | Description | Example | Generated FieldBloc |
+|------------|-------------|---------|-------------------|
+| `text` | Basic text input | `name:text` | TextFieldBloc |
+| `email` | Email with validation | `email:email` | TextFieldBloc with email validator |
+| `password` | Password with length validation | `password:password` | TextFieldBloc with password validator |
+| `number` | Numeric text input | `age:number` | TextFieldBloc with number validator |
+| `boolean` | True/false toggle | `isActive:boolean` | BooleanFieldBloc |
+| `select` | Single selection dropdown | `country:select:USA,Canada,Mexico` | SelectFieldBloc with items |
+| `multiselect` | Multiple selection | `interests:multiselect:sports,music,movies` | MultiSelectFieldBloc |
+| `date` | Date picker | `birthDate:date` | InputFieldBloc<DateTime> |
+| `file` | File upload | `avatar:file` | InputFieldBloc<dynamic> |
 
 **Examples:**
-```bash
-# Basic login form with email and password fields
-mason make form_bloc --name Login
 
-# Form with only validation (no submission logic)
-mason make form_bloc --name Contact --has_submission false
+**Basic Login Form (default):**
+```bash
+mason make form_bloc --name Login
+```
+Generates: `email:email`, `password:password`
+
+**User Registration Form:**
+```bash
+mason make form_bloc --name Registration \
+  --fields "name:text,email:email,password:password,confirmPassword:password,agreeTerms:boolean"
+```
+
+**Profile Form with Select Options:**
+```bash
+mason make form_bloc --name Profile \
+  --fields "firstName:text,lastName:text,email:email,phone:text,country:select:USA,Canada,Mexico,newsletter:boolean"
+```
+
+**Survey Form with Multiple Selection:**
+```bash
+mason make form_bloc --name Survey \
+  --fields "rating:select:1,2,3,4,5,comments:text,interests:multiselect:sports,music,movies,newsletter:boolean"
+```
+
+**Complex Form with Mixed Types:**
+```bash
+mason make form_bloc --name Application \
+  --fields "fullName:text,email:email,age:number,birthDate:date,experience:select:Junior,Senior,Expert,skills:multiselect:Flutter,Dart,React,available:boolean,resume:file"
 ```
 
 **Generated Structure:**
@@ -241,38 +276,108 @@ mason make form_bloc --name Contact --has_submission false
 {output_directory}/{name}_form_bloc/
 ├── lib/
 │   ├── src/
-│   │   ├── bloc.dart (main BLoC implementation)
-│   │   ├── event.dart (form events: field changes, submit, reset, validate)
-│   │   └── state.dart (form state with email/password fields and status enum)
+│   │   ├── bloc.dart (dynamic FormBloc implementation)
+│   │   ├── event.dart (dynamic form events)
+│   │   └── state.dart (FormBlocState extensions)
 │   └── {name}_form_bloc.dart (export file)
 ├── test/
-│   └── {name}_form_bloc_test.dart (test suite)
-├── pubspec.yaml (dependencies include bloc, equatable)
+│   └── {name}_form_bloc_test.dart (dynamic test suite)
+├── pubspec.yaml (dependencies include form_bloc, bloc_test)
 └── brick.yaml
 ```
 
 **Features:**
-- **Form State Management**: Manages email and password field states
-- **Event Handling**: Field changes, form submission, validation, and reset events
-- **Status Tracking**: Initial, validating, inProgress, success, and failure states
-- **Error Handling**: Error state management for failed submissions
-- **Conditional Logic**: Optional submission and validation based on configuration
-- **Test Ready**: Includes test file structure for comprehensive testing
+- **Dynamic Field Generation**: Automatically generates fields based on configuration
+- **Type-Safe Fields**: Each field type gets appropriate FieldBloc with correct validators
+- **Built-in Validation**: Email, password, number, required field validation
+- **Select Field Options**: Support for dropdown items and multi-select options
+- **Auto-validation**: Real-time validation as users type
+- **Submission Handling**: Async form submission with loading states
+- **Error Handling**: Comprehensive error management with user-friendly messages
+- **State Extensions**: Helper methods for easier state checking
+- **Dynamic Testing**: Automatically generates tests for all field types
+- **Form Data Access**: Type-safe form data extraction
 
-**Default Fields:**
-- `email`: Email field with nullable string type
-- `password`: Password field with nullable string type
+**Field Validation:**
+- **Text Fields**: Required validation
+- **Email Fields**: Required + email format validation
+- **Password Fields**: Required + minimum 6 characters validation
+- **Number Fields**: Required + numeric format validation
+- **Boolean Fields**: Required validation (must be true)
+- **Select Fields**: Required validation (must select an option)
+- **MultiSelect Fields**: Required validation (must select at least one)
+- **Date Fields**: Required validation
+- **File Fields**: Required validation (must upload file)
 
-**Usage in UI:**
+**Generated Code Examples:**
+
+**Field Declarations (from Profile Form):**
 ```dart
+late final TextFieldBloc firstName;
+late final TextFieldBloc lastName;
+late final TextFieldBloc email;
+late final TextFieldBloc phone;
+late final SelectFieldBloc<String, dynamic> country;
+late final BooleanFieldBloc newsletter;
+```
+
+**Field Initialization (with Select Options):**
+```dart
+void addCountryField() {
+  final selectItems = ['USA', 'Canada', 'Mexico'];
+  country = SelectFieldBloc<String, dynamic>(
+    items: selectItems,
+    validators: [
+      FieldBlocValidators.required,
+    ],
+  );
+  addFieldBlocs(fieldBlocs: [country]);
+}
+```
+
+**Dynamic PopulateFormEvent:**
+```dart
+class PopulateFormEvent extends ProfileFormEvent {
+  const PopulateFormEvent({
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    required this.phone,
+    required this.country,
+    required this.newsletter,
+  });
+
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String phone;
+  final String? country;
+  final bool newsletter;
+}
+```
+
+**Form Data Access:**
+```dart
+// Get form data as map
+final formData = formBloc.getFormData();
+print('Name: ${formData['firstName']} ${formData['lastName']}');
+print('Email: ${formData['email']}');
+print('Country: ${formData['country']}');
+print('Newsletter: ${formData['newsletter']}');
+
+// Check form state
+if (ProfileFormStateExtensions.isFormValid(formBloc.state)) {
+  // Form is valid, can submit
+}
+```
 
 **Usage in UI:**
 ```dart
 BlocProvider(
-  create: (context) => LoginFormBloc(),
+  create: (context) => ProfileFormBloc(),
   child: Builder(
     builder: (context) {
-      final formBloc = context.read<LoginFormBloc>();
+      final formBloc = context.read<ProfileFormBloc>();
 
       return FormBlocListener(
         formBloc: formBloc,
@@ -282,16 +387,23 @@ BlocProvider(
         child: Column(
           children: [
             TextFieldBlocBuilder(
-              textFieldBloc: formBloc.emailFieldBloc,
-              decoration: InputDecoration(labelText: 'Email'),
+              textFieldBloc: formBloc.firstName,
+              decoration: InputDecoration(labelText: 'First Name'),
             ),
             TextFieldBlocBuilder(
-              textFieldBloc: formBloc.passwordFieldBloc,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
+              textFieldBloc: formBloc.email,
+              decoration: InputDecoration(labelText: 'Email'),
+            ),
+            DropdownFieldBlocBuilder(
+              selectFieldBloc: formBloc.country,
+              decoration: InputDecoration(labelText: 'Country'),
+            ),
+            SwitchFieldBlocBuilder(
+              booleanFieldBloc: formBloc.newsletter,
+              title: Text('Subscribe to newsletter'),
             ),
             ElevatedButton(
-              onPressed: () => formBloc.add(LoginFormEventSubmitted()),
+              onPressed: () => formBloc.submit(),
               child: Text('Submit'),
             ),
           ],
@@ -302,108 +414,86 @@ BlocProvider(
 )
 ```
 
----
-
-### 6. List BLoC Brick (`list_bloc`)
-Creates a comprehensive list management BLoC with advanced features like pagination, search, filtering, and individual item state tracking.
-
-**Usage:**
-```bash
-mason make list_bloc --name ListName [options]
-```
-
-**Variables:**
-- `name` (required): List name (e.g., "Users", "Products", "Tasks")
-- `item_type` (required): Type of items in the list (e.g., "User", "Product", "Task")
-- `has_pagination` (default: false): Enable pagination support
-- `has_search` (default: false): Enable search functionality
-- `has_filters` (default: false): Enable filtering capabilities
-- `has_reorder` (default: false): Enable drag-and-drop reordering
-- `has_crud` (default: false): Enable create/update/delete operations
-- `has_batch_operations` (default: false): Enable batch operations
-- `has_multi_select` (default: false): Enable multi-selection mode
-
-**Generated Structure:**
-```
-{output_directory}/{name}_list_bloc/
-├── lib/
-│   ├── src/
-│   │   ├── bloc.dart (main BLoC implementation)
-│   │   ├── event.dart (event definitions)
-│   │   ├── state.dart (state management)
-│   │   ├── schema.dart (field and list schema)
-│   │   └── item_state.dart (individual item tracking)
-│   └── {name}_list_bloc.dart (export file)
-├── test/
-│   └── {name}_list_bloc_test.dart (comprehensive test suite)
-├── hooks/
-│   └── post_gen.dart (post-generation hook)
-├── README.md (usage documentation)
-├── pubspec.yaml (dependencies include bloc, flutter_bloc, equatable)
-└── brick.yaml
-```
-
-**Features:**
-- **Schema Management**: Dynamic field configuration with visibility, sorting, and filtering
-- **Individual Item States**: Track updating/removing/selecting/expanding/editing per item
-- **Optional Features**: Pagination, search, filters, reordering, CRUD operations (all configurable)
-- **Advanced Operations**: Batch operations, multi-select, optimistic updates
-- **State Management**: Comprehensive states (initial, loading, loaded, error)
-- **Error Handling**: Per-item error states with recovery options
-
-**Usage Example:**
+**Populating Form Data:**
 ```dart
-// Create the BLoC
-BlocProvider(
-  create: (context) => UsersListBloc(
-    repository: context.read<UserRepository>(),
-  ),
-  child: Builder(
-    builder: (context) {
-      final listBloc = context.read<UsersListBloc>();
-      
-      return BlocBuilder<UsersListBloc, UsersListState>(
-        builder: (context, state) {
-          return Column(
-            children: [
-              // Search bar (if enabled)
-              if (listBloc.schema.hasSearch)
-                TextField(
-                  onChanged: (query) => listBloc.add(
-                    UsersListEventSearchQueryChanged(query),
-                  ),
-                ),
-              
-              // Items list
-              ListView.builder(
-                itemCount: state.items.length,
-                itemBuilder: (context, index) {
-                  final item = state.items[index];
-                  final itemState = state.itemStates[item.id] ?? ItemState();
-                  
-                  return ListTile(
-                    title: Text(item.name),
-                    trailing: itemState.isUpdating
-                        ? CircularProgressIndicator()
-                        : IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () => listBloc.add(
-                              UsersListEventItemRemoved(item.id),
-                            ),
-                          ),
-                  );
-                },
-              ),
-            ],
-          );
-        },
-      );
-    },
-  ),
-)
+// Populate form with existing data
+formBloc.add(ProfileFormEvent(
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'john@example.com',
+  phone: '+1234567890',
+  country: 'USA',
+  newsletter: true,
+));
 ```
 
----
+**Testing:**
+The brick automatically generates comprehensive tests for each field type:
+
+```dart
+// Example generated tests
+test('email field validation', () {
+  blocTest<ProfileFormBloc, FormBlocState<String, String>>(
+    'emits invalid state when email is invalid format',
+    build: () => formBloc,
+    act: (bloc) => bloc.email.updateValue('invalid-email'),
+    expect: () => [
+      predicate<FormBlocState<String, String>>((state) => 
+        state.isValid == false && 
+        bloc.email.state.isInvalid
+      ),
+    ],
+  );
+});
+
+test('select field validation', () {
+  blocTest<ProfileFormBloc, FormBlocState<String, String>>(
+    'emits valid state when country has a selected value',
+    build: () => formBloc,
+    act: (bloc) => bloc.country.updateValue('USA'),
+    expect: () => [
+      predicate<FormBlocState<String, String>>((state) => 
+        bloc.country.state.isValid
+      ),
+    ],
+  );
+});
+```
+
+**Dependencies:**
+- `form_bloc`: Path reference to `../../third_party/form_bloc`
+- `bloc_test`: For comprehensive testing
+- `flutter_test`: For widget testing
+
+**Migration from Previous Version:**
+The brick maintains backward compatibility. Existing forms will continue to work:
+
+```bash
+# Old way (still works)
+mason make form_bloc --name Login
+
+# New equivalent
+mason make form_bloc --name Login --fields "email:email,password:password"
+```
+
+**Advanced Usage:**
+For complex forms, you can combine multiple field types:
+
+```bash
+mason make form_bloc --name JobApplication \
+  --fields "fullName:text,email:email,phone:text,position:select:Developer,Designer,Manager,experience:number,portfolio:file,available:boolean"
+```
+
+This generates a complete form with text inputs, email validation, phone number, position dropdown, years of experience, file upload for portfolio, and availability toggle.
+
+**Best Practices:**
+1. Use descriptive field names that clearly indicate their purpose
+2. Choose appropriate field types for better UX and validation
+3. Provide meaningful select options for dropdown fields
+4. Test generated forms thoroughly before integration
+5. Customize validation logic in the generated BLoC if needed
+6. Use the generated state extensions for cleaner UI code
+
 
 ### 7. Repository Brick (`repository`)
 Creates a complete repository pattern implementation with data sources and models.

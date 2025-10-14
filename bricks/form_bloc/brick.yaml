@@ -17,3 +17,8 @@ vars:
     description: Output directory for the form bloc
     default: app_bloc
     prompt: Where should the form bloc be created?
+  fields:
+    type: list
+    description: List of fields in format "name:field_type" (e.g., "name:text", "age:number", "isActive:boolean")
+    default: ["email:email", "password:password"]
+    prompt: Enter your form fields (e.g., "name:text", "age:number", "isActive:boolean")

@@ -103,13 +103,16 @@ class VariableBloc extends Bloc<VariableEvent, VariableState> {
     emit(VariableLoaded(variables: currentVariables, loading: true));
 
     try {
-      AppLogger().d('Deleting variable: projectId=${event.projectId}, environmentId=${event.environmentId}');
-      final projectApi = event.api.getProjectApi();
-      final response = await projectApi.projectProjectIdEnvironmentEnvironmentIdDelete(
-        projectId: event.projectId,
-        environmentId: event.environmentId,
+      AppLogger().d(
+        'Deleting variable: projectId=${event.projectId}, environmentId=${event.environmentId}',
       );
-      
+      final projectApi = event.api.getProjectApi();
+      final response = await projectApi
+          .projectProjectIdEnvironmentEnvironmentIdDelete(
+            projectId: event.projectId,
+            environmentId: event.environmentId,
+          );
+
       AppLogger().d('Delete response: ${response.statusCode}');
 
       // Reload variables after deletion

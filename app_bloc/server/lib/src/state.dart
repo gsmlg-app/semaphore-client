@@ -12,8 +12,6 @@ class SemaphoreServerState {
   bool get hasActiveServer => activeServer != null;
   bool get hasActiveProject => activeProject != null;
 
-
-
   SemaphoreServerState({
     this.servers = const [],
     this.activeServer,

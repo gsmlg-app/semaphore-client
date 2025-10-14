@@ -1,45 +1,86 @@
-part of 'bloc.dart';
-
-/// {@template {{name.snakeCase()}}_form_event}
-/// {{name.pascalCase()}}FormEvent represents events that can occur in the {{name.sentenceCase()}} form.
+/// {@template {{name.snakeCase()}}_form_events}
+/// Custom events for {{name.pascalCase()}}FormBloc beyond the standard FormBloc events.
 /// {@endtemplate}
-abstract class {{name.pascalCase()}}FormEvent extends Equatable {
-  /// {@macro {{name.snakeCase()}}_form_event}
+abstract class {{name.pascalCase()}}FormEvent {
+  /// {@macro {{name.snakeCase()}}_form_events}
   const {{name.pascalCase()}}FormEvent();
-
-  @override
-  List<Object?> get props => [];
 }
 
-/// Event triggered when a form field value changes
-class {{name.pascalCase()}}FieldChanged extends {{name.pascalCase()}}FormEvent {
-  /// {@macro {{name.snakeCase()}}_field_changed}
-  const {{name.pascalCase()}}FieldChanged(this.field, this.value);
-
-  /// The field name that changed
-  final String field;
-
-  /// The new value for the field
-  final String value;
-
-  @override
-  List<Object?> get props => [field, value];
+/// Event to clear all form fields
+class ClearFormEvent extends {{name.pascalCase()}}FormEvent {
+  /// {@macro {{name.snakeCase()}}_form_clear_event}
+  const ClearFormEvent();
 }
 
-/// Event triggered when the form is submitted
-class {{name.pascalCase()}}FormSubmitted extends {{name.pascalCase()}}FormEvent {
-  /// {@macro {{name.snakeCase()}}_form_submitted}
-  const {{name.pascalCase()}}FormSubmitted();
+/// Event to populate form with initial data
+class PopulateFormEvent extends {{name.pascalCase()}}FormEvent {
+  /// {@macro {{name.snakeCase()}}_form_populate_event}
+  const PopulateFormEvent({
+{{#each fields}}
+    {{#if (eq (split this ":").[1] "text")}}
+    required this.{{split this ":".[0]}},
+    {{else if (eq (split this ":").[1] "email")}}
+    required this.{{split this ":".[0]}},
+    {{else if (eq (split this ":").[1] "password")}}
+    required this.{{split this ":".[0]}},
+    {{else if (eq (split this ":").[1] "number")}}
+    required this.{{split this ":".[0]}},
+    {{else if (eq (split this ":").[1] "boolean")}}
+    required this.{{split this ":".[0]}},
+    {{else if (eq (split this ":").[1] "select")}}
+    required this.{{split this ":".[0]}},
+    {{else if (eq (split this ":").[1] "multiselect")}}
+    required this.{{split this ":".[0]}},
+    {{else if (eq (split this ":").[1] "date")}}
+    required this.{{split this ":".[0]}},
+    {{else if (eq (split this ":").[1] "file")}}
+    this.{{split this ":".[0]}},
+    {{else}}
+    required this.{{split this ":".[0]}},
+    {{/if}}
+{{/each}}
+  });
+
+{{#each fields}}
+  {{#if (eq (split this ":").[1] "text")}}
+  /// Initial {{split this ":".[0]}} value
+  final String {{split this ":".[0]}};
+  {{else if (eq (split this ":").[1] "email")}}
+  /// Initial {{split this ":".[0]}} value
+  final String {{split this ":".[0]}};
+  {{else if (eq (split this ":").[1] "password")}}
+  /// Initial {{split this ":".[0]}} value
+  final String {{split this ":".[0]}};
+  {{else if (eq (split this ":").[1] "number")}}
+  /// Initial {{split this ":".[0]}} value
+  final String {{split this ":".[0]}};
+  {{else if (eq (split this ":").[1] "boolean")}}
+  /// Initial {{split this ":".[0]}} value
+  final bool {{split this ":".[0]}};
+  {{else if (eq (split this ":").[1] "select")}}
+  /// Initial {{split this ":".[0]}} value
+  final String? {{split this ":".[0]}};
+  {{else if (eq (split this ":").[1] "multiselect")}}
+  /// Initial {{split this ":".[0]}} value
+  final List<String> {{split this ":".[0]}};
+  {{else if (eq (split this ":").[1] "date")}}
+  /// Initial {{split this ":".[0]}} value
+  final DateTime {{split this ":".[0]}};
+  {{else if (eq (split this ":").[1] "file")}}
+  /// Initial {{split this ":".[0]}} value
+  final dynamic {{split this ":".[0]}};
+  {{else}}
+  /// Initial {{split this ":".[0]}} value
+  final String {{split this ":".[0]}};
+  {{/if}}
+{{/each}}
 }
 
-/// Event triggered when form validation should be performed
-class {{name.pascalCase()}}FormValidated extends {{name.pascalCase()}}FormEvent {
-  /// {@macro {{name.snakeCase()}}_form_validated}
-  const {{name.pascalCase()}}FormValidated();
-}
+/// Event to validate specific field
+class ValidateFieldEvent extends {{name.pascalCase()}}FormEvent {
+  /// {@macro {{name.snakeCase()}}_form_validate_field_event}
+  const ValidateFieldEvent(this.fieldName);
 
-/// Event triggered when the form is reset
-class {{name.pascalCase()}}FormReset extends {{name.pascalCase()}}FormEvent {
-  /// {@macro {{name.snakeCase()}}_form_reset}
-  const {{name.pascalCase()}}FormReset();
+  /// Name of the field to validate
+  final String fieldName;
 }

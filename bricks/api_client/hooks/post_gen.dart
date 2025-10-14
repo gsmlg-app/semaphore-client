@@ -68,8 +68,7 @@ paths:
   // Check if running in a Flutter project
   if (!File('pubspec.yaml').existsSync()) {
     logger.warn(
-      '⚠️  Not in a Flutter project directory. Make sure to run flutter pub get manually.',
-    );
+        '⚠️  Not in a Flutter project directory. Make sure to run flutter pub get manually.');
   }
 
   // Validate that the generated structure is correct
@@ -89,6 +88,5 @@ paths:
 
   logger.info('✅ All expected files generated successfully');
   logger.info(
-    '⚠️  Remember to add your OpenAPI specification and run code generation!',
-  );
+      '⚠️  Remember to add your OpenAPI specification and run code generation!');
 }

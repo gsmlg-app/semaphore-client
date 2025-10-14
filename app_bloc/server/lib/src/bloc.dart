@@ -39,7 +39,9 @@ class SemaphoreServerBloc
       )..orderBy([(t) => drift.OrderingTerm(expression: t.id)])).get();
 
       final activeServerId = sharedPreferences.getInt('active_server_id');
-      final activeProjectId = sharedPreferences.getInt('active_server_project_id');
+      final activeProjectId = sharedPreferences.getInt(
+        'active_server_project_id',
+      );
 
       SemaphoreServer? activeServer;
       SemaphoreProject? activeProject;
@@ -61,7 +63,7 @@ class SemaphoreServerBloc
         final projects = await (database.select(
           database.semaphoreProjects,
         )..where((t) => t.serverId.equals(serverId))).get();
-        
+
         try {
           activeProject = projects.firstWhere(
             (project) => project.projectId == activeProjectId,

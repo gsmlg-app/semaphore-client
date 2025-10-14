@@ -59,7 +59,7 @@ class {{model_name.pascalCase()}}RepositoryImpl extends {{model_name.pascalCase(
 {{/has_local_data_source}}
     this.enableCache = true,
     this.cachePolicy = CachePolicy.networkFirst,
-  });
+  }) : _logger = AppLogger();
 
 {{#has_remote_data_source}}
   /// Remote data source
@@ -70,6 +70,9 @@ class {{model_name.pascalCase()}}RepositoryImpl extends {{model_name.pascalCase(
   /// Local data source
   final {{model_name.pascalCase()}}LocalDataSource localDataSource;
 {{/has_local_data_source}}
+
+  /// Logger instance
+  final AppLogger _logger;
 
   /// Whether caching is enabled
   final bool enableCache;
@@ -368,7 +371,7 @@ class {{model_name.pascalCase()}}RepositoryImpl extends {{model_name.pascalCase(
       await localDataSource.cache{{model_name.pascalCase()}}s(remote{{model_name.pascalCase()}}s);
     } catch (e) {
       // Sync failed, but don't throw - just log
-      AppLogger().e('Failed to sync {{name.sentenceCase}}s: $e');
+      _logger.w('Failed to sync {{name.sentenceCase}}s: $e', e);
     }
 {{/has_local_data_source}}
 {{^has_local_data_source}}
