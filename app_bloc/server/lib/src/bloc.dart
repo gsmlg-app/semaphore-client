@@ -26,6 +26,64 @@ class SemaphoreServerBloc
     on<UpdateServer>(_onUpdateServer);
     on<RemoveServer>(_onRemoveServer);
     on<LoadProjects>(_onLoadProjects);
+    on<LoadSavedState>(_onLoadSavedState);
+  }
+
+  Future<void> _onLoadSavedState(
+    LoadSavedState event,
+    Emitter<SemaphoreServerState> emitter,
+  ) async {
+    try {
+      final servers = await (database.select(
+        database.semaphoreServers,
+      )..orderBy([(t) => drift.OrderingTerm(expression: t.id)])).get();
+
+      final activeServerId = sharedPreferences.getInt('active_server_id');
+      final activeProjectId = sharedPreferences.getInt('active_server_project_id');
+
+      SemaphoreServer? activeServer;
+      SemaphoreProject? activeProject;
+
+      if (activeServerId != null) {
+        try {
+          activeServer = servers.firstWhere(
+            (server) => server.id == activeServerId,
+          );
+        } catch (e) {
+          // Server not found, clear the saved ID
+          sharedPreferences.remove('active_server_id');
+          sharedPreferences.remove('active_server_project_id');
+        }
+      }
+
+      if (activeProjectId != null && activeServer != null) {
+        final serverId = activeServer.id;
+        final projects = await (database.select(
+          database.semaphoreProjects,
+        )..where((t) => t.serverId.equals(serverId))).get();
+        
+        try {
+          activeProject = projects.firstWhere(
+            (project) => project.projectId == activeProjectId,
+          );
+        } catch (e) {
+          // Project not found, clear the saved project ID
+          sharedPreferences.remove('active_server_project_id');
+        }
+      }
+
+      emitter(
+        SemaphoreServerState(
+          servers: servers,
+          activeServer: activeServer,
+          activeProject: activeProject,
+          loaded: true,
+        ),
+      );
+    } catch (e) {
+      AppLogger().e('Failed to load saved state', e);
+      emitter(SemaphoreServerState(loaded: true));
+    }
   }
 
   Future<void> _onLoadServers(

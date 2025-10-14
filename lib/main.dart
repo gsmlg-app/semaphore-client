@@ -1,6 +1,5 @@
 import 'package:activity_bloc/activity.dart';
 import 'package:app_database/app_database.dart';
-import 'package:app_utils/app_utils.dart' show PlatformExt;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:history_bloc/history.dart';
@@ -72,7 +71,7 @@ void main() async {
               SemaphoreServerState(),
               context.read<AppDatabase>(),
               context.read<SharedPreferences>(),
-            ),
+            )..add(LoadSavedState()),
           ),
           BlocProvider(create: (BuildContext context) => ServerFormBloc()),
           BlocProvider(create: (BuildContext context) => ProjectBloc()),

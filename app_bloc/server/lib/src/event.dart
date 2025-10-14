@@ -4,6 +4,8 @@ sealed class SemaphoreServerEvent {}
 
 class LoadServers extends SemaphoreServerEvent {}
 
+class LoadSavedState extends SemaphoreServerEvent {}
+
 class UnloadServers extends SemaphoreServerEvent {}
 
 class AddServer extends SemaphoreServerEvent {

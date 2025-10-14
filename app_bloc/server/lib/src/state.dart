@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:app_database/app_database.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SemaphoreServerState {
   final List<SemaphoreServer> servers;
@@ -13,12 +12,7 @@ class SemaphoreServerState {
   bool get hasActiveServer => activeServer != null;
   bool get hasActiveProject => activeProject != null;
 
-  factory SemaphoreServerState.fromSavedStats(
-    AppDatabase database,
-    SharedPreferences prefs,
-  ) {
-    return SemaphoreServerState(loaded: true);
-  }
+
 
   SemaphoreServerState({
     this.servers = const [],
