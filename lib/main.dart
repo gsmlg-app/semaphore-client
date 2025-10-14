@@ -23,6 +23,7 @@ import 'package:team_bloc/team.dart';
 import 'package:template_bloc/template.dart';
 import 'package:theme_bloc/theme.dart';
 import 'package:variable_bloc/variable.dart';
+import 'package:variable_form_bloc/variable_form.dart';
 // import 'package:window_manager/window_manager.dart';
 
 void main() async {
@@ -86,6 +87,7 @@ void main() async {
           BlocProvider(create: (BuildContext context) => InventoryBloc()),
           BlocProvider(create: (BuildContext context) => InventoryFormBloc()),
           BlocProvider(create: (BuildContext context) => VariableBloc()),
+          BlocProvider(create: (BuildContext context) => VariableFormBloc()),
           BlocProvider(create: (BuildContext context) => KeyStoreBloc()),
           BlocProvider(create: (BuildContext context) => RepositoryBloc()),
           BlocProvider(create: (BuildContext context) => IntegrationBloc()),

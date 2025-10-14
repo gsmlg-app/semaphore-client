@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart' as logging;
-import 'package:stack_trace/stack_trace.dart';
 
 import 'log_level.dart';
 import 'log_record.dart';

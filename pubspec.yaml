@@ -35,6 +35,7 @@ workspace:
   - app_bloc/team
   - app_bloc/template
   - app_bloc/variable
+  - app_bloc/variable_form
   - app_widget/adaptive
   - app_widget/artwork
   - app_widget/error
@@ -97,6 +98,7 @@ dependencies:
   team_bloc: any
   template_bloc: any
   variable_bloc: any
+  variable_form_bloc: any
   app_artwork: any
   app_error: any
   app_feedback: any

@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_adaptive_widgets/gsmlg_adaptive_widgets.dart';
 import 'package:server_bloc/server.dart';
 import 'package:variable_bloc/variable.dart';
+import 'package:variable_form_bloc/variable_form.dart';
 import 'package:semaphore_client/destination.dart';
 import 'package:app_utils/app_utils.dart';
 import 'package:app_database/server.dart';
 import 'package:semaphore_client/screens/project/project_screen.dart';
 import 'package:app_error/app_error.dart';
+import 'package:app_feedback/app_feedback.dart';
 
 class VariableScreen extends StatefulWidget {
   const VariableScreen({super.key});
@@ -90,25 +92,41 @@ class _VariableScreenState extends State<VariableScreen>
                       itemCount: state.variables.length,
                       itemBuilder: (context, index) {
                         final variable = state.variables[index];
-                        return ListTile(
-                          leading: const Icon(Icons.data_object),
-                          title: Text(variable.name ?? '--'),
-                          trailing: AppAdaptiveActionList(
-                            size: AppAdaptiveActionSize.small,
-                            actions: [
-                              AppAdaptiveAction(
-                                icon: Icons.delete,
-                                title: context.l10n!.delete,
-                                onPressed: () {},
-                              ),
-                              AppAdaptiveAction(
-                                icon: Icons.edit,
-                                title: context.l10n!.edit,
-                                onPressed: () {},
-                              ),
-                            ],
-                          ),
-                        );
+                         return ListTile(
+                           leading: const Icon(Icons.data_object),
+                           title: Text(variable.name ?? '--'),
+                           trailing: AppAdaptiveActionList(
+                             size: AppAdaptiveActionSize.small,
+                             actions: [
+                               AppAdaptiveAction(
+                                 icon: Icons.delete,
+                                 title: context.l10n!.delete,
+                                 onPressed: () {
+                                   final serverState = context.read<SemaphoreServerBloc>().state;
+                                   showDeleteVariable(
+                                     context: context,
+                                     api: serverState.activeServer!.api,
+                                     projectId: serverState.activeProject!.projectId!,
+                                     environment: variable,
+                                   );
+                                 },
+                               ),
+                               AppAdaptiveAction(
+                                 icon: Icons.edit,
+                                 title: context.l10n!.edit,
+                                 onPressed: () {
+                                   final serverState = context.read<SemaphoreServerBloc>().state;
+                                   showEditVariable(
+                                     context: context,
+                                     api: serverState.activeServer!.api,
+                                     projectId: serverState.activeProject!.projectId!,
+                                     environment: variable,
+                                   );
+                                 },
+                               ),
+                             ],
+                           ),
+                         );
                       },
                     );
                   }
@@ -180,14 +198,30 @@ class _VariableScreenState extends State<VariableScreen>
                               DataCell(
                                 Row(
                                   children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.delete),
-                                      onPressed: () {},
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      onPressed: () {},
-                                    ),
+                                     IconButton(
+                                       icon: const Icon(Icons.delete),
+                                       onPressed: () {
+                                         final serverState = context.read<SemaphoreServerBloc>().state;
+                                         showDeleteVariable(
+                                           context: context,
+                                           api: serverState.activeServer!.api,
+                                           projectId: serverState.activeProject!.projectId!,
+                                           environment: variable,
+                                         );
+                                       },
+                                     ),
+                                     IconButton(
+                                       icon: const Icon(Icons.edit),
+                                       onPressed: () {
+                                         final serverState = context.read<SemaphoreServerBloc>().state;
+                                         showEditVariable(
+                                           context: context,
+                                           api: serverState.activeServer!.api,
+                                           projectId: serverState.activeProject!.projectId!,
+                                           environment: variable,
+                                         );
+                                       },
+                                     ),
                                   ],
                                 ),
                               ),
@@ -218,10 +252,23 @@ class _VariableScreenState extends State<VariableScreen>
         : isLarge
         ? AppAdaptiveActionSize.large
         : AppAdaptiveActionSize.medium;
+    final serverState = context.read<SemaphoreServerBloc>().state;
+    
     return [
       AppAdaptiveActionList(
         size: size,
         actions: [
+          AppAdaptiveAction(
+            icon: Icons.add,
+            title: context.l10n!.create,
+            onPressed: () {
+              showCreateVariable(
+                context: context,
+                api: serverState.activeServer!.api,
+                projectId: serverState.activeProject!.projectId!,
+              );
+            },
+          ),
           AppAdaptiveAction(
             icon: Icons.refresh,
             title: context.l10n!.refresh,

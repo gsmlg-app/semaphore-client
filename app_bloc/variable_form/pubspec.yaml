@@ -1,0 +1,30 @@
+name: variable_form_bloc
+description: Variable Form BLoC for Semaphore app
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ">=3.8.0 <4.0.0"
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  flutter_form_bloc: any
+  bloc: ^9.0.0
+  flutter_bloc: ^9.0.0
+  equatable: ^2.0.7
+  dio: ^5.0.0
+  
+  app_database: any
+  app_api: any
+  app_utils: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  # No assets or resources needed for BLoC package
