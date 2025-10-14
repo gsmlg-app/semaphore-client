@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:app_feedback/app_feedback.dart';
 import 'package:variable_bloc/variable.dart';
-import 'package:server_bloc/server.dart' show SemaphoreServerBloc;
-import 'package:app_utils/app_utils.dart';
 import 'package:app_api/app_api.dart';
-import 'package:app_database/server.dart';
+import 'package:app_utils/app_utils.dart';
 
 void showDeleteVariable({
   required BuildContext context,
@@ -30,6 +27,16 @@ void showDeleteVariable({
           ),
           TextButton(
             onPressed: () {
+              if (environment.id == null) {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Cannot delete variable: missing ID'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+                return;
+              }
               Navigator.of(context).pop();
               context.read<VariableBloc>().add(
                     VariableDelete(api, projectId, environment.id!),

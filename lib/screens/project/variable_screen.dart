@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_adaptive_widgets/gsmlg_adaptive_widgets.dart';
 import 'package:server_bloc/server.dart';
 import 'package:variable_bloc/variable.dart';
-import 'package:variable_form_bloc/variable_form.dart';
 import 'package:semaphore_client/destination.dart';
 import 'package:app_utils/app_utils.dart';
 import 'package:app_database/server.dart';
@@ -70,7 +69,18 @@ class _VariableScreenState extends State<VariableScreen>
                   ),
                 );
               },
-              child: BlocBuilder<VariableBloc, VariableState>(
+              child: BlocListener<VariableBloc, VariableState>(
+                listener: (context, state) {
+                  if (state is VariableError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Failed to delete variable: ${state.error}'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                },
+                child: BlocBuilder<VariableBloc, VariableState>(
                 builder: (context, state) {
                   if (state is VariableInitial || state is VariableLoading) {
                     return const SliverFillRemaining(
@@ -132,6 +142,7 @@ class _VariableScreenState extends State<VariableScreen>
                   }
                   return const Center(child: Text('--'));
                 },
+                ),
               ),
             ),
           ],
