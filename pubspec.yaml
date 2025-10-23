@@ -15,6 +15,7 @@ workspace:
   - app_lib/logging
   - app_lib/utils
   - app_lib/api
+  - app_api/semaphore
   - app_bloc/theme
   - app_bloc/error_handler
   - app_bloc/activity

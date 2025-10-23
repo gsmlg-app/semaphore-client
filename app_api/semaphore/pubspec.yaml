@@ -1,0 +1,18 @@
+name: "semaphore_api"
+version: 1.0.0
+description: API client, generate from OpenAPI spec
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+resolution: workspace
+
+dependencies:
+  dio: ^5.7.0
+  built_value: ^8.9.0
+  built_collection: ^5.1.1
+  one_of_serializer: ^1.0.0
+
+dev_dependencies:
+  test: "^1.16.0"
+  build_runner: any
+  built_value_generator: ^8.9.0

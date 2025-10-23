@@ -1,0 +1,7 @@
+targets:
+  $default:
+    builders:
+      openapi_generator|openapi_generator:
+        enabled: true
+        options:
+          output_directory: lib/src/

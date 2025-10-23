@@ -1,0 +1,5478 @@
+openapi: 3.0.3
+info:
+  title: Semaphore API
+  description: >
+    Semaphore API provides endpoints for managing and interacting with the
+    Semaphore UI.
+
+    This documentation outlines the available operations and data models.
+
+
+    ## Authentication
+
+
+    Semaphore API supports multiple authentication methods:
+
+
+    * **Session Cookies**: Automatic authentication after web login
+
+    * **API Tokens**: For programmatic access using Bearer tokens
+
+    * **Multiple Auth Providers**: LDAP, OIDC, email OTP, TOTP
+
+
+    ## Rate Limiting
+
+
+    API requests may be rate limited to ensure fair usage.
+
+
+    ## Error Handling
+
+
+    The API uses standard HTTP status codes and returns detailed error messages
+    in JSON format.
+
+
+    ## Pagination
+
+
+    List endpoints support pagination using `limit` and `offset` parameters.
+  version: 2.16.14
+  contact:
+    name: Semaphore UI
+    url: https://semaphoreui.com
+    email: support@semaphoreui.com
+  license:
+    name: MIT
+    url: https://github.com/semaphoreui/semaphore/blob/master/LICENSE
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+  - url: https://{hostname}/api
+    description: Production server
+    variables:
+      hostname:
+        default: your-semaphore-instance.com
+        description: Your Semaphore instance hostname
+  - url: /api
+    description: Relative path (uses current host)
+tags:
+  - name: authentication
+    description: Authentication, Logout & API Tokens
+  - name: project
+    description: Everything related to a project
+  - name: user
+    description: User-related API
+  - name: integration
+    description: Integration API
+  - name: admin
+    description: Administrative operations and system management
+  - name: terraform
+    description: Terraform state management and operations
+  - name: runner
+    description: Runner management and operations
+  - name: schedule
+    description: Task scheduling and management
+  - name: template
+    description: Task templates and execution
+  - name: inventory
+    description: Ansible inventory management
+  - name: repository
+    description: Git repository management
+  - name: environment
+    description: Environment variables and secrets management
+externalDocs:
+  description: Semaphore UI Documentation
+  url: https://docs.semaphoreui.com
+security:
+  - bearer: []
+  - cookie: []
+paths:
+  /debug/gc:
+    post:
+      summary: Garbage collector
+      description: Run the garbage collector
+      responses:
+        '204':
+          description: Successful "OK" reply
+  /ping:
+    get:
+      summary: PING test
+      security: []
+      responses:
+        '200':
+          description: Successful "PONG" reply
+          headers:
+            content-type:
+              x-example: text/plain; charset=utf-8
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Pong'
+  # /ws:
+  #   get:
+  #     summary: Websocket handler
+  #     responses:
+  #       '200':
+  #         description: OK
+  #       '401':
+  #         description: not authenticated
+  #     servers:
+  #       - url: ws:/api
+  #       - url: wss:/api
+  /info:
+    get:
+      summary: Fetches information about semaphore
+      description: you must be authenticated to use this
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoType'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/InfoType'
+  /auth/login:
+    get:
+      tags:
+        - authentication
+      summary: Fetches login metadata
+      description: Fetches metadata for login, such as available OIDC providers
+      security: []
+      responses:
+        '200':
+          description: Login metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginMetadata'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/LoginMetadata'
+    post:
+      tags:
+        - authentication
+      summary: Performs Login
+      description: Upon success you will be logged in
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      responses:
+        '204':
+          description: You are logged in
+        '400':
+          description: something in body is missing / is invalid
+  /auth/logout:
+    post:
+      tags:
+        - authentication
+      summary: Destroys current session
+      responses:
+        '204':
+          description: Your session was successfully nuked
+  /auth/oidc/{provider_id}/login:
+    parameters:
+      - name: provider_id
+        in: path
+        required: true
+        example: mysso
+        schema:
+          type: string
+    get:
+      tags:
+        - authentication
+      summary: Begin OIDC authentication flow and redirect to OIDC provider
+      description: >-
+        The user agent is redirected to this endpoint when chosing to sign in
+        via OIDC
+      responses:
+        '302':
+          description: >-
+            Redirection to the OIDC provider on success, or to the login page on
+            error
+  /auth/oidc/{provider_id}/redirect:
+    parameters:
+      - name: provider_id
+        in: path
+        required: true
+        example: mysso
+        schema:
+          type: string
+    get:
+      tags:
+        - authentication
+      summary: Finish OIDC authentication flow, upon succes you will be logged in
+      description: >-
+        The user agent is redirected here by the OIDC provider to complete
+        authentication
+      responses:
+        '302':
+          description: >-
+            Redirection to the Semaphore root URL on success, or to the login
+            page on error
+  /auth/oidc/{provider_id}/redirect/{redirect_path}:
+    parameters:
+      - name: provider_id
+        in: path
+        required: true
+        example: mysso
+        schema:
+          type: string
+      - name: redirect_path
+        in: path
+        required: true
+        description: Path to redirect to after authentication
+        schema:
+          type: string
+    get:
+      tags:
+        - authentication
+      summary: Finish OIDC authentication flow with custom redirect path
+      description: >-
+        The user agent is redirected here by the OIDC provider to complete
+        authentication with custom redirect
+      responses:
+        '302':
+          description: >-
+            Redirection to the specified path on success, or to the login page
+            on error
+  /auth/verify/email:
+    post:
+      tags:
+        - authentication
+      summary: Start email verification process
+      description: Sends verification email to start email-based authentication
+      security: []
+      requestBody:
+        $ref: '#/components/requestBodies/EmailLoginRequest'
+      responses:
+        '200':
+          description: Verification email sent
+        '400':
+          description: Invalid email address
+        '429':
+          description: Too many requests
+  /auth/login/email:
+    get:
+      tags:
+        - authentication
+      summary: Check email login status
+      description: Check if email verification is pending
+      security: []
+      parameters:
+        - name: email
+          in: query
+          required: true
+          description: Email address to check
+          schema:
+            type: string
+            format: email
+      responses:
+        '200':
+          description: Email login status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pending:
+                    type: boolean
+                    example: true
+                  expires_at:
+                    type: string
+                    format: date-time
+            text/plain; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  pending:
+                    type: boolean
+                    example: true
+                  expires_at:
+                    type: string
+                    format: date-time
+    post:
+      tags:
+        - authentication
+      summary: Login with email and OTP
+      description: Complete email-based authentication with OTP token
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailVerifyRequest'
+        required: true
+      responses:
+        '204':
+          description: Login successful
+        '400':
+          description: Invalid or expired token
+  /auth/login/email/resend:
+    post:
+      tags:
+        - authentication
+      summary: Resend email verification
+      description: Resend verification email for email-based authentication
+      security: []
+      requestBody:
+        $ref: '#/components/requestBodies/EmailLoginRequest'
+      responses:
+        '200':
+          description: Verification email resent
+        '400':
+          description: Invalid email address
+  /auth/verify:
+    post:
+      tags:
+        - authentication
+      summary: Verify current session
+      description: Verify if current session is valid
+      responses:
+        '200':
+          description: Session is valid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valid:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+            text/plain; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  valid:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: Session is invalid or expired
+  /auth/recovery:
+    post:
+      tags:
+        - authentication
+      summary: Recover session
+      description: Attempt to recover a lost session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: recovery_token_here
+        required: true
+      responses:
+        '200':
+          description: Session recovered
+        '400':
+          description: Invalid recovery token
+  /user/:
+    get:
+      tags:
+        - user
+      summary: Fetch logged in user
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/User'
+  /user/tokens:
+    get:
+      tags:
+        - authentication
+        - user
+      summary: Fetch API tokens for user
+      responses:
+        '200':
+          description: API Tokens
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/APIToken'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/APIToken'
+    post:
+      tags:
+        - authentication
+        - user
+      summary: Create an API token
+      responses:
+        '201':
+          description: API Token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIToken'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/APIToken'
+  /user/tokens/{api_token_id}:
+    parameters:
+      - name: api_token_id
+        in: path
+        required: true
+        example: kwofd61g93-yuqvex8efmhjkgnbxlo8mp1tin6spyhu=
+        schema:
+          type: string
+    delete:
+      tags:
+        - authentication
+        - user
+      summary: Expires API token
+      responses:
+        '204':
+          description: Expired API Token
+  /users:
+    get:
+      tags:
+        - user
+      summary: Fetches all users
+      responses:
+        '200':
+          description: Users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags:
+        - user
+      summary: Creates a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: User creation failed
+  /users/{user_id}/:
+    parameters:
+      - $ref: '#/components/parameters/user_id'
+    get:
+      tags:
+        - user
+      summary: Fetches a user profile
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+        - user
+      summary: Updates user details
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPutRequest'
+        required: true
+      responses:
+        '204':
+          description: User Updated
+    delete:
+      tags:
+        - user
+      summary: Deletes user
+      responses:
+        '204':
+          description: User deleted
+  /users/{user_id}/password:
+    parameters:
+      - $ref: '#/components/parameters/user_id'
+    post:
+      tags:
+        - user
+      summary: Updates user password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordUpdateRequest'
+        required: true
+      responses:
+        '204':
+          description: Password updated
+        '400':
+          description: Invalid password
+  /users/{user_id}/2fas/totp:
+    parameters:
+      - $ref: '#/components/parameters/user_id'
+    post:
+      tags:
+        - user
+      summary: Enable TOTP 2FA
+      description: Enable Time-based One-Time Password two-factor authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TotpEnableRequest'
+        required: true
+      responses:
+        '201':
+          description: TOTP enabled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TotpQrResponse'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/TotpQrResponse'
+  /users/{user_id}/2fas/totp/{totp_id}:
+    parameters:
+      - name: user_id
+        in: path
+        required: true
+        example: 1
+        schema:
+          type: integer
+      - name: totp_id
+        in: path
+        required: true
+        example: 1
+        schema:
+          type: integer
+    get:
+      tags:
+        - user
+      summary: Get TOTP QR code
+      description: Get QR code for TOTP setup
+      responses:
+        '200':
+          description: TOTP QR code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TotpQrResponse'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/TotpQrResponse'
+    delete:
+      tags:
+        - user
+      summary: Disable TOTP 2FA
+      description: Disable Time-based One-Time Password two-factor authentication
+      responses:
+        '204':
+          description: TOTP disabled
+  /invites/accept:
+    post:
+      tags:
+        - project
+        - authentication
+      summary: Accept project invitation
+      description: Accept a project invitation using the provided token
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptInviteRequest'
+        required: true
+      responses:
+        '204':
+          description: Invitation accepted successfully
+        '400':
+          description: Invalid token, invitation expired, or user already a member
+        '403':
+          description: Invitation not for this user
+        '404':
+          description: Invitation not found
+  /projects:
+    get:
+      tags:
+        - project
+      summary: Get projects
+      responses:
+        '200':
+          description: List of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+    post:
+      tags:
+        - project
+      summary: Create a new project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequest'
+        required: true
+      responses:
+        '201':
+          description: Created project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Project'
+  /projects/restore:
+    post:
+      tags:
+        - project
+      summary: Restore Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectBackup'
+        required: true
+      responses:
+        '200':
+          description: Created project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Project'
+  /events:
+    get:
+      summary: Get Events related to Semaphore and projects you are part of
+      responses:
+        '200':
+          description: Array of events in chronological order
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+  /events/last:
+    get:
+      summary: Get last 200 Events related to Semaphore and projects you are part of
+      responses:
+        '200':
+          description: Array of events in chronological order
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+  /project/{project_id}/:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - project
+      summary: Fetch project
+      responses:
+        '200':
+          description: Project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Project'
+    put:
+      tags:
+        - project
+      summary: Update project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ProjectRequest'
+                - properties:
+                    id:
+                      type: integer
+                      minimum: 1
+        required: true
+      responses:
+        '204':
+          description: Project saved
+    delete:
+      tags:
+        - project
+      summary: Delete project
+      responses:
+        '204':
+          description: Project deleted
+  /project/{project_id}/backup:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - project
+      summary: Backup A Project
+      responses:
+        '200':
+          description: Backup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectBackup'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ProjectBackup'
+  /project/{project_id}/role:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - project
+      summary: Fetch permissions of the current user for project
+      responses:
+        '200':
+          description: Permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    example: owner
+                  permissions:
+                    type: number
+                    example: 0
+            text/plain; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    example: owner
+                  permissions:
+                    type: number
+                    example: 0
+  /project/{project_id}/events:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - project
+      summary: Get Events related to this project
+      responses:
+        '200':
+          description: Array of events in chronological order
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+  /project/{project_id}/users:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - project
+      summary: Get users linked to project
+      parameters:
+        - name: sort
+          in: query
+          required: true
+          description: sorting name
+          example: email
+          schema:
+            type: string
+            enum:
+              - name
+              - username
+              - email
+              - role
+        - name: order
+          in: query
+          required: true
+          description: ordering manner
+          example: desc
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectUser'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectUser'
+    post:
+      tags:
+        - project
+      summary: Link user to project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  minimum: 2
+                role:
+                  type: string
+                  enum:
+                    - owner
+                    - manager
+                    - task_runner
+                    - guest
+                  example: owner
+        required: true
+      responses:
+        '204':
+          description: User added
+  /project/{project_id}/users/{user_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/user_id'
+    delete:
+      tags:
+        - project
+      summary: Removes user from project
+      responses:
+        '204':
+          description: User removed
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  enum:
+                    - owner
+                    - manager
+                    - task_runner
+                    - guest
+                  example: owner
+        required: true
+      summary: Update user role
+      tags:
+        - project
+      responses:
+        '204':
+          description: User updated
+  /project/{project_id}/invites:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - project
+      summary: Get invitations for project
+      parameters:
+        - name: sort
+          in: query
+          required: false
+          description: sorting field
+          example: created
+          schema:
+            type: string
+            enum:
+              - created
+              - status
+              - role
+        - name: order
+          in: query
+          required: false
+          description: ordering manner
+          example: desc
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Project invitations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectInvite'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectInvite'
+    post:
+      tags:
+        - project
+      summary: Create project invitation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectInviteRequest'
+        required: true
+      responses:
+        '201':
+          description: Invitation created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectInvite'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ProjectInvite'
+        '400':
+          description: Bad request (invalid role, missing user_id/email, or both provided)
+        '409':
+          description: User already a member or invitation already exists
+  /project/{project_id}/invites/{invite_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/invite_id'
+    get:
+      tags:
+        - project
+      summary: Get specific project invitation
+      responses:
+        '200':
+          description: Project invitation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectInvite'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ProjectInvite'
+        '404':
+          description: Invitation not found
+  /project/{project_id}/integrations:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - integration
+      summary: get all integrations
+      responses:
+        '200':
+          description: integration
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Integration'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Integration'
+    post:
+      summary: create a new integration
+      tags:
+        - integration
+      requestBody:
+        $ref: '#/components/requestBodies/IntegrationRequest'
+      responses:
+        '201':
+          description: Integration Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Integration'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Integration'
+  /project/{project_id}/integrations/{integration_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/integration_id'
+    get:
+      tags:
+        - integration
+      summary: Get Integration
+      responses:
+        '200':
+          description: Integration Value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Integration'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Integration'
+    put:
+      tags:
+        - integration
+      summary: Update Integration
+      requestBody:
+        $ref: '#/components/requestBodies/IntegrationRequest'
+      responses:
+        '204':
+          description: Integration updated
+    delete:
+      tags:
+        - integration
+      summary: Remove integration
+      responses:
+        '204':
+          description: integration removed
+  /project/{project_id}/integrations/{integration_id}/values:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/integration_id'
+    get:
+      tags:
+        - integration
+      summary: Get Integration Extracted Values linked to integration extractor
+      responses:
+        '200':
+          description: Integration Extracted Value
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IntegrationExtractValue'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IntegrationExtractValue'
+    post:
+      tags:
+        - integration
+      summary: Add Integration Extracted Value
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegrationExtractValue'
+        required: true
+      responses:
+        '201':
+          description: Integration Extract Value Created
+        '400':
+          description: Bad Integration Extract Value params
+  /project/{project_id}/integrations/{integration_id}/values/{extractvalue_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/integration_id'
+      - $ref: '#/components/parameters/extractvalue_id'
+    put:
+      tags:
+        - integration
+      summary: Updates Integration ExtractValue
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegrationExtractValueRequest'
+        required: true
+      responses:
+        '204':
+          description: Integration Extract Value updated
+        '400':
+          description: Bad integration extract value parameter
+    delete:
+      tags:
+        - integration
+      summary: Removes integration extract value
+      responses:
+        '204':
+          description: integration extract value removed
+  /project/{project_id}/integrations/{integration_id}/matchers:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/integration_id'
+    get:
+      tags:
+        - integration
+      summary: Get Integration Matcher linked to integration extractor
+      responses:
+        '200':
+          description: Integration Matcher
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IntegrationMatcher'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IntegrationMatcher'
+    post:
+      tags:
+        - integration
+      summary: Add Integration Matcher
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegrationMatcher'
+        required: true
+      responses:
+        '200':
+          description: Integration Matcher Created
+        '400':
+          description: Bad Integration Matcher params
+  /project/{project_id}/integrations/{integration_id}/matchers/{matcher_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/integration_id'
+      - $ref: '#/components/parameters/matcher_id'
+    put:
+      tags:
+        - integration
+      summary: Updates Integration Matcher
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegrationMatcherRequest'
+        required: true
+      responses:
+        '204':
+          description: Integration Matcher updated
+        '400':
+          description: Bad integration matcher parameter
+    delete:
+      tags:
+        - integration
+      summary: Removes integration matcher
+      responses:
+        '204':
+          description: integration matcher removed
+  /project/{project_id}/keys:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - key-store
+      summary: Get access keys linked to project
+      parameters:
+        - name: Key type
+          in: query
+          required: false
+          description: Filter by key type
+          example: none
+          schema:
+            type: string
+            enum:
+              - none
+              - ssh
+              - login_password
+        - name: sort
+          in: query
+          required: true
+          description: sorting name
+          example: type
+          schema:
+            type: string
+            enum:
+              - name
+              - type
+        - name: order
+          in: query
+          required: true
+          description: ordering manner
+          example: asc
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Access Keys
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccessKey'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccessKey'
+    post:
+      tags:
+        - key-store
+      summary: Add access key
+      requestBody:
+        $ref: '#/components/requestBodies/AccessKeyRequest'
+      responses:
+        '201':
+          description: Access Key created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessKey'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/AccessKey'
+        '400':
+          description: Bad type
+  /project/{project_id}/keys/{key_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/key_id'
+    put:
+      tags:
+        - key-store
+      summary: Updates access key
+      requestBody:
+        $ref: '#/components/requestBodies/AccessKeyRequest'
+      responses:
+        '204':
+          description: Key updated
+        '400':
+          description: Bad type
+    delete:
+      tags:
+        - key-store
+      summary: Removes access key
+      responses:
+        '204':
+          description: access key removed
+  /project/{project_id}/repositories:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - repository
+      summary: Get repositories
+      parameters:
+        - name: sort
+          in: query
+          required: true
+          description: sorting name
+          schema:
+            type: string
+            enum:
+              - name
+              - git_url
+              - ssh_key
+        - name: order
+          in: query
+          required: true
+          description: ordering manner
+          schema:
+            type: string
+            format: asc/desc
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: repositories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Repository'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Repository'
+    post:
+      tags:
+        - repository
+      summary: Add repository
+      requestBody:
+        $ref: '#/components/requestBodies/RepositoryRequest'
+      responses:
+        '201':
+          description: Repository created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Repository'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Repository'
+  /project/{project_id}/repositories/{repository_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/repository_id'
+    get:
+      tags:
+        - repository
+      summary: Get repository
+      responses:
+        '200':
+          description: repository object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Repository'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Repository'
+    put:
+      tags:
+        - repository
+      summary: Updates repository
+      requestBody:
+        $ref: '#/components/requestBodies/RepositoryRequest'
+      responses:
+        '204':
+          description: Repository updated
+        '400':
+          description: Bad request
+    delete:
+      tags:
+        - repository
+      summary: Removes repository
+      responses:
+        '204':
+          description: repository removed
+  /project/{project_id}/inventory:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - inventory
+      summary: Get inventory
+      parameters:
+        - name: sort
+          in: query
+          required: true
+          description: sorting name
+          schema:
+            type: string
+            enum:
+              - name
+              - type
+        - name: order
+          in: query
+          required: true
+          description: ordering manner
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: inventory
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Inventory'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Inventory'
+    post:
+      tags:
+        - inventory
+      summary: create inventory
+      requestBody:
+        $ref: '#/components/requestBodies/InventoryRequest'
+      responses:
+        '201':
+          description: inventory created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+  /project/{project_id}/inventory/{inventory_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/inventory_id'
+    get:
+      tags:
+        - inventory
+      summary: Get inventory
+      responses:
+        '200':
+          description: inventory object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+    put:
+      tags:
+        - inventory
+      summary: Updates inventory
+      requestBody:
+        $ref: '#/components/requestBodies/InventoryRequest'
+      responses:
+        '204':
+          description: Inventory updated
+    delete:
+      tags:
+        - inventory
+      summary: Removes inventory
+      responses:
+        '204':
+          description: inventory removed
+  /project/{project_id}/environment:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - variable-group
+      summary: Get environment
+      parameters:
+        - name: sort
+          in: query
+          required: true
+          description: sorting name
+          example: name
+          schema:
+            type: string
+            format: name
+        - name: order
+          in: query
+          required: true
+          description: ordering manner
+          example: desc
+          schema:
+            type: string
+            format: asc/desc
+      responses:
+        '200':
+          description: environment
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Environment'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Environment'
+    post:
+      tags:
+        - variable-group
+      summary: Add environment
+      requestBody:
+        $ref: '#/components/requestBodies/EnvironmentRequest'
+      responses:
+        '201':
+          description: Environment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Environment'
+  /project/{project_id}/environment/{environment_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/environment_id'
+    get:
+      tags:
+        - variable-group
+      summary: Get environment
+      responses:
+        '200':
+          description: environment object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Environment'
+    put:
+      tags:
+        - variable-group
+      summary: Update environment
+      requestBody:
+        $ref: '#/components/requestBodies/EnvironmentRequest'
+      responses:
+        '204':
+          description: Environment Updated
+    delete:
+      tags:
+        - variable-group
+      summary: Removes environment
+      responses:
+        '204':
+          description: environment removed
+  /project/{project_id}/templates:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - template
+      summary: Get template
+      parameters:
+        - name: sort
+          in: query
+          required: true
+          description: sorting name
+          schema:
+            type: string
+            enum:
+              - name
+              - playbook
+              - ssh_key
+              - inventory
+              - environment
+              - repository
+        - name: order
+          in: query
+          required: true
+          description: ordering manner
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: template
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+    post:
+      tags:
+        - template
+      summary: create template
+      requestBody:
+        $ref: '#/components/requestBodies/TemplateRequest'
+      responses:
+        '201':
+          description: template created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Template'
+  /project/{project_id}/templates/{template_id}/stop_all_tasks:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/template_id'
+    post:
+      tags:
+        - template
+      summary: Stop all active tasks of template
+      responses:
+        '204':
+          description: tasks stopped
+  /project/{project_id}/templates/{template_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/template_id'
+    get:
+      tags:
+        - template
+      summary: Get template
+      responses:
+        '200':
+          description: template object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Template'
+    put:
+      tags:
+        - template
+      summary: Updates template
+      requestBody:
+        $ref: '#/components/requestBodies/TemplateRequest'
+      responses:
+        '204':
+          description: template updated
+    delete:
+      tags:
+        - template
+      summary: Removes template
+      responses:
+        '204':
+          description: template removed
+  /project/{project_id}/schedules/{schedule_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/schedule_id'
+    get:
+      tags:
+        - schedule
+      summary: Get schedule
+      responses:
+        '200':
+          description: Schedule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+    delete:
+      tags:
+        - schedule
+      summary: Deletes schedule
+      responses:
+        '204':
+          description: schedule deleted
+    put:
+      tags:
+        - schedule
+      summary: Updates schedule
+      requestBody:
+        $ref: '#/components/requestBodies/ScheduleRequest'
+      responses:
+        '204':
+          description: schedule updated
+  /project/{project_id}/schedules:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    post:
+      tags:
+        - schedule
+      summary: create schedule
+      requestBody:
+        $ref: '#/components/requestBodies/ScheduleRequest'
+      responses:
+        '201':
+          description: schedule created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+  /project/{project_id}/views:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - project
+      summary: Get view
+      responses:
+        '200':
+          description: view
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/View'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/View'
+    post:
+      tags:
+        - project
+      summary: create view
+      requestBody:
+        $ref: '#/components/requestBodies/ViewRequest'
+      responses:
+        '201':
+          description: view created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/View'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/View'
+  /project/{project_id}/views/{view_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/view_id'
+    get:
+      tags:
+        - project
+      summary: Get view
+      responses:
+        '200':
+          description: view object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/View'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/View'
+    put:
+      tags:
+        - project
+      summary: Updates view
+      requestBody:
+        $ref: '#/components/requestBodies/ViewRequest'
+      responses:
+        '204':
+          description: view updated
+    delete:
+      tags:
+        - project
+      summary: Removes view
+      responses:
+        '204':
+          description: view removed
+  /project/{project_id}/tasks:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - task
+      summary: Get Tasks related to current project
+      responses:
+        '200':
+          description: Array of tasks in chronological order
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+    post:
+      tags:
+        - task
+      summary: Starts a job
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                template_id:
+                  type: integer
+                debug:
+                  type: boolean
+                dry_run:
+                  type: boolean
+                diff:
+                  type: boolean
+                playbook:
+                  type: string
+                environment:
+                  type: string
+                limit:
+                  type: string
+                git_branch:
+                  type: string
+                message:
+                  type: string
+                arguments:
+                  type: string
+                inventory_id:
+                  type: integer
+        required: true
+      responses:
+        '201':
+          description: Task queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Task'
+  /project/{project_id}/tasks/last:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - task
+      summary: Get last 200 Tasks related to current project
+      responses:
+        '200':
+          description: Array of tasks in chronological order
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+  /project/{project_id}/tasks/{task_id}/stop:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/task_id'
+    post:
+      tags:
+        - task
+      summary: Stop a job
+      responses:
+        '204':
+          description: Task queued
+  /project/{project_id}/tasks/{task_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/task_id'
+    get:
+      tags:
+        - task
+      summary: Get a single task
+      responses:
+        '200':
+          description: Task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Task'
+    delete:
+      tags:
+        - task
+      summary: Deletes task (including output)
+      responses:
+        '204':
+          description: task deleted
+  /project/{project_id}/tasks/{task_id}/output:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/task_id'
+    get:
+      tags:
+        - task
+      summary: Get task output
+      responses:
+        '200':
+          description: output
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskOutput'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskOutput'
+  /project/{project_id}/tasks/{task_id}/raw_output:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/task_id'
+    get:
+      tags:
+        - task
+      summary: Get task raw output
+      responses:
+        '200':
+          description: output
+          headers:
+            content-type:
+              x-example: text/plain; charset=utf-8
+              schema:
+                type: string
+  /apps:
+    get:
+      summary: Get apps
+      responses:
+        '200':
+          description: Apps
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/App'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/App'
+  /apps/{app_id}:
+    parameters:
+      - name: app_id
+        in: path
+        required: true
+        example: ansible
+        schema:
+          type: string
+    get:
+      summary: Get app details
+      responses:
+        '200':
+          description: App details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/App'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/App'
+        '404':
+          description: App not found
+    put:
+      summary: Update app
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppRequest'
+        required: true
+      responses:
+        '204':
+          description: App updated
+        '404':
+          description: App not found
+    delete:
+      summary: Delete app
+      responses:
+        '204':
+          description: App deleted
+        '404':
+          description: App not found
+  /apps/{app_id}/active:
+    parameters:
+      - name: app_id
+        in: path
+        required: true
+        example: ansible
+        schema:
+          type: string
+    post:
+      summary: Set app active status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppActiveRequest'
+        required: true
+      responses:
+        '204':
+          description: App status updated
+        '404':
+          description: App not found
+  /options:
+    get:
+      tags:
+        - admin
+      summary: Get system options
+      description: Retrieve all system configuration options (admin only)
+      responses:
+        '200':
+          description: System options
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Option'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Option'
+        '403':
+          description: Admin access required
+    post:
+      tags:
+        - admin
+      summary: Set system option
+      description: Update a system configuration option (admin only)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OptionRequest'
+        required: true
+      responses:
+        '200':
+          description: Option updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Option'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Option'
+        '403':
+          description: Admin access required
+  /runners:
+    get:
+      tags:
+        - admin
+      summary: Get global runners
+      description: Retrieve all global runners (admin only)
+      responses:
+        '200':
+          description: Global runners
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Runner'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Runner'
+        '403':
+          description: Admin access required
+    post:
+      tags:
+        - admin
+      summary: Add global runner
+      description: Add a new global runner (admin only)
+      requestBody:
+        $ref: '#/components/requestBodies/RunnerRequest'
+      responses:
+        '201':
+          description: Global runner created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Runner'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Runner'
+        '403':
+          description: Admin access required
+  /runners/{runner_id}:
+    parameters:
+      - name: runner_id
+        in: path
+        required: true
+        example: 1
+        schema:
+          type: integer
+    get:
+      tags:
+        - admin
+      summary: Get global runner
+      description: Get details of a specific global runner (admin only)
+      responses:
+        '200':
+          description: Global runner details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Runner'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Runner'
+        '403':
+          description: Admin access required
+        '404':
+          description: Runner not found
+    put:
+      tags:
+        - admin
+      summary: Update global runner
+      description: Update a global runner (admin only)
+      requestBody:
+        $ref: '#/components/requestBodies/RunnerRequest'
+      responses:
+        '204':
+          description: Runner updated
+        '403':
+          description: Admin access required
+        '404':
+          description: Runner not found
+    delete:
+      tags:
+        - admin
+      summary: Delete global runner
+      description: Delete a global runner (admin only)
+      responses:
+        '204':
+          description: Runner deleted
+        '403':
+          description: Admin access required
+        '404':
+          description: Runner not found
+  /runners/{runner_id}/active:
+    parameters:
+      - name: runner_id
+        in: path
+        required: true
+        example: 1
+        schema:
+          type: integer
+    post:
+      tags:
+        - admin
+      summary: Set runner active status
+      description: Set whether a global runner is active (admin only)
+      requestBody:
+        $ref: '#/components/requestBodies/ActiveStatus'
+      responses:
+        '204':
+          description: Runner status updated
+        '403':
+          description: Admin access required
+        '404':
+          description: Runner not found
+  /runners/{runner_id}/cache:
+    parameters:
+      - name: runner_id
+        in: path
+        required: true
+        example: 1
+        schema:
+          type: integer
+    delete:
+      tags:
+        - admin
+      summary: Clear runner cache
+      description: Clear the cache for a global runner (admin only)
+      responses:
+        '204':
+          description: Cache cleared
+        '403':
+          description: Admin access required
+        '404':
+          description: Runner not found
+  /roles:
+    get:
+      tags:
+        - admin
+      summary: Get global roles
+      description: Retrieve all global roles (admin only)
+      responses:
+        '200':
+          description: Global roles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+        '403':
+          description: Admin access required
+    post:
+      tags:
+        - admin
+      summary: Create global role
+      description: Create a new global role (admin only)
+      requestBody:
+        $ref: '#/components/requestBodies/RoleRequest'
+      responses:
+        '201':
+          description: Global role created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '403':
+          description: Admin access required
+  /roles/{role_slug}:
+    parameters:
+      - name: role_slug
+        in: path
+        required: true
+        example: admin
+        schema:
+          type: string
+    get:
+      tags:
+        - admin
+      summary: Get global role
+      description: Get details of a specific global role (admin only)
+      responses:
+        '200':
+          description: Global role details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '403':
+          description: Admin access required
+        '404':
+          description: Role not found
+    put:
+      tags:
+        - admin
+      summary: Update global role
+      description: Update a global role (admin only)
+      requestBody:
+        $ref: '#/components/requestBodies/RoleRequest'
+      responses:
+        '204':
+          description: Role updated
+        '403':
+          description: Admin access required
+        '404':
+          description: Role not found
+    delete:
+      tags:
+        - admin
+      summary: Delete global role
+      description: Delete a global role (admin only)
+      responses:
+        '204':
+          description: Role deleted
+        '403':
+          description: Admin access required
+        '404':
+          description: Role not found
+  /cache:
+    delete:
+      tags:
+        - admin
+      summary: Clear system cache
+      description: Clear the system cache (admin only)
+      responses:
+        '204':
+          description: Cache cleared
+        '403':
+          description: Admin access required
+  /debug/pprof/dump:
+    post:
+      tags:
+        - admin
+      summary: Dump performance profiling data
+      description: Generate and dump performance profiling data (admin only)
+      responses:
+        '204':
+          description: Profiling data dumped
+        '403':
+          description: Admin access required
+  /subscription:
+    get:
+      summary: Get subscription information
+      description: Retrieve current subscription details
+      responses:
+        '200':
+          description: Subscription details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        '403':
+          description: Access denied
+    post:
+      summary: Activate subscription
+      description: Activate or update subscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subscription'
+        required: true
+      responses:
+        '200':
+          description: Subscription activated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        '403':
+          description: Access denied
+  /project/{project_id}/notifications/test:
+    post:
+      tags:
+        - project
+      summary: Send test notification
+      description: Sends a test notification to all enabled messengers for the project
+      parameters:
+        - $ref: '#/components/parameters/project_id'
+      responses:
+        '204':
+          description: Test notification dispatched
+        '409':
+          description: Alerts not enabled for the project
+  /project/{project_id}/secret_storages:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - project
+      summary: Get secret storages
+      description: Retrieve all secret storages for the project
+      parameters:
+        - name: sort
+          in: query
+          required: true
+          description: sorting name
+          example: name
+          schema:
+            type: string
+            enum:
+              - name
+              - type
+        - name: order
+          in: query
+          required: true
+          description: ordering manner
+          example: asc
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: Secret storages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SecretStorage'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SecretStorage'
+    post:
+      tags:
+        - project
+      summary: Create secret storage
+      description: Create a new secret storage for the project
+      requestBody:
+        $ref: '#/components/requestBodies/SecretStorageRequest'
+      responses:
+        '201':
+          description: Secret storage created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecretStorage'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SecretStorage'
+  /project/{project_id}/secret_storages/{storage_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - name: storage_id
+        in: path
+        required: true
+        example: 1
+        schema:
+          type: integer
+    get:
+      tags:
+        - project
+      summary: Get secret storage
+      description: Retrieve details of a specific secret storage
+      responses:
+        '200':
+          description: Secret storage details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecretStorage'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SecretStorage'
+        '404':
+          description: Secret storage not found
+    put:
+      tags:
+        - project
+      summary: Update secret storage
+      description: Update a secret storage
+      requestBody:
+        $ref: '#/components/requestBodies/SecretStorageRequest'
+      responses:
+        '200':
+          description: Secret storage updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecretStorage'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SecretStorage'
+        '404':
+          description: Secret storage not found
+    delete:
+      tags:
+        - project
+      summary: Delete secret storage
+      description: Delete a secret storage
+      responses:
+        '204':
+          description: Secret storage deleted
+        '404':
+          description: Secret storage not found
+  /project/{project_id}/secret_storages/{storage_id}/refs:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - name: storage_id
+        in: path
+        required: true
+        example: 1
+        schema:
+          type: integer
+    get:
+      tags:
+        - project
+      summary: Get secret storage references
+      description: Get all resources that reference this secret storage
+      responses:
+        '200':
+          description: Secret storage references
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      example: template
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: My Template
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      example: template
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: My Template
+  /project/{project_id}/me:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    delete:
+      tags:
+        - project
+      summary: Leave project
+      description: Remove the current user from the project
+      responses:
+        '204':
+          description: Left project successfully
+  /project/{project_id}/cache:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    delete:
+      tags:
+        - project
+      summary: Clear project cache
+      description: Clear the cache for the project
+      responses:
+        '204':
+          description: Project cache cleared
+  /project/{project_id}/stats:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - project
+      summary: Get project task statistics
+      description: Retrieve task statistics for the project
+      responses:
+        '200':
+          description: Task statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStats'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/TaskStats'
+  /project/{project_id}/templates/{template_id}/description:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/template_id'
+    put:
+      tags:
+        - project
+      summary: Update template description
+      description: Update only the description of a template
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateDescriptionRequest'
+        required: true
+      responses:
+        '204':
+          description: Template description updated
+  /project/{project_id}/templates/{template_id}/perms:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/template_id'
+    get:
+      tags:
+        - project
+      summary: Get template permissions
+      description: Retrieve role-based permissions for a template
+      responses:
+        '200':
+          description: Template permissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TemplateRolePerm'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TemplateRolePerm'
+    post:
+      tags:
+        - project
+      summary: Add template permission
+      description: Add role-based permission to a template
+      requestBody:
+        $ref: '#/components/requestBodies/TemplateRolePermRequest'
+      responses:
+        '201':
+          description: Template permission added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateRolePerm'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/TemplateRolePerm'
+  /project/{project_id}/templates/{template_id}/perms/{perm_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/template_id'
+      - name: perm_id
+        in: path
+        required: true
+        example: 1
+        schema:
+          type: integer
+    get:
+      tags:
+        - project
+      summary: Get template permission
+      description: Retrieve a specific template permission
+      responses:
+        '200':
+          description: Template permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateRolePerm'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/TemplateRolePerm'
+    put:
+      tags:
+        - project
+      summary: Update template permission
+      description: Update a template permission
+      requestBody:
+        $ref: '#/components/requestBodies/TemplateRolePermRequest'
+      responses:
+        '204':
+          description: Template permission updated
+    delete:
+      tags:
+        - project
+      summary: Delete template permission
+      description: Delete a template permission
+      responses:
+        '204':
+          description: Template permission deleted
+  /project/{project_id}/tasks/{task_id}/stages:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/task_id'
+    get:
+      tags:
+        - task
+      summary: Get task stages
+      description: Retrieve all stages of a task
+      responses:
+        '200':
+          description: Task stages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskStage'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskStage'
+  /project/{project_id}/tasks/{task_id}/confirm:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/task_id'
+    post:
+      tags:
+        - task
+      summary: Confirm task execution
+      description: Confirm and execute a task that requires confirmation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskConfirmRequest'
+        required: true
+      responses:
+        '201':
+          description: Task confirmed and queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Task'
+  /project/{project_id}/tasks/{task_id}/reject:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/task_id'
+    post:
+      tags:
+        - task
+      summary: Reject task execution
+      description: Reject a task that requires confirmation
+      responses:
+        '204':
+          description: Task rejected
+  /project/{project_id}/tasks/{task_id}/ansible/hosts:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/task_id'
+    get:
+      tags:
+        - task
+      summary: Get Ansible hosts
+      description: Retrieve the list of hosts targeted by an Ansible task
+      responses:
+        '200':
+          description: Ansible hosts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: web-server-01
+                    status:
+                      type: string
+                      example: ok
+                    changed:
+                      type: boolean
+                      example: false
+                    unreachable:
+                      type: boolean
+                      example: false
+                    failed:
+                      type: boolean
+                      example: false
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: web-server-01
+                    status:
+                      type: string
+                      example: ok
+                    changed:
+                      type: boolean
+                      example: false
+                    unreachable:
+                      type: boolean
+                      example: false
+                    failed:
+                      type: boolean
+                      example: false
+  /project/{project_id}/tasks/{task_id}/ansible/errors:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/task_id'
+    get:
+      tags:
+        - task
+      summary: Get Ansible errors
+      description: Retrieve error details from an Ansible task execution
+      responses:
+        '200':
+          description: Ansible errors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    host:
+                      type: string
+                      example: web-server-01
+                    task:
+                      type: string
+                      example: Install package
+                    error:
+                      type: string
+                      example: Package installation failed
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    host:
+                      type: string
+                      example: web-server-01
+                    task:
+                      type: string
+                      example: Install package
+                    error:
+                      type: string
+                      example: Package installation failed
+  /project/{project_id}/schedules/validate:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    post:
+      tags:
+        - project
+      summary: Validate cron format
+      description: Validate a cron expression format
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleValidationRequest'
+        required: true
+      responses:
+        '200':
+          description: Cron validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleValidationResponse'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ScheduleValidationResponse'
+  /project/{project_id}/views/positions:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    post:
+      tags:
+        - project
+      summary: Set view positions
+      description: Update the order/position of views in the project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ViewPositionRequest'
+        required: true
+      responses:
+        '204':
+          description: View positions updated
+  /project/{project_id}/views/{view_id}/templates:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/view_id'
+    get:
+      tags:
+        - project
+      summary: Get view templates
+      description: Retrieve all templates associated with a view
+      responses:
+        '200':
+          description: View templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+  /project/{project_id}/integrations/aliases:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - integration
+      summary: Get integration aliases
+      description: Retrieve all integration aliases for the project
+      responses:
+        '200':
+          description: Integration aliases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IntegrationAlias'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IntegrationAlias'
+    post:
+      tags:
+        - integration
+      summary: Create integration alias
+      description: Create a new integration alias
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegrationAliasRequest'
+        required: true
+      responses:
+        '201':
+          description: Integration alias created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationAlias'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/IntegrationAlias'
+  /project/{project_id}/integrations/aliases/{alias_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - name: alias_id
+        in: path
+        required: true
+        example: 1
+        schema:
+          type: integer
+    delete:
+      tags:
+        - integration
+      summary: Delete integration alias
+      description: Delete an integration alias
+      responses:
+        '204':
+          description: Integration alias deleted
+  /project/{project_id}/runners:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - project
+      summary: Get project runners
+      description: Retrieve all runners for the project
+      responses:
+        '200':
+          description: Project runners
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Runner'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Runner'
+    post:
+      tags:
+        - project
+      summary: Create project runner
+      description: Create a new runner for the project
+      requestBody:
+        $ref: '#/components/requestBodies/RunnerRequest'
+      responses:
+        '201':
+          description: Project runner created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Runner'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Runner'
+  /project/{project_id}/runners/{runner_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/runner_id'
+    get:
+      tags:
+        - project
+      summary: Get project runner
+      description: Get details of a specific project runner
+      responses:
+        '200':
+          description: Project runner details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Runner'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Runner'
+        '404':
+          description: Runner not found
+    put:
+      tags:
+        - project
+      summary: Update project runner
+      description: Update a project runner
+      requestBody:
+        $ref: '#/components/requestBodies/RunnerRequest'
+      responses:
+        '204':
+          description: Runner updated
+        '404':
+          description: Runner not found
+    delete:
+      tags:
+        - project
+      summary: Delete project runner
+      description: Delete a project runner
+      responses:
+        '204':
+          description: Runner deleted
+        '404':
+          description: Runner not found
+  /project/{project_id}/runners/{runner_id}/active:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/runner_id'
+    post:
+      tags:
+        - project
+      summary: Set runner active status
+      description: Set whether a project runner is active
+      requestBody:
+        $ref: '#/components/requestBodies/ActiveStatus'
+      responses:
+        '204':
+          description: Runner status updated
+        '404':
+          description: Runner not found
+  /project/{project_id}/runners/{runner_id}/cache:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/runner_id'
+    delete:
+      tags:
+        - project
+      summary: Clear runner cache
+      description: Clear the cache for a project runner
+      responses:
+        '204':
+          description: Cache cleared
+        '404':
+          description: Runner not found
+  /project/{project_id}/runner_tags:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - project
+      summary: Get runner tags
+      description: Retrieve all runner tags with their counts
+      responses:
+        '200':
+          description: Runner tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RunnerTag'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RunnerTag'
+  /project/{project_id}/roles:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - project
+      summary: Get project roles
+      description: Retrieve all roles for the project
+      responses:
+        '200':
+          description: Project roles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+    post:
+      tags:
+        - project
+      summary: Create project role
+      description: Create a new role for the project
+      requestBody:
+        $ref: '#/components/requestBodies/RoleRequest'
+      responses:
+        '201':
+          description: Project role created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Role'
+  /project/{project_id}/roles/all:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+    get:
+      tags:
+        - project
+      summary: Get all roles (global + project)
+      description: >-
+        Retrieve all available roles for the project (global and
+        project-specific)
+      responses:
+        '200':
+          description: All available roles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+  /project/{project_id}/roles/{role_slug}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/role_slug'
+    get:
+      tags:
+        - project
+      summary: Get project role
+      description: Get details of a specific project role
+      responses:
+        '200':
+          description: Project role details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Role'
+    put:
+      tags:
+        - project
+      summary: Update project role
+      description: Update a project role
+      requestBody:
+        $ref: '#/components/requestBodies/RoleRequest'
+      responses:
+        '204':
+          description: Role updated
+    delete:
+      tags:
+        - project
+      summary: Delete project role
+      description: Delete a project role
+      responses:
+        '204':
+          description: Role deleted
+  /project/{project_id}/inventory/{inventory_id}/terraform/aliases:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/inventory_id'
+    get:
+      tags:
+        - project
+      summary: Get Terraform inventory aliases
+      description: Retrieve all Terraform aliases for the inventory
+      responses:
+        '200':
+          description: Terraform aliases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TerraformInventoryAlias'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TerraformInventoryAlias'
+    post:
+      tags:
+        - project
+      summary: Create Terraform inventory alias
+      description: Create a new Terraform alias for the inventory
+      requestBody:
+        $ref: '#/components/requestBodies/TerraformInventoryAliasRequest'
+      responses:
+        '201':
+          description: Terraform alias created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TerraformInventoryAlias'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/TerraformInventoryAlias'
+  /project/{project_id}/inventory/{inventory_id}/terraform/aliases/{alias_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/inventory_id'
+      - $ref: '#/components/parameters/alias_id'
+    get:
+      tags:
+        - project
+      summary: Get Terraform inventory alias
+      description: Get details of a specific Terraform alias
+      responses:
+        '200':
+          description: Terraform alias details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TerraformInventoryAlias'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/TerraformInventoryAlias'
+    put:
+      tags:
+        - project
+      summary: Update Terraform inventory alias
+      description: Update a Terraform alias
+      requestBody:
+        $ref: '#/components/requestBodies/TerraformInventoryAliasRequest'
+      responses:
+        '204':
+          description: Terraform alias updated
+    delete:
+      tags:
+        - project
+      summary: Delete Terraform inventory alias
+      description: Delete a Terraform alias
+      responses:
+        '204':
+          description: Terraform alias deleted
+  /project/{project_id}/inventory/{inventory_id}/terraform/states:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/inventory_id'
+    get:
+      tags:
+        - project
+      summary: Get Terraform inventory states
+      description: Retrieve all Terraform states for the inventory
+      responses:
+        '200':
+          description: Terraform states
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TerraformInventoryState'
+            text/plain; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TerraformInventoryState'
+  /project/{project_id}/inventory/{inventory_id}/terraform/states/latest:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/inventory_id'
+    get:
+      tags:
+        - project
+      summary: Get latest Terraform state
+      description: Retrieve the latest Terraform state for the inventory
+      responses:
+        '200':
+          description: Latest Terraform state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TerraformInventoryState'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/TerraformInventoryState'
+  /project/{project_id}/inventory/{inventory_id}/terraform/states/{state_id}:
+    parameters:
+      - $ref: '#/components/parameters/project_id'
+      - $ref: '#/components/parameters/inventory_id'
+      - $ref: '#/components/parameters/state_id'
+    get:
+      tags:
+        - project
+      summary: Get Terraform state
+      description: Retrieve a specific Terraform state
+      responses:
+        '200':
+          description: Terraform state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TerraformInventoryState'
+            text/plain; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/TerraformInventoryState'
+    delete:
+      tags:
+        - project
+      summary: Delete Terraform state
+      description: Delete a Terraform state
+      responses:
+        '204':
+          description: Terraform state deleted
+  /terraform/{alias}:
+    parameters:
+      - name: alias
+        in: path
+        required: true
+        example: production
+        schema:
+          type: string
+    get:
+      summary: Get Terraform state by alias
+      description: Public endpoint to get Terraform state using alias
+      security: []
+      responses:
+        '200':
+          description: Terraform state
+          content:
+            type: application/json
+        '404':
+          description: Terraform state not found
+    post:
+      summary: Add Terraform state
+      description: Public endpoint to add/update Terraform state using alias
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                state:
+                  type: string
+                  description: Terraform state data (base64 encoded)
+                workspace:
+                  type: string
+                  example: default
+        required: true
+      responses:
+        '200':
+          description: Terraform state added/updated
+          content:
+            type: application/json
+        '400':
+          description: Invalid state data
+    lock:
+      summary: Lock Terraform state
+      description: Public endpoint to lock Terraform state using alias
+      security: []
+      responses:
+        '200':
+          description: Terraform state locked
+          content:
+            type: application/json
+        '409':
+          description: State already locked
+    unlock:
+      summary: Unlock Terraform state
+      description: Public endpoint to unlock Terraform state using alias
+      security: []
+      responses:
+        '200':
+          description: Terraform state unlocked
+          content:
+            type: application/json
+        '404':
+          description: State not locked
+  /integrations/{integration_alias}:
+    parameters:
+      - name: integration_alias
+        in: path
+        required: true
+        example: deploy
+        schema:
+          type: string
+    get:
+      summary: Get integration by alias
+      description: Public endpoint to trigger integration using alias
+      security: []
+      responses:
+        '200':
+          description: Integration triggered
+          content:
+            type: application/json
+        '404':
+          description: Integration not found
+    post:
+      summary: Trigger integration
+      description: Public endpoint to trigger integration using alias
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Integration-specific data
+        required: true
+      responses:
+        '200':
+          description: Integration triggered
+        '400':
+          description: Invalid integration data
+    options:
+      summary: Integration CORS options
+      description: CORS preflight for integration alias
+      security: []
+      responses:
+        '204':
+          description: CORS preflight successful
+components:
+  parameters:
+    project_id:
+      name: project_id
+      description: Project ID
+      in: path
+      required: true
+      example: 1
+      schema:
+        type: integer
+    user_id:
+      name: user_id
+      description: User ID
+      in: path
+      required: true
+      example: 2
+      schema:
+        type: integer
+    key_id:
+      name: key_id
+      description: key ID
+      in: path
+      required: true
+      example: 3
+      schema:
+        type: integer
+    repository_id:
+      name: repository_id
+      description: repository ID
+      in: path
+      required: true
+      example: 4
+      schema:
+        type: integer
+    inventory_id:
+      name: inventory_id
+      description: inventory ID
+      in: path
+      required: true
+      example: 5
+      schema:
+        type: integer
+    environment_id:
+      name: environment_id
+      description: environment ID
+      in: path
+      required: true
+      example: 6
+      schema:
+        type: integer
+    template_id:
+      name: template_id
+      description: template ID
+      in: path
+      required: true
+      example: 7
+      schema:
+        type: integer
+    task_id:
+      name: task_id
+      description: task ID
+      in: path
+      required: true
+      example: 8
+      schema:
+        type: integer
+    schedule_id:
+      name: schedule_id
+      description: schedule ID
+      in: path
+      required: true
+      example: 9
+      schema:
+        type: integer
+    view_id:
+      name: view_id
+      description: view ID
+      in: path
+      required: true
+      example: 10
+      schema:
+        type: integer
+    integration_id:
+      name: integration_id
+      description: integration ID
+      in: path
+      required: true
+      example: 11
+      schema:
+        type: integer
+    extractvalue_id:
+      name: extractvalue_id
+      description: extractValue ID
+      in: path
+      required: true
+      example: 12
+      schema:
+        type: integer
+    matcher_id:
+      name: matcher_id
+      description: matcher ID
+      in: path
+      required: true
+      example: 13
+      schema:
+        type: integer
+    invite_id:
+      name: invite_id
+      description: Invite ID
+      in: path
+      required: true
+      example: 14
+      schema:
+        type: integer
+    storage_id:
+      name: storage_id
+      description: Secret storage ID
+      in: path
+      required: true
+      example: 1
+      schema:
+        type: integer
+    runner_id:
+      name: runner_id
+      description: Runner ID
+      in: path
+      required: true
+      example: 1
+      schema:
+        type: integer
+    role_slug:
+      name: role_slug
+      description: Role slug
+      in: path
+      required: true
+      example: admin
+      schema:
+        type: string
+    app_id:
+      name: app_id
+      description: App ID
+      in: path
+      required: true
+      example: ansible
+      schema:
+        type: string
+    perm_id:
+      name: perm_id
+      description: Permission ID
+      in: path
+      required: true
+      example: 1
+      schema:
+        type: integer
+    totp_id:
+      name: totp_id
+      description: TOTP ID
+      in: path
+      required: true
+      example: 1
+      schema:
+        type: integer
+    alias_id:
+      name: alias_id
+      description: Alias ID
+      in: path
+      required: true
+      example: 1
+      schema:
+        type: integer
+    alias:
+      name: alias
+      description: Terraform alias
+      in: path
+      required: true
+      example: production
+      schema:
+        type: string
+    state_id:
+      name: state_id
+      description: Terraform state ID
+      in: path
+      required: true
+      example: 1
+      schema:
+        type: integer
+  requestBodies:
+    InventoryRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InventoryRequest'
+      required: true
+    RunnerRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RunnerRequest'
+      required: true
+    ActiveStatus:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              active:
+                type: boolean
+                example: true
+      required: true
+    ScheduleRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ScheduleRequest'
+      required: true
+    TemplateRolePermRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TemplateRolePermRequest'
+      required: true
+    RepositoryRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RepositoryRequest'
+      required: true
+    TerraformInventoryAliasRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TerraformInventoryAliasRequest'
+      required: true
+    ViewRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ViewRequest'
+      required: true
+    EmailLoginRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EmailLoginRequest'
+      required: true
+    IntegrationRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IntegrationRequest'
+      required: true
+    AccessKeyRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccessKeyRequest'
+      required: true
+    EnvironmentRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EnvironmentRequest'
+      required: true
+    TemplateRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TemplateRequest'
+      required: true
+    RoleRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RoleRequest'
+      required: true
+    SecretStorageRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SecretStorageRequest'
+      required: true
+  securitySchemes:
+    cookie:
+      type: apiKey
+      name: Cookie
+      in: header
+      description: |
+        Session cookie for authentication.
+        Automatically set by the server after successful login.
+        Used for web UI and regular API interactions.
+
+        Example: `semaphore=encoded_session_data`
+    bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: |
+        API token for programmatic access.
+        Should be prefixed with "Bearer ".
+
+        Get your API token from the user settings page.
+
+        Example: `Bearer your-api-token-here`
+  schemas:
+    SecretStorage:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        project_id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          example: Vault Storage
+        type:
+          type: string
+          enum:
+            - local
+            - vault
+          example: vault
+        params:
+          type: object
+          description: Storage parameters (format depends on type)
+          example:
+            url: https://vault.example.com
+            token: ...
+        readonly:
+          type: boolean
+          description: Whether the storage is read-only
+          example: false
+    SecretStorageRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          example: Vault Storage
+        type:
+          type: string
+          enum:
+            - local
+            - vault
+          example: vault
+        params:
+          type: object
+          description: Storage parameters (format depends on type)
+        readonly:
+          type: boolean
+          description: Whether the storage is read-only
+          example: false
+    Runner:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        project_id:
+          type: integer
+          description: Project ID (null for global runners)
+          example: 1
+        webhook:
+          type: string
+          description: Webhook URL for the runner
+          example: https://runner.example.com/webhook
+        max_parallel_tasks:
+          type: integer
+          description: Maximum number of parallel tasks
+          example: 5
+        active:
+          type: boolean
+          description: Whether the runner is active
+          example: true
+        name:
+          type: string
+          description: Runner name
+          example: production-runner
+        tag:
+          type: string
+          description: Runner tag for identification
+          example: production
+        touched:
+          type: string
+          format: date-time
+          description: Last heartbeat time
+          example: '2023-01-01T12:00:00Z'
+        cleaning_requested:
+          type: string
+          format: date-time
+          description: When cleaning was requested
+          example: '2023-01-01T11:00:00Z'
+    RunnerRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          example: production-runner
+        tag:
+          type: string
+          example: production
+        max_parallel_tasks:
+          type: integer
+          example: 5
+          minimum: 1
+        webhook:
+          type: string
+          example: https://runner.example.com/webhook
+    RunnerTag:
+      type: object
+      properties:
+        tag:
+          type: string
+          example: production
+        number_of_runners:
+          type: integer
+          example: 3
+    Role:
+      type: object
+      properties:
+        slug:
+          type: string
+          description: Unique identifier for the role
+          example: admin
+        name:
+          type: string
+          description: Display name of the role
+          example: Administrator
+        permissions:
+          type: integer
+          description: Permission bitmask
+          example: 65535
+        project_id:
+          type: integer
+          description: Project ID (null for global roles)
+          example: 1
+    RoleRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Administrator
+        permissions:
+          type: integer
+          example: 65535
+    TemplateRolePerm:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        role_slug:
+          type: string
+          example: admin
+        template_id:
+          type: integer
+          minimum: 1
+        project_id:
+          type: integer
+          minimum: 1
+        permissions:
+          type: integer
+          description: Permission bitmask
+          example: 255
+    TemplateRolePermRequest:
+      type: object
+      properties:
+        role_slug:
+          type: string
+          example: admin
+        permissions:
+          type: integer
+          example: 255
+    Option:
+      type: object
+      properties:
+        key:
+          type: string
+          example: max_tasks
+        value:
+          type: string
+          example: '10'
+    OptionRequest:
+      type: object
+      properties:
+        key:
+          type: string
+          example: max_tasks
+        value:
+          type: string
+          example: '10'
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: string
+          example: sub_1234567890
+        status:
+          type: string
+          enum:
+            - active
+            - canceled
+            - incomplete
+            - past_due
+            - trialing
+            - unpaid
+          example: active
+        plan_id:
+          type: string
+          example: plan_1234567890
+        current_period_start:
+          type: string
+          format: date-time
+        current_period_end:
+          type: string
+          format: date-time
+    App:
+      type: object
+      properties:
+        id:
+          type: string
+          example: ansible
+        name:
+          type: string
+          example: Ansible
+        description:
+          type: string
+          example: Ansible automation tool
+        priority:
+          type: integer
+          example: 100
+        active:
+          type: boolean
+          example: true
+        config:
+          type: object
+          description: App-specific configuration
+    Pong:
+      type: string
+      x-example: pong
+    Login:
+      type: object
+      properties:
+        auth:
+          type: string
+          description: Username/Email address
+          x-example: user@semaphoreui.com
+        password:
+          type: string
+          format: password
+          description: Password
+    LoginMetadata:
+      type: object
+      properties:
+        oidc_providers:
+          type: array
+          description: List of OIDC providers
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: ID of the provider, used in the login URL
+                x-example: mysso
+              name:
+                type: string
+                description: Text to show on the login button
+                x-example: Sign in with MySSO
+    UserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          x-example: Integration Test User
+          example: Integration Test User
+        username:
+          type: string
+          x-example: test-user
+          example: test-user
+        email:
+          type: string
+          x-example: test@ansiblesemaphore.test
+          example: test@ansiblesemaphore.test
+        password:
+          type: string
+          format: password
+        alert:
+          type: boolean
+        admin:
+          type: boolean
+        external:
+          type: boolean
+    UserPutRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          x-example: Integration Test User2
+          example: Integration Test User2
+        username:
+          type: string
+          x-example: test-user2
+          example: test-user2
+        email:
+          type: string
+          x-example: test2@ansiblesemaphore.test
+          example: test2@ansiblesemaphore.test
+        alert:
+          type: boolean
+        admin:
+          type: boolean
+    EmailLoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+    EmailVerifyRequest:
+      type: object
+      properties:
+        token:
+          type: string
+          example: '123456'
+    PasswordUpdateRequest:
+      type: object
+      properties:
+        password:
+          type: string
+          format: password
+          example: newpassword123
+    TotpEnableRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: My Phone
+    TotpQrResponse:
+      type: object
+      properties:
+        qr_code:
+          type: string
+          format: base64
+          description: Base64 encoded QR code image
+        secret:
+          type: string
+          description: TOTP secret for manual entry
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        created:
+          type: string
+          format: date-time
+        alert:
+          type: boolean
+        admin:
+          type: boolean
+        external:
+          type: boolean
+        roles:
+          type: array
+          items:
+            type: object
+            properties:
+              project_id:
+                type: integer
+              role:
+                type: string
+                enum:
+                  - owner
+                  - manager
+                  - task_runner
+                  - guest
+        totp_enabled:
+          type: boolean
+          description: Whether TOTP 2FA is enabled
+          example: false
+        totp_secrets:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+                example: My Phone
+    ProjectUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+        username:
+          type: string
+        role:
+          type: string
+          enum:
+            - owner
+            - manager
+            - task_runner
+            - guest
+    ProjectInvite:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        project_id:
+          type: integer
+          minimum: 1
+        user_id:
+          type: integer
+          minimum: 1
+          description: User ID for user-based invites (optional)
+        email:
+          type: string
+          format: email
+          description: Email address for email-based invites (optional)
+        role:
+          type: string
+          enum:
+            - owner
+            - manager
+            - task_runner
+            - guest
+          example: manager
+        status:
+          type: string
+          enum:
+            - pending
+            - accepted
+            - declined
+            - expired
+          example: pending
+        inviter_user_id:
+          type: integer
+          minimum: 1
+          description: ID of the user who created the invite
+        created:
+          type: string
+          format: date-time
+          description: When the invite was created
+        expires_at:
+          type: string
+          format: date-time
+          description: When the invite expires (optional)
+        accepted_at:
+          type: string
+          format: date-time
+          description: When the invite was accepted (optional)
+        inviter_user:
+          $ref: '#/components/schemas/User'
+        user:
+          $ref: '#/components/schemas/User'
+    ProjectInviteRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email address to invite (use either user_id or email, not both)
+          x-example: user@example.com
+        role:
+          type: string
+          enum:
+            - owner
+            - manager
+            - task_runner
+            - guest
+          example: manager
+        expires_at:
+          type: string
+          format: date-time
+          description: When the invite should expire (optional, defaults to 7 days)
+      required:
+        - role
+    AcceptInviteRequest:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The invitation token
+          x-example: a1b2c3d4e5f6...
+      required:
+        - token
+    ProjectBackup:
+      type: object
+      example:
+        meta:
+          name: homelab
+          alert: true
+          alert_chat: Test
+          max_parallel_tasks: 0
+          type: null
+        templates:
+          - inventory: Build
+            repository: Demo
+            environment: Empty
+            name: Build
+            playbook: build.yml
+            arguments: '[]'
+            allow_override_args_in_task: false
+            description: Build Job
+            vault_key: null
+            type: build
+            start_version: 1.0.0
+            build_template: null
+            view: Build
+            autorun: false
+            survey_vars: []
+            suppress_success_alerts: false
+            cron: '* * * * *'
+        repositories:
+          - name: Demo
+            git_url: https://github.com/semaphoreui/semaphore-demo.git
+            git_branch: main
+            ssh_key: None
+        keys:
+          - name: None
+            type: none
+          - name: Vault Password
+            type: login_password
+        views:
+          - title: Build
+            position: 0
+        inventories:
+          - name: Build
+            inventory: ''
+            ssh_key: None
+            become_key: None
+            type: static
+          - name: Dev
+            inventory: ''
+            ssh_key: None
+            become_key: None
+            type: file
+          - name: Prod
+            inventory: ''
+            ssh_key: None
+            become_key: None
+            type: file
+        environments:
+          - name: Empty
+            password: null
+            json: '{}'
+            env: null
+      properties:
+        meta:
+          type: object
+          properties:
+            name:
+              type: string
+            alert:
+              type: boolean
+            alert_chat:
+              type: string
+            max_parallel_tasks:
+              type: integer
+              minimum: 0
+            type:
+              type: string
+        templates:
+          type: array
+          items:
+            type: object
+            properties:
+              inventory:
+                type: string
+              repository:
+                type: string
+              environment:
+                type: string
+              view:
+                type: string
+              name:
+                type: string
+              playbook:
+                type: string
+              arguments:
+                type: string
+              description:
+                type: string
+              allow_override_args_in_task:
+                type: boolean
+              suppress_success_alerts:
+                type: boolean
+              cron:
+                type: string
+              build_template:
+                type: string
+              autorun:
+                type: boolean
+              survey_vars:
+                type: string
+              start_version:
+                type: string
+              type:
+                type: string
+              vault_key:
+                type: string
+              allow_override_branch_in_task:
+                type: boolean
+        repositories:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              git_url:
+                type: string
+              git_branch:
+                type: string
+              ssh_key:
+                type: string
+        keys:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+                enum:
+                  - ssh
+                  - login_password
+                  - none
+        views:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              position:
+                type: integer
+                minimum: 0
+        inventories:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              inventory:
+                type: string
+              ssh_key:
+                type: string
+              become_key:
+                type: string
+              type:
+                type: string
+                enum:
+                  - static
+                  - static-yaml
+                  - file
+        environments:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              password:
+                type: string
+              json:
+                type: string
+              env:
+                type: string
+    APIToken:
+      type: object
+      properties:
+        id:
+          type: string
+        created:
+          type: string
+        expired:
+          type: boolean
+        user_id:
+          type: integer
+          minimum: 1
+    ProjectRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Test
+        alert:
+          type: boolean
+        alert_chat:
+          type: string
+          example: Test
+        max_parallel_tasks:
+          type: integer
+          minimum: 0
+        type:
+          type: string
+        demo:
+          description: Create Demo project resources?
+          type: boolean
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          example: Test
+        created:
+          type: string
+        alert:
+          type: boolean
+        alert_chat:
+          type: string
+          example: Test
+        max_parallel_tasks:
+          type: integer
+          minimum: 0
+        type:
+          type: string
+    AccessKeyRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          x-example: None
+          example: None
+        type:
+          type: string
+          enum:
+            - none
+            - ssh
+            - login_password
+          x-example: none
+        project_id:
+          type: integer
+          minimum: 1
+          x-example: 2
+        override_secret:
+          type: boolean
+        login_password:
+          type: object
+          properties:
+            password:
+              type: string
+              x-example: password
+              example: password
+            login:
+              type: string
+              x-example: username
+              example: username
+        ssh:
+          type: object
+          properties:
+            login:
+              type: string
+              x-example: user
+              example: user
+            passphrase:
+              type: string
+              x-example: passphrase
+              example: passphrase
+            private_key:
+              type: string
+              x-example: private key
+              example: private key
+    AccessKey:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: Test
+        type:
+          type: string
+          enum:
+            - none
+            - ssh
+            - login_password
+        project_id:
+          type: integer
+    EnvironmentSecret:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - env
+            - var
+    EnvironmentSecretRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: Test
+        secret:
+          type: string
+        type:
+          type: string
+          enum:
+            - env
+            - var
+        operation:
+          type: string
+          enum:
+            - create
+            - update
+            - delete
+    EnvironmentRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Test
+        project_id:
+          type: integer
+          minimum: 1
+        password:
+          type: string
+        json:
+          type: string
+          example: '{}'
+        env:
+          type: string
+          example: '{}'
+        secrets:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnvironmentSecretRequest'
+    Environment:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          example: Test
+        project_id:
+          type: integer
+          minimum: 1
+        password:
+          type: string
+        json:
+          type: string
+          example: '{}'
+        env:
+          type: string
+          example: '{}'
+        secrets:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnvironmentSecret'
+    InventoryRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: Test
+        project_id:
+          type: integer
+          minimum: 1
+        inventory:
+          type: string
+        ssh_key_id:
+          type: integer
+          minimum: 1
+        become_key_id:
+          type: integer
+          minimum: 1
+        repository_id:
+          type: integer
+          minimum: 1
+        type:
+          type: string
+          enum:
+            - static
+            - static-yaml
+            - file
+            - terraform-workspace
+    Inventory:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: Test
+        project_id:
+          type: integer
+        inventory:
+          type: string
+        ssh_key_id:
+          type: integer
+        become_key_id:
+          type: integer
+        repository_id:
+          type: integer
+        type:
+          type: string
+          enum:
+            - static
+            - static-yaml
+            - file
+            - terraform-workspace
+    Integration:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: deploy
+        project_id:
+          type: integer
+          minimum: 1
+        template_id:
+          type: integer
+          minimum: 1
+        task_params:
+          $ref: '#/components/schemas/TaskPrams'
+    IntegrationRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: deploy
+        project_id:
+          type: integer
+        template_id:
+          type: integer
+        params:
+          $ref: '#/components/schemas/TaskPrams'
+    IntegrationExtractValueRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: deploy
+        value_source:
+          type: string
+          enum:
+            - body
+            - header
+        body_data_type:
+          type: string
+          enum:
+            - json
+            - xml
+            - string
+        key:
+          type: string
+          example: key
+        variable:
+          type: string
+          example: variable
+        variable_type:
+          type: string
+          enum:
+            - environment
+            - task
+    IntegrationExtractValue:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: extract this value
+        value_source:
+          type: string
+          enum:
+            - body
+            - header
+        body_data_type:
+          type: string
+          enum:
+            - json
+            - xml
+            - string
+        key:
+          type: string
+          example: key
+        variable:
+          type: string
+          example: variable
+        variable_type:
+          type: string
+          enum:
+            - environment
+            - task
+        integration_id:
+          type: integer
+    IntegrationMatcherRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: deploy
+        match_type:
+          type: string
+          enum:
+            - body
+            - header
+        method:
+          type: string
+          enum:
+            - equals
+            - unequals
+            - contains
+        body_data_type:
+          type: string
+          enum:
+            - json
+            - xml
+            - string
+        key:
+          type: string
+          example: key
+        value:
+          type: string
+          example: value
+    IntegrationMatcher:
+      type: object
+      properties:
+        id:
+          type: integer
+        integration_id:
+          type: integer
+        name:
+          type: string
+          example: deploy
+        match_type:
+          type: string
+          enum:
+            - body
+            - header
+        method:
+          type: string
+          enum:
+            - equals
+            - unequals
+            - contains
+        body_data_type:
+          type: string
+          enum:
+            - json
+            - xml
+            - string
+        key:
+          type: string
+          example: key
+        value:
+          type: string
+          example: value
+    IntegrationAlias:
+      type: object
+      properties:
+        id:
+          type: integer
+        project_id:
+          type: integer
+        name:
+          type: string
+          example: webhook-deploy
+        integration_id:
+          type: integer
+        alias:
+          type: string
+          example: deploy
+        created:
+          type: string
+          format: date-time
+    IntegrationAliasRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: webhook-deploy
+        integration_id:
+          type: integer
+        alias:
+          type: string
+          example: deploy
+    TerraformInventoryAlias:
+      type: object
+      properties:
+        id:
+          type: integer
+        inventory_id:
+          type: integer
+        alias:
+          type: string
+          example: production
+        access_key_id:
+          type: integer
+        created:
+          type: string
+          format: date-time
+    TerraformInventoryAliasRequest:
+      type: object
+      properties:
+        alias:
+          type: string
+          example: production
+        access_key_id:
+          type: integer
+    TerraformInventoryState:
+      type: object
+      properties:
+        id:
+          type: integer
+        inventory_id:
+          type: integer
+        workspace:
+          type: string
+          example: default
+        version:
+          type: integer
+          example: 1
+        state:
+          type: string
+          description: Terraform state data (base64 encoded)
+        created:
+          type: string
+          format: date-time
+        created_by:
+          type: integer
+          description: User ID who created the state
+    ViewPositionRequest:
+      type: object
+      properties:
+        view_positions:
+          type: array
+          items:
+            type: object
+            properties:
+              view_id:
+                type: integer
+              position:
+                type: integer
+    ScheduleValidationRequest:
+      type: object
+      properties:
+        cron_format:
+          type: string
+          example: 0 0 * * 1
+    ScheduleValidationResponse:
+      type: object
+      properties:
+        valid:
+          type: boolean
+          example: true
+        description:
+          type: string
+          example: Valid cron expression
+        next_run:
+          type: string
+          format: date-time
+    TemplateDescriptionRequest:
+      type: object
+      properties:
+        description:
+          type: string
+          example: Updated description
+    TaskStats:
+      type: object
+      properties:
+        total:
+          type: integer
+          example: 100
+        success:
+          type: integer
+          example: 85
+        failed:
+          type: integer
+          example: 10
+        running:
+          type: integer
+          example: 5
+        pending:
+          type: integer
+          example: 0
+    RepositoryRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: Test
+        project_id:
+          type: integer
+        git_url:
+          type: string
+          example: git@example.com
+        git_branch:
+          type: string
+          example: master
+        ssh_key_id:
+          type: integer
+    Repository:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: Test
+        project_id:
+          type: integer
+        git_url:
+          type: string
+          example: git@example.com
+        git_branch:
+          type: string
+          example: master
+        ssh_key_id:
+          type: integer
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 23
+        template_id:
+          type: integer
+        status:
+          type: string
+          enum:
+            - pending
+            - running
+            - success
+            - failed
+            - stopped
+          example: running
+        playbook:
+          type: string
+        environment:
+          type: string
+        secret:
+          type: string
+        arguments:
+          type: string
+        git_branch:
+          type: string
+        message:
+          type: string
+        inventory_id:
+          type: integer
+        params:
+          allOf:
+            - $ref: '#/components/schemas/AnsibleTaskParams'
+            - $ref: '#/components/schemas/TerraformTaskParams'
+        limit:
+          type: string
+        created:
+          type: string
+          format: date-time
+        started:
+          type: string
+          format: date-time
+        finished:
+          type: string
+          format: date-time
+        output:
+          type: string
+        user_id:
+          type: integer
+        project_id:
+          type: integer
+        code:
+          type: integer
+          example: 0
+    TaskStage:
+      type: object
+      properties:
+        id:
+          type: integer
+        task_id:
+          type: integer
+        type:
+          type: string
+          example: task
+        status:
+          type: string
+          example: running
+        started:
+          type: string
+          format: date-time
+        finished:
+          type: string
+          format: date-time
+    TaskConfirmRequest:
+      type: object
+      properties:
+        template_id:
+          type: integer
+        params:
+          $ref: '#/components/schemas/TaskPrams'
+    AppRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Custom App
+        description:
+          type: string
+          example: Custom application description
+        priority:
+          type: integer
+          example: 50
+        active:
+          type: boolean
+          example: true
+        config:
+          type: object
+          description: App-specific configuration
+    AppActiveRequest:
+      type: object
+      properties:
+        active:
+          type: boolean
+          example: true
+    AnsibleTaskParams:
+      type: object
+      properties:
+        debug:
+          type: boolean
+        dry_run:
+          type: boolean
+        diff:
+          type: boolean
+        limit:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: string
+        skip_tags:
+          type: array
+          items:
+            type: string
+    TerraformTaskParams:
+      type: object
+      properties:
+        plan:
+          type: boolean
+        destroy:
+          type: boolean
+        auto_approve:
+          type: boolean
+        upgrade:
+          type: boolean
+    TaskPrams:
+      type: object
+      properties:
+        environment:
+          type: string
+        git_branch:
+          type: string
+        message:
+          type: string
+        inventory_id:
+          type: integer
+        arguments:
+          type: string
+        params:
+          allOf:
+            - $ref: '#/components/schemas/AnsibleTaskParams'
+            - $ref: '#/components/schemas/TerraformTaskParams'
+    TaskOutput:
+      type: object
+      properties:
+        task_id:
+          type: integer
+          example: 23
+        time:
+          type: string
+          format: date-time
+        output:
+          type: string
+    TemplateRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        project_id:
+          type: integer
+          minimum: 1
+        inventory_id:
+          type: integer
+          minimum: 1
+        repository_id:
+          type: integer
+          minimum: 1
+        environment_id:
+          type: integer
+          minimum: 1
+        view_id:
+          type: integer
+          minimum: 1
+        vaults:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateVault'
+        name:
+          type: string
+          example: Test
+        playbook:
+          type: string
+          example: test.yml
+        arguments:
+          type: string
+          example: '[]'
+        description:
+          type: string
+          example: Hello, World!
+        allow_override_args_in_task:
+          type: boolean
+          example: false
+        limit:
+          type: string
+          example: ''
+        suppress_success_alerts:
+          type: boolean
+        app:
+          type: string
+          example: ansible
+        git_branch:
+          type: string
+          example: main
+        survey_vars:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateSurveyVar'
+        type:
+          type: string
+          enum:
+            - ''
+            - build
+            - deploy
+        start_version:
+          type: string
+        build_template_id:
+          type: integer
+        autorun:
+          type: boolean
+    Template:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        project_id:
+          type: integer
+          minimum: 1
+        inventory_id:
+          type: integer
+          minimum: 1
+        repository_id:
+          type: integer
+        environment_id:
+          type: integer
+          minimum: 1
+        view_id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          example: Test
+        playbook:
+          type: string
+          example: test.yml
+        arguments:
+          type: string
+          example: '[]'
+        description:
+          type: string
+          example: Hello, World!
+        allow_override_args_in_task:
+          type: boolean
+          example: false
+        suppress_success_alerts:
+          type: boolean
+        app:
+          type: string
+        git_branch:
+          type: string
+          example: main
+        type:
+          type: string
+          enum:
+            - ''
+            - build
+            - deploy
+        start_version:
+          type: string
+        build_template_id:
+          type: integer
+        autorun:
+          type: boolean
+        survey_vars:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateSurveyVar'
+        vaults:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateVault'
+    TemplateSurveyVar:
+      type: object
+      properties:
+        name:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+          enum:
+            - ''
+            - int
+            - enum
+            - secret
+          example: int
+        required:
+          type: boolean
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateSurveyVarValue'
+    TemplateSurveyVarValue:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    TemplateVault:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: default
+        type:
+          type: string
+          enum:
+            - password
+            - script
+          example: script
+        vault_key_id:
+          type: integer
+        script:
+          type: string
+          example: path/to/script-client.py
+    ScheduleRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        cron_format:
+          type: string
+          x-example: '* * * 1 *'
+          example: '* * * 1 *'
+        project_id:
+          type: integer
+        template_id:
+          type: integer
+        name:
+          type: string
+        active:
+          type: boolean
+        task_params:
+          $ref: '#/components/schemas/TaskPrams'
+    Schedule:
+      type: object
+      properties:
+        id:
+          type: integer
+        cron_format:
+          type: string
+        project_id:
+          type: integer
+        template_id:
+          type: integer
+        name:
+          type: string
+        active:
+          type: boolean
+        task_params:
+          $ref: '#/components/schemas/TaskPrams'
+    ViewRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Test
+        project_id:
+          type: integer
+          minimum: 1
+        position:
+          type: integer
+          minimum: 1
+    View:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        project_id:
+          type: integer
+        position:
+          type: integer
+        hidden:
+          type: boolean
+        type:
+          type: string
+          enum:
+            - ''
+            - all
+        sort_column:
+          type: string
+          enum:
+            - name
+        sort_reverse:
+          type: boolean
+    Event:
+      type: object
+      properties:
+        project_id:
+          type: integer
+        user_id:
+          type: integer
+        object_id:
+          type: integer
+        object_type:
+          type: string
+        description:
+          type: string
+    InfoType:
+      type: object
+      properties:
+        version:
+          type: string
+        ansible:
+          type: string
+        web_host:
+          type: string
+        use_remote_runner:
+          type: boolean
+        auth_methods:
+          type: object
+        git_client:
+          type: string
+        schedule_timezone:
+          type: string
+        premium_features:
+          type: object
+
