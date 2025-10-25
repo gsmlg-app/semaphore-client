@@ -49,7 +49,6 @@ class ServerScreen extends StatelessWidget {
           ),
         ],
       ),
-      smallSecondaryBody: AdaptiveScaffold.emptyBuilder,
       largeBody: (context) => Stack(
         children: [
           SafeArea(
@@ -82,7 +81,6 @@ class ServerScreen extends StatelessWidget {
           ),
         ],
       ),
-      largeSecondaryBody: (_) => SafeArea(child: Container()),
     );
   }
 

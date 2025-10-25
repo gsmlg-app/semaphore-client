@@ -7,7 +7,7 @@ import 'package:app_theme/app_theme.dart';
 import 'package:app_utils/app_utils.dart';
 import 'package:semaphore_client/screens/settings/select_brightness.dart';
 import 'package:semaphore_client/screens/settings/select_theme.dart';
-import 'package:semaphore_client/screens/settings/app_settings_screen.dart';
+
 
 class RootSettingList extends StatelessWidget {
   const RootSettingList({super.key});
@@ -24,18 +24,7 @@ class RootSettingList extends StatelessWidget {
               SettingsSection(
                 title: const Text('Semaphore'),
                 tiles: <SettingsTile>[
-                  SettingsTile.navigation(
-                    leading: const Icon(Icons.computer),
-                    title: Text(context.l10n!.smenuSemaphoreServer),
-                    onPressed: (context) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AppSettingsScreen(),
-                        ),
-                      );
-                    },
-                  ),
+
                 ],
               ),
               SettingsSection(
