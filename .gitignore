@@ -52,3 +52,8 @@ mason-lock.json
 /.devenv*
 /local.properties
 
+# Code generation
+**/*.g.dart
+!app_api/**/*.g.dart
+**/*.freezed.dart
+**/*.mocks.dart
