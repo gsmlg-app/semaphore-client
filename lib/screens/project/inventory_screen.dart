@@ -225,6 +225,13 @@ class _InventoryScreenState extends State<InventoryScreen>
                                 ),
                               ),
                               DataCell(
+                                Text(
+                                  inventory.type == InventoryTypeEnum.file
+                                      ? (inventory.inventory ?? '--')
+                                      : '--',
+                                ),
+                              ),
+                              DataCell(
                                 Row(
                                   children: [
                                     IconButton(
