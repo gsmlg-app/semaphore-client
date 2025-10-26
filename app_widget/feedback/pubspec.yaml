@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
 
   app_locale: any
+  app_theme: any
 
   flutter_form_bloc: any
   inventory_bloc: any
