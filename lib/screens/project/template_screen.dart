@@ -22,6 +22,24 @@ import 'package:semaphore_client/screens/project/template_task_screen.dart';
 import 'package:app_error/app_error.dart';
 import 'package:semaphore_api/semaphore_api.dart';
 
+// Helper widget to load SVG with fallback icon
+Widget _buildTemplateIcon(String? app, {double size = 24}) {
+  if (app == null || app.isEmpty) {
+    return Icon(Icons.description, size: size);
+  }
+
+  // Map app names to SVG file names
+  final svgName = app == 'tofu' ? 'opentofu' : app;
+
+  return SvgPicture.asset(
+    'assets/svg/$svgName.svg',
+    package: 'app_artwork',
+    height: size,
+    width: size,
+    placeholderBuilder: (context) => Icon(Icons.description, size: size),
+  );
+}
+
 class TemplateScreen extends StatefulWidget {
   const TemplateScreen({super.key});
   static const name = 'template';
@@ -125,11 +143,7 @@ class _TemplateScreenState extends State<TemplateScreen>
                           children: [
                             for (final template in state.templates)
                               ListTile(
-                                leading: SvgPicture.asset(
-                                  'assets/svg/${template.app}.svg',
-                                  height: 24,
-                                  width: 24,
-                                ),
+                                leading: _buildTemplateIcon(template.app, size: 24),
                                 title: Text(template.name ?? 'N/A'),
                                 subtitle: _showLastTask(
                                   context,
@@ -259,11 +273,7 @@ class _TemplateScreenState extends State<TemplateScreen>
                                               TextSpan(
                                                 children: [
                                                   WidgetSpan(
-                                                    child: SvgPicture.asset(
-                                                      'assets/svg/${template.app}.svg',
-                                                      height: 20,
-                                                      width: 20,
-                                                    ),
+                                                    child: _buildTemplateIcon(template.app, size: 20),
                                                   ),
                                                   TextSpan(
                                                     text:
