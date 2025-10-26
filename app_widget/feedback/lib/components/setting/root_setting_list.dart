@@ -22,12 +22,6 @@ class RootSettingList extends StatelessWidget {
           return SettingsList(
             sections: [
               SettingsSection(
-                title: const Text('Semaphore'),
-                tiles: <SettingsTile>[
-
-                ],
-              ),
-              SettingsSection(
                 title: Text(context.l10n!.smenuTheme),
                 tiles: <SettingsTile>[
                   SettingsTile.navigation(
