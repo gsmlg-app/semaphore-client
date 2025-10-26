@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:app_adaptive_widgets/gsmlg_adaptive_widgets.dart';
+import 'package:app_artwork/app_artwork.dart';
 import 'package:inventory_bloc/inventory.dart';
 import 'package:repository_bloc/repository.dart';
 import 'package:server_bloc/server.dart';
@@ -21,24 +21,6 @@ import 'package:semaphore_client/screens/project/project_screen.dart';
 import 'package:semaphore_client/screens/project/template_task_screen.dart';
 import 'package:app_error/app_error.dart';
 import 'package:semaphore_api/semaphore_api.dart';
-
-// Helper widget to load SVG with fallback icon
-Widget _buildTemplateIcon(String? app, {double size = 24}) {
-  if (app == null || app.isEmpty) {
-    return Icon(Icons.description, size: size);
-  }
-
-  // Map app names to SVG file names
-  final svgName = app == 'tofu' ? 'opentofu' : app;
-
-  return SvgPicture.asset(
-    'assets/svg/$svgName.svg',
-    package: 'app_artwork',
-    height: size,
-    width: size,
-    placeholderBuilder: (context) => Icon(Icons.description, size: size),
-  );
-}
 
 class TemplateScreen extends StatefulWidget {
   const TemplateScreen({super.key});
@@ -143,7 +125,7 @@ class _TemplateScreenState extends State<TemplateScreen>
                           children: [
                             for (final template in state.templates)
                               ListTile(
-                                leading: _buildTemplateIcon(template.app, size: 24),
+                                leading: buildTemplateIcon(template.app, size: 24),
                                 title: Text(template.name ?? 'N/A'),
                                 subtitle: _showLastTask(
                                   context,
@@ -273,7 +255,7 @@ class _TemplateScreenState extends State<TemplateScreen>
                                               TextSpan(
                                                 children: [
                                                   WidgetSpan(
-                                                    child: _buildTemplateIcon(template.app, size: 20),
+                                                    child: buildTemplateIcon(template.app, size: 20),
                                                   ),
                                                   TextSpan(
                                                     text:
