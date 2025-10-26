@@ -1,4 +1,4 @@
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:app_utils/app_utils.dart';

@@ -212,7 +212,7 @@ class SemaphoreServerBloc
   ) async {
     try {
       final server = event.server;
-      final resp = await server.api.getProjectsApi().projectsGet();
+      final resp = await server.api.getProjectApi().projectsGet();
       AppLogger().d('Projects loaded: ${resp.data}');
 
       // Delete existing projects for this server

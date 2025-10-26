@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory_bloc/inventory.dart';
 import 'package:server_bloc/server.dart';
 import 'package:app_utils/app_utils.dart';
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:app_database/server.dart';
 
 void showDeleteInventory({

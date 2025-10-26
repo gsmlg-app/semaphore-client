@@ -1,4 +1,4 @@
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -20,13 +20,13 @@ class TaskOutputBloc extends Bloc<TaskOutputEvent, TaskOutputState> {
       }
 
       final taskResp = await event.api
-          .getProjectApi()
+          .getTaskApi()
           .projectProjectIdTasksTaskIdGet(
             projectId: event.projectId,
             taskId: event.taskId,
           );
       final outputResp = await event.api
-          .getProjectApi()
+          .getTaskApi()
           .projectProjectIdTasksTaskIdOutputGet(
             projectId: event.projectId,
             taskId: event.taskId,
@@ -36,7 +36,7 @@ class TaskOutputBloc extends Bloc<TaskOutputEvent, TaskOutputState> {
         return;
       }
 
-      emit(TaskOutputLoadDone(taskResp.data!, outputResp.data ?? []));
+      emit(TaskOutputLoadDone(taskResp.data!, outputResp.data?.toList() ?? []));
     } catch (e) {
       emit(TaskOutputError(e));
     }

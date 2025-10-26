@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:app_logging/app_logging.dart';
 
 class RunTaskFormBloc extends FormBloc<Task, String> {
@@ -31,7 +31,7 @@ class RunTaskFormBloc extends FormBloc<Task, String> {
     emitLoading();
     this.api = api;
     final resp = await api
-        .getProjectApi()
+        .getTemplateApi()
         .projectProjectIdTemplatesTemplateIdGet(
           projectId: projectId,
           templateId: templateId,
@@ -103,15 +103,11 @@ class RunTaskFormBloc extends FormBloc<Task, String> {
       for (var bloc in dynamicBlocs) {
         dynamicData[bloc.name] = bloc.value;
       }
-      final resp = await api.getProjectApi().projectProjectIdTasksPost(
+      final resp = await api.getTaskApi().projectProjectIdTasksPost(
         projectId: template!.projectId!,
-        task: ProjectProjectIdTasksPostRequest(
-          templateId: template!.id!,
-          // dryRun: dryRun.value,
-          // debug: debug.value,
-          // diff: diff.value,
-          environment: dynamicBlocs.isNotEmpty ? jsonEncode(dynamicData) : null,
-        ),
+        task: ProjectProjectIdTasksPostRequest((b) => b
+          ..templateId = template!.id!
+          ..environment = dynamicBlocs.isNotEmpty ? jsonEncode(dynamicData) : null),
       );
       final newTask = resp.data;
       if (newTask != null) {

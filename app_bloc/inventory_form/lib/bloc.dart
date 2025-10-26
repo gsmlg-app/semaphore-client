@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 
 class InventoryFormBloc extends FormBloc<String, String> {
   SemaphoreApi api = SemaphoreApi();
@@ -19,7 +19,7 @@ class InventoryFormBloc extends FormBloc<String, String> {
 
   final type = SelectFieldBloc<InventoryTypeEnum, dynamic>(
     validators: [FieldBlocValidators.required],
-    items: InventoryTypeEnum.values,
+    items: InventoryTypeEnum.values.toList(),
   );
 
   final inventory = TextFieldBloc<String>(validators: []);
@@ -42,22 +42,23 @@ class InventoryFormBloc extends FormBloc<String, String> {
       editData = inventory;
       this.api = api;
       this.projectId = projectId;
-      final projectApi = api.getProjectApi();
-      final accessKeys = await projectApi.projectProjectIdKeysGet(
+      final keyStoreApi = api.getKeyStoreApi();
+      final accessKeys = await keyStoreApi.projectProjectIdKeysGet(
         projectId: projectId,
         sort: 'name',
         order: 'asc',
       );
-      sshKeyId.updateItems(accessKeys.data ?? []);
-      becomeKeyId.updateItems(accessKeys.data ?? []);
-      final repositories = await projectApi.projectProjectIdRepositoriesGet(
+      sshKeyId.updateItems(accessKeys.data?.toList() ?? []);
+      becomeKeyId.updateItems(accessKeys.data?.toList() ?? []);
+      final repositoryApi = api.getRepositoryApi();
+      final repositories = await repositoryApi.projectProjectIdRepositoriesGet(
         projectId: projectId,
         sort: 'name',
         order: 'asc',
       );
-      repositoryId.updateItems(repositories.data ?? []);
+      repositoryId.updateItems(repositories.data?.toList() ?? []);
       if (inventory != null) {
-        _setValues(inventory, accessKeys.data ?? [], repositories.data ?? []);
+        _setValues(inventory, accessKeys.data?.toList() ?? [], repositories.data?.toList() ?? []);
       }
       emitLoaded();
     } catch (e) {
@@ -68,38 +69,36 @@ class InventoryFormBloc extends FormBloc<String, String> {
   @override
   void onSubmitting() async {
     try {
-      final projectApi = api.getProjectApi();
+      final inventoryApi = api.getInventoryApi();
       if (editData == null) {
-        final request = InventoryRequest(
-          projectId: projectId,
-          name: name.value,
-          sshKeyId: sshKeyId.value?.id,
-          becomeKeyId: becomeKeyId.value?.id,
-          type: InventoryRequestTypeEnum.values.firstWhere(
+        final request = InventoryRequest((b) => b
+          ..projectId = projectId
+          ..name = name.value
+          ..sshKeyId = sshKeyId.value?.id
+          ..becomeKeyId = becomeKeyId.value?.id
+          ..type = InventoryRequestTypeEnum.values.firstWhere(
             (e) => e.name == type.value?.name,
-          ),
-          inventory: inventory.value,
-          repositoryId: repositoryId.value?.id,
-        );
-        await projectApi.projectProjectIdInventoryPost(
+          )
+          ..inventory = inventory.value
+          ..repositoryId = repositoryId.value?.id);
+        await inventoryApi.projectProjectIdInventoryPost(
           projectId: projectId,
           inventory: request,
         );
         emitSuccess(successResponse: 'Inventory has been created');
       } else {
-        final request = InventoryRequest(
-          id: editData!.id!,
-          projectId: projectId,
-          name: name.value,
-          sshKeyId: sshKeyId.value?.id,
-          becomeKeyId: becomeKeyId.value?.id,
-          type: InventoryRequestTypeEnum.values.firstWhere(
+        final request = InventoryRequest((b) => b
+          ..id = editData!.id!
+          ..projectId = projectId
+          ..name = name.value
+          ..sshKeyId = sshKeyId.value?.id
+          ..becomeKeyId = becomeKeyId.value?.id
+          ..type = InventoryRequestTypeEnum.values.firstWhere(
             (e) => e.name == type.value?.name,
-          ),
-          inventory: inventory.value,
-          repositoryId: repositoryId.value?.id,
-        );
-        await projectApi.projectProjectIdInventoryInventoryIdPut(
+          )
+          ..inventory = inventory.value
+          ..repositoryId = repositoryId.value?.id);
+        await inventoryApi.projectProjectIdInventoryInventoryIdPut(
           projectId: projectId,
           inventoryId: editData!.id!,
           inventory: request,

@@ -18,7 +18,7 @@ dependencies:
   dio: ^5.0.0
   
   app_database: any
-  app_api: any
+  semaphore_api: any
   app_utils: any
 
 dev_dependencies:

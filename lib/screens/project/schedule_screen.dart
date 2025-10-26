@@ -105,7 +105,7 @@ class _ScheduleScreenState extends State<ScheduleScreen>
                               Text(schedule.cronFormat ?? '--'),
                               const SizedBox(width: 24),
                               Text(
-                                schedule.tplName ?? '--',
+                                schedule.name ?? '--',
                                 style: TextStyle(
                                   color: Theme.of(context).colorScheme.onSurface
                                       .withValues(alpha: 0.6),
@@ -227,7 +227,7 @@ class _ScheduleScreenState extends State<ScheduleScreen>
                                     );
                                   },
                                   child: Text(
-                                    schedule.tplName ?? 'N/A',
+                                    schedule.name ?? 'N/A',
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),

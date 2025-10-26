@@ -18,7 +18,7 @@ dependencies:
   inventory_form_bloc: any
   server_bloc: any
   app_utils: any
-  app_api: any
+  semaphore_api: any
   app_database: any
   flutter_bloc: any
   google_fonts: any

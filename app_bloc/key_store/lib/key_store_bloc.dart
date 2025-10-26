@@ -1,7 +1,7 @@
 import 'package:app_logging/app_logging.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 
 part 'key_store_event.dart';
 part 'key_store_state.dart';
@@ -26,15 +26,15 @@ class KeyStoreBloc extends Bloc<KeyStoreEvent, KeyStoreState> {
       emit(KeyStoreLoading());
     }
     try {
-      final projectApi = event.api.getProjectApi();
-      final resp = await projectApi.projectProjectIdKeysGet(
+      final keyStoreApi = event.api.getKeyStoreApi();
+      final resp = await keyStoreApi.projectProjectIdKeysGet(
         projectId: event.projectId,
         sort: 'name',
         order: 'asc',
       );
 
       AppLogger().d('Key store response: ${resp.data}');
-      emit(KeyStoreLoaded(accessKeys: resp.data ?? [], loading: false));
+      emit(KeyStoreLoaded(accessKeys: resp.data?.toList() ?? [], loading: false));
     } catch (e) {
       AppLogger().e('Failed to load key store', e);
       emit(KeyStoreError(e));

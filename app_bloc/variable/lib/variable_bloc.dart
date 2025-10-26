@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:app_logging/app_logging.dart';
 
 part 'variable_event.dart';
@@ -29,15 +29,15 @@ class VariableBloc extends Bloc<VariableEvent, VariableState> {
       emit(VariableLoading());
     }
     try {
-      final projectApi = event.api.getProjectApi();
-      final resp = await projectApi.projectProjectIdEnvironmentGet(
+      final variableGroupApi = event.api.getVariableGroupApi();
+      final resp = await variableGroupApi.projectProjectIdEnvironmentGet(
         projectId: event.projectId,
         sort: 'name',
         order: 'asc',
       );
 
       AppLogger().d('Variable data: ${resp.data}');
-      emit(VariableLoaded(variables: resp.data ?? [], loading: false));
+      emit(VariableLoaded(variables: resp.data?.toList() ?? [], loading: false));
     } catch (e) {
       AppLogger().e('Failed to load variables', e);
       emit(VariableError(e));
@@ -54,8 +54,8 @@ class VariableBloc extends Bloc<VariableEvent, VariableState> {
     emit(VariableLoaded(variables: currentVariables, loading: true));
 
     try {
-      final projectApi = event.api.getProjectApi();
-      await projectApi.projectProjectIdEnvironmentPost(
+      final variableGroupApi = event.api.getVariableGroupApi();
+      await variableGroupApi.projectProjectIdEnvironmentPost(
         projectId: event.projectId,
         environment: event.environment,
       );
@@ -78,8 +78,8 @@ class VariableBloc extends Bloc<VariableEvent, VariableState> {
     emit(VariableLoaded(variables: currentVariables, loading: true));
 
     try {
-      final projectApi = event.api.getProjectApi();
-      await projectApi.projectProjectIdEnvironmentEnvironmentIdPut(
+      final variableGroupApi = event.api.getVariableGroupApi();
+      await variableGroupApi.projectProjectIdEnvironmentEnvironmentIdPut(
         projectId: event.projectId,
         environmentId: event.environmentId,
         environment: event.environment,
@@ -106,8 +106,8 @@ class VariableBloc extends Bloc<VariableEvent, VariableState> {
       AppLogger().d(
         'Deleting variable: projectId=${event.projectId}, environmentId=${event.environmentId}',
       );
-      final projectApi = event.api.getProjectApi();
-      final response = await projectApi
+      final variableGroupApi = event.api.getVariableGroupApi();
+      final response = await variableGroupApi
           .projectProjectIdEnvironmentEnvironmentIdDelete(
             projectId: event.projectId,
             environmentId: event.environmentId,

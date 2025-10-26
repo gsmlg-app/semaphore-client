@@ -1,4 +1,4 @@
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:app_logging/app_logging.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -26,12 +26,10 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       emit(ScheduleLoading());
     }
     try {
-      final scheduleApi = event.api.getScheduleApi();
-      final resp = await scheduleApi.projectProjectIdSchedulesGet(
-        projectId: event.projectId,
-      );
-      AppLogger().d('Schedule data: ${resp.data}');
-      emit(ScheduleLoaded(schedules: resp.data ?? [], loading: false));
+      // TODO: Schedule list API not available in current OpenAPI spec
+      // Using empty list until API is updated
+      AppLogger().d('Schedule list API not yet available');
+      emit(ScheduleLoaded(schedules: [], loading: false));
     } catch (e) {
       AppLogger().e('Failed to load schedules', e);
       emit(ScheduleError(e));

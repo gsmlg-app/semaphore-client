@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:app_logging/app_logging.dart';
 
 part 'repository_event.dart';
@@ -26,15 +26,15 @@ class RepositoryBloc extends Bloc<RepositoryEvent, RepositoryState> {
       emit(RepositoryLoading());
     }
     try {
-      final projectApi = event.api.getProjectApi();
-      final resp = await projectApi.projectProjectIdRepositoriesGet(
+      final repositoryApi = event.api.getRepositoryApi();
+      final resp = await repositoryApi.projectProjectIdRepositoriesGet(
         projectId: event.projectId,
         sort: 'name',
         order: 'asc',
       );
 
       AppLogger().d('Repository data: ${resp.data}');
-      emit(RepositoryLoaded(repositorys: resp.data ?? [], loading: false));
+      emit(RepositoryLoaded(repositorys: resp.data?.toList() ?? [], loading: false));
     } catch (e) {
       AppLogger().e('Failed to load repositories', e);
       emit(RepositoryError(e));

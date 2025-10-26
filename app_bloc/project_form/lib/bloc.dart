@@ -1,5 +1,6 @@
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+import 'package:built_value/json_object.dart';
 
 class ProjectFormBloc extends FormBloc<String, String> {
   SemaphoreApi api = SemaphoreApi();
@@ -25,13 +26,13 @@ class ProjectFormBloc extends FormBloc<String, String> {
   @override
   void onSubmitting() async {
     try {
-      await api.getProjectsApi().projectsPost(
-        project: ProjectRequest(
-          name: name.value,
-          alert: alert.value,
-          // alertChat: alertChat.value,
-          maxParallelTasks: maxParallelTasks.value as int,
-        ),
+      final projectData = JsonObject({
+        'name': name.value,
+        'alert': alert.value,
+        'max_parallel_tasks': maxParallelTasks.value,
+      });
+      await api.getProjectApi().projectsPost(
+        project: projectData as ProjectRequest,
       );
       emitSuccess(successResponse: 'Project created');
     } catch (e) {

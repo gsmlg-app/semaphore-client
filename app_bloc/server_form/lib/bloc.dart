@@ -1,4 +1,4 @@
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 
 class ServerFormBloc extends FormBloc<String, String> {
@@ -27,7 +27,9 @@ class ServerFormBloc extends FormBloc<String, String> {
     try {
       final api = SemaphoreApi(basePathOverride: apiUrl.value);
       final result = await api.getAuthenticationApi().authLoginPost(
-        loginBody: Login(auth: username.value, password: password.value),
+        loginBody: Login((b) => b
+          ..auth = username.value
+          ..password = password.value),
       );
       final headers = result.headers;
       final cookie = headers.value('set-cookie');

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:flutter/material.dart';
 
 class TaskEnvWidget extends StatelessWidget {

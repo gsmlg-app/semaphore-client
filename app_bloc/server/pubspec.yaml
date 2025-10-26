@@ -18,7 +18,7 @@ dependencies:
   shared_preferences: ^2.3.5
   
   app_database: any
-  app_api: any
+  semaphore_api: any
   app_utils: any
 
 dev_dependencies:

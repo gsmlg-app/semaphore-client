@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 
 class VariableFormBloc extends FormBloc<String, String> {
   SemaphoreApi api = SemaphoreApi();
@@ -44,30 +44,28 @@ class VariableFormBloc extends FormBloc<String, String> {
   @override
   void onSubmitting() async {
     try {
-      final projectApi = api.getProjectApi();
+      final variableGroupApi = api.getVariableGroupApi();
       if (editData == null) {
-        final request = EnvironmentRequest(
-          projectId: projectId,
-          name: name.value,
-          json: json.value.isEmpty ? null : json.value,
-          env: env.value.isEmpty ? null : env.value,
-          password: password.value.isEmpty ? null : password.value,
-        );
-        await projectApi.projectProjectIdEnvironmentPost(
+        final request = EnvironmentRequest((b) => b
+          ..projectId = projectId
+          ..name = name.value
+          ..json = json.value.isEmpty ? null : json.value
+          ..env = env.value.isEmpty ? null : env.value
+          ..password = password.value.isEmpty ? null : password.value);
+        await variableGroupApi.projectProjectIdEnvironmentPost(
           projectId: projectId,
           environment: request,
         );
         emitSuccess(successResponse: 'Variable has been created');
       } else {
-        final request = EnvironmentRequest(
-          id: editData!.id!,
-          projectId: projectId,
-          name: name.value,
-          json: json.value.isEmpty ? null : json.value,
-          env: env.value.isEmpty ? null : env.value,
-          password: password.value.isEmpty ? null : password.value,
-        );
-        await projectApi.projectProjectIdEnvironmentEnvironmentIdPut(
+        final request = EnvironmentRequest((b) => b
+          ..id = editData!.id!
+          ..projectId = projectId
+          ..name = name.value
+          ..json = json.value.isEmpty ? null : json.value
+          ..env = env.value.isEmpty ? null : env.value
+          ..password = password.value.isEmpty ? null : password.value);
+        await variableGroupApi.projectProjectIdEnvironmentEnvironmentIdPut(
           projectId: projectId,
           environmentId: editData!.id!,
           environment: request,

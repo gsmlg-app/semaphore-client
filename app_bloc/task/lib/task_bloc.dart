@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 
 part 'task_event.dart';
 part 'task_state.dart';
@@ -28,7 +28,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       }
       if (template == null) {
         final resp = await event.api
-            .getProjectApi()
+            .getTemplateApi()
             .projectProjectIdTemplatesTemplateIdGet(
               projectId: event.projectId,
               templateId: event.templateId,
@@ -41,13 +41,12 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         emit(TaskLoading(template: template));
       }
 
-      final projectApi = event.api.getProjectApi();
-      final resp = await projectApi
-          .projectProjectIdTemplatesTemplateIdTasksLastGet(
+      final taskApi = event.api.getTaskApi();
+      final resp = await taskApi
+          .projectProjectIdTasksLastGet(
             projectId: event.projectId,
-            templateId: event.templateId,
           );
-      emit(TaskLoaded(template: template, taskList: resp.data ?? []));
+      emit(TaskLoaded(template: template, taskList: resp.data?.toList() ?? []));
     } catch (e) {
       emit(TaskError(e));
     }

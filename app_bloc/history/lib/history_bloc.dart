@@ -1,4 +1,4 @@
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:app_logging/app_logging.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -23,12 +23,12 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       emit(HistoryLoading());
     }
     try {
-      final projectApi = event.api.getProjectApi();
-      final resp = await projectApi.projectProjectIdTasksLastGet(
+      final taskApi = event.api.getTaskApi();
+      final resp = await taskApi.projectProjectIdTasksLastGet(
         projectId: event.projectId,
       );
       AppLogger().d('History data: ${resp.data}');
-      emit(HistoryLoaded(history: resp.data ?? []));
+      emit(HistoryLoaded(history: resp.data?.toList() ?? []));
     } catch (e) {
       AppLogger().e('Failed to load history', e);
       emit(HistoryError(e));

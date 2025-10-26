@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:app_logging/app_logging.dart';
 
 part 'template_event.dart';
@@ -26,14 +26,14 @@ class TemplateBloc extends Bloc<TemplateEvent, TemplateState> {
       emit(TemplateLoading());
     }
     try {
-      final projectApi = event.api.getProjectApi();
-      final resp = await projectApi.projectProjectIdTemplatesGet(
+      final templateApi = event.api.getTemplateApi();
+      final resp = await templateApi.projectProjectIdTemplatesGet(
         projectId: event.projectId,
         sort: 'name',
         order: 'asc',
       );
       AppLogger().d('Template data: ${resp.data}');
-      emit(TemplateLoaded(templates: resp.data ?? []));
+      emit(TemplateLoaded(templates: resp.data?.toList() ?? []));
     } catch (e) {
       AppLogger().e('Failed to load templates', e);
       emit(TemplateError(e));

@@ -1,4 +1,4 @@
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'event.dart';
 import 'state.dart';
@@ -22,8 +22,8 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     LoadProjects event,
     Emitter<ProjectState> emit,
   ) async {
-    final projectsResponse = await api.getProjectsApi().projectsGet();
-    emit(state.copyWith(projects: projectsResponse.data ?? [], loaded: true));
+    final projectsResponse = await api.getProjectApi().projectsGet();
+    emit(state.copyWith(projects: projectsResponse.data?.toList() ?? [], loaded: true));
   }
 
   Future<void> _onSelectProject(
@@ -37,7 +37,7 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
     AddProject event,
     Emitter<ProjectState> emit,
   ) async {
-    final _ = await api.getProjectsApi().projectsPost(
+    final _ = await api.getProjectApi().projectsPost(
       project: event.projectRequest,
     );
     add(LoadProjects());

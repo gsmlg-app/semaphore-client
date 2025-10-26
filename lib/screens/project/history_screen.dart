@@ -165,7 +165,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                                   ),
                                   WidgetSpan(
                                     child: GestureDetector(
-                                      child: Text('${history.tplAlias}'),
+                                      child: Text('Template #${history.templateId}'),
                                       onTap: () => context.goNamed(
                                         TemplateTaskScreen.name,
                                         pathParameters: {

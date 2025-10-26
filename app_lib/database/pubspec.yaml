@@ -13,7 +13,7 @@ dependencies:
   drift_flutter: ^0.2.5
   path_provider: ^2.1.5
   sqlite3_flutter_libs: ^0.5.25
-  app_api: any
+  semaphore_api: any
   dio: ^5.3.1
   app_utils: any
 

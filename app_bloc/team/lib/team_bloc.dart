@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:app_logging/app_logging.dart';
 
 part 'team_event.dart';
@@ -26,7 +26,7 @@ class TeamBloc extends Bloc<TeamEvent, TeamState> {
       );
 
       AppLogger().d('Team data: ${resp.data}');
-      emit(TeamLoaded(users: resp.data ?? [], loading: false));
+      emit(TeamLoaded(users: resp.data?.toList() ?? [], loading: false));
     } catch (e) {
       AppLogger().e('Failed to load team', e);
       emit(TeamError(e));

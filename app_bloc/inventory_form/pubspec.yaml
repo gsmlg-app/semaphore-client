@@ -16,7 +16,7 @@ dependencies:
   equatable: ^2.0.7
   
   app_database: any
-  app_api: any
+  semaphore_api: any
   app_utils: any
 
   dio: any

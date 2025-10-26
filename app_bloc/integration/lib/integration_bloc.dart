@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:app_logging/app_logging.dart';
 
 part 'integration_event.dart';
@@ -26,13 +26,13 @@ class IntegrationBloc extends Bloc<IntegrationEvent, IntegrationState> {
       emit(IntegrationLoading());
     }
     try {
-      final projectApi = event.api.getProjectApi();
-      final resp = await projectApi.projectProjectIdIntegrationsGet(
+      final integrationApi = event.api.getIntegrationApi();
+      final resp = await integrationApi.projectProjectIdIntegrationsGet(
         projectId: event.projectId,
       );
 
       AppLogger().d('Integration data: ${resp.data}');
-      emit(IntegrationLoaded(integrations: resp.data ?? [], loading: false));
+      emit(IntegrationLoaded(integrations: resp.data?.toList() ?? [], loading: false));
     } catch (e) {
       AppLogger().e('Failed to load integrations', e);
       emit(IntegrationError(e));

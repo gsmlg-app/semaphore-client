@@ -20,7 +20,7 @@ import 'package:app_utils/app_utils.dart';
 import 'package:semaphore_client/screens/project/project_screen.dart';
 import 'package:semaphore_client/screens/project/template_task_screen.dart';
 import 'package:app_error/app_error.dart';
-import 'package:app_api/semaphore_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 
 class TemplateScreen extends StatefulWidget {
   const TemplateScreen({super.key});
@@ -133,7 +133,7 @@ class _TemplateScreenState extends State<TemplateScreen>
                                 title: Text(template.name ?? 'N/A'),
                                 subtitle: _showLastTask(
                                   context,
-                                  template.lastTask,
+                                  null,
                                 ),
                                 trailing: IconButton(
                                   icon: const Icon(Icons.play_circle_outline),
@@ -278,7 +278,7 @@ class _TemplateScreenState extends State<TemplateScreen>
                                       DataCell(
                                         _showLastTask(
                                           context,
-                                          template.lastTask,
+                                          null,
                                         ),
                                       ),
                                       DataCell(
@@ -412,12 +412,8 @@ class _TemplateScreenState extends State<TemplateScreen>
             child: Text('#${task.id}', textAlign: TextAlign.left),
           ),
         ),
-        task.userName != null
-            ? Text(
-                context.l10n!.byUser(task.userName!),
-                textScaler: const TextScaler.linear(0.8),
-              )
-            : const SizedBox(),
+        // User name not available in API
+        const SizedBox(),
       ],
     );
   }

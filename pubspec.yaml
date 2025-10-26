@@ -14,7 +14,6 @@ workspace:
   - app_lib/provider
   - app_lib/logging
   - app_lib/utils
-  - app_lib/api
   - app_api/semaphore
   - app_bloc/theme
   - app_bloc/error_handler
@@ -78,7 +77,7 @@ dependencies:
   app_provider: any
   app_logging: any
   app_utils: any
-  app_api: any
+  semaphore_api: any
   theme_bloc: any
   error_handler_bloc: any
   activity_bloc: any

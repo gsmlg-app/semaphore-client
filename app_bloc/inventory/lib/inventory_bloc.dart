@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:app_api/app_api.dart';
+import 'package:semaphore_api/semaphore_api.dart';
 import 'package:app_logging/app_logging.dart';
 
 part 'inventory_event.dart';
@@ -25,14 +25,14 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       emit(InventoryLoading());
     }
     try {
-      final projectApi = event.api.getProjectApi();
-      final resp = await projectApi.projectProjectIdInventoryGet(
+      final inventoryApi = event.api.getInventoryApi();
+      final resp = await inventoryApi.projectProjectIdInventoryGet(
         projectId: event.projectId,
         sort: 'name',
         order: 'asc',
       );
       AppLogger().d('Inventory data: ${resp.data}');
-      emit(InventoryLoaded(inventorys: resp.data ?? [], loading: false));
+      emit(InventoryLoaded(inventorys: resp.data?.toList() ?? [], loading: false));
     } catch (e) {
       AppLogger().e('Failed to load inventory', e);
       emit(InventoryError(e));
@@ -43,18 +43,17 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
     if (state is InventoryLoaded) {
       try {
         final currentState = state as InventoryLoaded;
-        final projectApi = event.api.getProjectApi();
-        final request = InventoryRequest(
-          name: event.inventory.name,
-          inventory: event.inventory.inventory,
-          sshKeyId: event.inventory.sshKeyId,
-          becomeKeyId: event.inventory.becomeKeyId,
-          repositoryId: event.inventory.repositoryId,
-          type: InventoryRequestTypeEnum.values.firstWhere(
+        final inventoryApi = event.api.getInventoryApi();
+        final request = InventoryRequest((b) => b
+          ..name = event.inventory.name
+          ..inventory = event.inventory.inventory
+          ..sshKeyId = event.inventory.sshKeyId
+          ..becomeKeyId = event.inventory.becomeKeyId
+          ..repositoryId = event.inventory.repositoryId
+          ..type = InventoryRequestTypeEnum.values.firstWhere(
             (e) => e.name == event.inventory.type?.name,
-          ),
-        );
-        final resp = await projectApi.projectProjectIdInventoryPost(
+          ));
+        final resp = await inventoryApi.projectProjectIdInventoryPost(
           projectId: event.projectId,
           inventory: request,
         );
@@ -81,8 +80,8 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
     if (state is InventoryLoaded) {
       try {
         final currentState = state as InventoryLoaded;
-        final projectApi = event.api.getProjectApi();
-        await projectApi.projectProjectIdInventoryInventoryIdDelete(
+        final inventoryApi = event.api.getInventoryApi();
+        await inventoryApi.projectProjectIdInventoryInventoryIdDelete(
           projectId: event.projectId,
           inventoryId: event.inventory.id!,
         );
