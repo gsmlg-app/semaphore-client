@@ -3,7 +3,7 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:semaphore_api/semaphore_api.dart';
 
 class InventoryFormBloc extends FormBloc<String, String> {
-  SemaphoreApi api = SemaphoreApi();
+  late SemaphoreApi api;
   int projectId = 1;
   Inventory? editData;
 

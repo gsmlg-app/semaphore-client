@@ -3,7 +3,7 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:built_value/json_object.dart';
 
 class ProjectFormBloc extends FormBloc<String, String> {
-  SemaphoreApi api = SemaphoreApi();
+  late SemaphoreApi api;
 
   final name = TextFieldBloc<String>(
     validators: [FieldBlocValidators.required],

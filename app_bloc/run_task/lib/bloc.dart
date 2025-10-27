@@ -6,7 +6,7 @@ import 'package:semaphore_api/semaphore_api.dart';
 import 'package:app_logging/app_logging.dart';
 
 class RunTaskFormBloc extends FormBloc<Task, String> {
-  SemaphoreApi api = SemaphoreApi();
+  late SemaphoreApi api;
 
   final message = TextFieldBloc<String>(validators: []);
 

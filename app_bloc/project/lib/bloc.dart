@@ -7,7 +7,7 @@ export 'event.dart';
 export 'state.dart';
 
 class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
-  SemaphoreApi api = SemaphoreApi();
+  late SemaphoreApi api;
 
   ProjectBloc() : super(const ProjectState()) {
     on<LoadProjects>(_onLoadProjects);
