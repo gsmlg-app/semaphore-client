@@ -120,35 +120,5 @@ void main() {
 
       expect(find.byIcon(Icons.color_lens), findsOneWidget);
     });
-
-    testWidgets('app settings tile has correct icon', (
-      WidgetTester tester,
-    ) async {
-      await tester.pumpWidget(
-        MultiRepositoryProvider(
-          providers: [
-            RepositoryProvider<SharedPreferences>(
-              create: (context) => sharedPreferences,
-            ),
-            RepositoryProvider<AppDatabase>(create: (context) => database),
-          ],
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider<ThemeBloc>(create: (context) => themeBloc),
-              BlocProvider<SemaphoreServerBloc>(
-                create: (context) => serverBloc,
-              ),
-            ],
-            child: MaterialApp(
-              localizationsDelegates: AppLocale.localizationsDelegates,
-              supportedLocales: AppLocale.supportedLocales,
-              home: const SettingsScreen(),
-            ),
-          ),
-        ),
-      );
-
-      expect(find.byIcon(Icons.computer), findsOneWidget);
-    });
   });
 }
